@@ -19,8 +19,15 @@
 			"pxn\\phpUtils\\": "src/"
 		}
 	},
+	"autoload-dev": {
+		"psr-4": {
+			"pxn\\phpUtils\\tests\\":    "tests/",
+			"pxn\\phpUtils\\Examples\\": "examples/"
+		}
+	},
 	"archive": {
 		"exclude": [
+			"tests/",
 			"example/"
 		]
 	},
