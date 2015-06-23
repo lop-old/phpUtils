@@ -9,7 +9,7 @@
  */
 namespace pxn\phpUtils\tests;
 
-use \pxn\phpUtils\General;
+use pxn\phpUtils\General;
 
 class GeneralTest extends \PHPUnit_Framework_TestCase {
 

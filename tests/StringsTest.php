@@ -9,7 +9,7 @@
  */
 namespace pxn\phpUtils\tests;
 
-use \pxn\phpUtils\Strings;
+use pxn\phpUtils\Strings;
 
 class StringsTest extends \PHPUnit_Framework_TestCase {
 

@@ -9,7 +9,7 @@
  */
 namespace pxn\phpUtils\tests;
 
-use \pxn\phpUtils\San;
+use pxn\phpUtils\San;
 
 class SanTest extends \PHPUnit_Framework_TestCase {
 

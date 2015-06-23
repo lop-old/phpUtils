@@ -9,7 +9,7 @@
  */
 namespace pxn\phpUtils\tests;
 
-use \pxn\phpUtils\Numbers;
+use pxn\phpUtils\Numbers;
 
 class NumbersTest extends \PHPUnit_Framework_TestCase {
 
