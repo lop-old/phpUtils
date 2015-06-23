@@ -12,7 +12,6 @@
 	},
 	"authors": [{
 		"name":  "lorenzop",
-		"email": "lorenzo@poixson.com",
 		"role":  "Developer"
 	}],
 	"autoload": {
