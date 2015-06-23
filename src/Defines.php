@@ -23,6 +23,7 @@ final class Defines {
 	const TAB          = "\t";
 	const QUOTE_S      = '\'';
 	const QUOTE_D      = "\"";
+	const ACCENT       = '`';
 	const INT_MAX      = 2147483647;
 	const INT_MIN      =-2147483648;
 	const NET_PORT_MAX = 65535;
