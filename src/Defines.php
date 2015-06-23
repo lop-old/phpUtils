@@ -21,8 +21,8 @@ final class Defines {
 	const CRLF         = "\n";
 	const EOL          = "\n";
 	const TAB          = "\t";
-	const S_QUOTE      = '\'';
-	const D_QUOTE      = "\"";
+	const QUOTE_S      = '\'';
+	const QUOTE_D      = "\"";
 	const INT_MAX      = 2147483647;
 	const INT_MIN      =-2147483648;
 	const NET_PORT_MAX = 65535;

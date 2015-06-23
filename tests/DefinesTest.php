@@ -21,8 +21,8 @@ class DefinesTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(Defines::DIR_SEP, \DIRECTORY_SEPARATOR);
 		$this->assertEquals(Defines::NEWLINE, Defines::EOL);
 		$this->assertEquals(Defines::TAB,     "\t");
-		$this->assertEquals(Defines::S_QUOTE, '\'');
-		$this->assertEquals(Defines::D_QUOTE, "\"");
+		$this->assertEquals(Defines::QUOTE_S, '\'');
+		$this->assertEquals(Defines::QUOTE_D, "\"");
 		$this->assertEquals(Defines::INT_MAX, 2147483647);
 		$this->assertEquals(Defines::INT_MIN,-2147483648);
 		$this->assertEquals(Defines::NET_PORT_MAX, 65535);
