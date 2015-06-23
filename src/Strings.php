@@ -14,6 +14,12 @@ final class Strings {
 
 
 
+	#################
+	## Trim String ##
+	#################
+
+
+
 	public static function Trim($text, ...$remove) {
 		if(!\is_array($remove) || \count($remove) == 0)
 			$remove = [ ' ', "\t", "\r", "\n" ];
@@ -134,6 +140,62 @@ final class Strings {
 			}
 		}
 		return $text;
+	}
+
+
+
+	######################
+	## Starts/Ends With ##
+	######################
+
+
+
+	public static function StartsWith($haystack, $needle, $ignoreCase=FALSE) {
+		if(empty($haystack) || empty($needle))
+			return FALSE;
+		$len = \strlen($needle);
+		if($len > \strlen($haystack))
+			return FALSE;
+		if($ignoreCase) {
+			$haystack = \strtolower($haystack);
+			$needle   = \strtolower($needle);
+		}
+		return \substr($haystack, 0, $len) == $needle;
+	}
+	public static function EndsWith($haystack, $needle, $ignoreCase=FALSE) {
+		if(empty($haystack) || empty($needle))
+			return FALSE;
+		$len = \strlen($needle);
+		if($len > \strlen($haystack))
+			return FALSE;
+			if($ignoreCase) {
+			$haystack = \strtolower($haystack);
+			$needle   = \strtolower($needle);
+		}
+		return \substr($haystack, 0 - $len) == $needle;
+	}
+
+
+
+	#####################
+	## Force Start/End ##
+	#####################
+
+
+
+	public static function ForceStartsWith($haystack, $prepend) {
+		if(empty($haystack) || empty($prepend))
+			return $haystack;
+		if(self::StartsWith($haystack, $prepend))
+			return $haystack;
+		return $prepend.$haystack;
+	}
+	public static function ForceEndsWith($haystack, $append) {
+		if(empty($haystack) || empty($append))
+			return $haystack;
+		if(self::EndsWith($haystack, $append))
+			return $haystack;
+		return $haystack.$append;
 	}
 
 
