@@ -16,16 +16,24 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 
 
 	public function testTimestamp() {
+		// all timings are in ms
+		$this->PerformTimestampTest(
+				10, // sleep time
+				8,  // min expected time
+				30  // max expected time
+		);
+	}
+	private function PerformTimestampTest($sleepTime, $minExpected, $maxExpected) {
 		$a = General::getTimestamp();
-		\usleep(10 * 1000); // sleep 10ms
+		\usleep($sleepTime * 1000);
 		$b = General::getTimestamp();
 		$c = $b - $a;
 		// > 1
 		$this->assertGreaterThan(1, $a);
 		$this->assertGreaterThan(1, $b);
 		// within 5-15ms
-		$this->assertGreaterThan(0.005, $c);
-		$this->assertLessThan(   0.015, $c);
+		$this->assertGreaterThan($minExpected / 1000, $c);
+		$this->assertLessThan(   $maxExpected / 1000, $c);
 	}
 
 
