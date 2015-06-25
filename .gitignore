@@ -3,6 +3,7 @@
 .git
 **/composer.phar
 **/vendor/
+**/coverage-html/
 **/pom.xml.original
 
 **/target/
