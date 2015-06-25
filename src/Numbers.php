@@ -130,10 +130,8 @@ final class Numbers {
 	 */
 	public static function FormatRoman($value, $max=FALSE) {
 		$value = (int) $value;
-		if($max !== FALSE) {
-			if($value > $max)
-				return ((string) $value);
-		}
+		if( ($max !== FALSE && $value > $max) || $value < 0)
+			return ((string) $value);
 		$result = '';
 		$lookup = array(
 				'M' => 1000,
