@@ -64,7 +64,7 @@ abstract class BasicEnum {
 	public static function getByValue($value, $strict=FALSE) {
 		$constants = self::getConstants();
 		if($strict) {
-			$result = \array_search($value, $constants);
+			$result = \array_search($value, $constants, TRUE);
 			if(!$result)
 				return NULL;
 			return $result;

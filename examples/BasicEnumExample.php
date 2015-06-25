@@ -14,11 +14,11 @@ use pxn\phpUtils\BasicEnum;
 class BasicEnumExample extends BasicEnum {
 
 
-	const DOG     = 0;
-	const CAT     = 1;
-	const FISH    = 2;
-	const PENGUIN = 4;
-	const LIZARD  = 8;
+	const DOG     = 'woof';
+	const CAT     = 'meow';
+	const FISH    = 'bloop';
+	const PENGUIN = 'sqeuaaaa';
+	const BIRD    = 'churp';
 
 
 
