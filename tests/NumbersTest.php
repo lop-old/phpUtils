@@ -111,6 +111,7 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('2MB',    Numbers::FormatBytes('2048K'));
 		$this->assertEquals('3GB',    Numbers::FormatBytes('3072M'));
 		$this->assertEquals('4TB',    Numbers::FormatBytes('4096G'));
+		$this->assertEquals('6TB',    Numbers::FormatBytes('6T'));
 	}
 
 
@@ -144,6 +145,9 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('CM',   Numbers::FormatRoman(900 ));
 		$this->assertEquals('M',    Numbers::FormatRoman(1000));
 		$this->assertEquals('MCCXXXIV', Numbers::FormatRoman(1234));
+		$this->assertEquals('-20',Numbers::FormatRoman(-20));
+		$this->assertEquals('11', Numbers::FormatRoman(11, 10));
+		$this->assertEquals('IX', Numbers::FormatRoman(9,  10));
 	}
 
 
@@ -158,6 +162,7 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 	 * @covers ::StringToSeconds
 	 */
 	public function testStringToSeconds() {
+		$this->assertEquals(0.001,    Numbers::StringToSeconds('1n'        ));
 		$this->assertEquals(1,        Numbers::StringToSeconds('1s'        ));
 		$this->assertEquals(42,       Numbers::StringToSeconds('42s'       ));
 		$this->assertEquals(60,       Numbers::StringToSeconds('1m'        ));
@@ -170,6 +175,9 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(31536000, Numbers::StringToSeconds('1y'        ));
 		$this->assertEquals(31536000, Numbers::StringToSeconds('1 Year'    ));
 		$this->assertEquals(34822861, Numbers::StringToSeconds('1y 1o 1w 1d 1h 1m 1s'));
+		$this->assertEquals(0,        Numbers::StringToSeconds('1b'));
+		$this->assertEquals(1,        Numbers::StringToSeconds('1b 1s'));
+		$this->assertEquals(1,        Numbers::StringToSeconds('1s 1b'));
 	}
 
 
