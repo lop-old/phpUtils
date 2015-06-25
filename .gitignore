@@ -3,6 +3,7 @@
 .git
 **/composer.phar
 **/vendor/
+**/coverage/
 **/pom.xml.original
 
 **/target/
@@ -13,10 +14,6 @@
 **/.project
 **/.classpath
 **/.settings/
-
-coverage-html/
-coverage-xml/
-coverage.txt
 
 *.swp
 .*.swp
