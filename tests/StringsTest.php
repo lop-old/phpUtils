@@ -24,7 +24,7 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 
 
 
-	const TRIM_TEST_DATA  = ' --   == test ==   -- ';
+	const TRIM_TEST_DATA  = "\t--   == test ==   --\t";
 
 
 
@@ -38,15 +38,15 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 		);
 		$this->assertEquals(
 				'test',
-				Strings::Trim(self::TRIM_TEST_DATA, ' ', '-', '=')
+				Strings::Trim(self::TRIM_TEST_DATA, ' ', '-', '=', "\t")
 		);
 		$this->assertEquals(
-				'test',
-				Strings::Trim(self::TRIM_TEST_DATA, ' ', '--', '==')
+				"test",
+				Strings::Trim(self::TRIM_TEST_DATA, ' ', '--', '==', "\t")
 		);
 		$this->assertEquals(
 				'--   == test ==   --',
-				Strings::Trim(self::TRIM_TEST_DATA, ' ', '=')
+				Strings::Trim(self::TRIM_TEST_DATA, ' ', '=', "\t")
 		);
 	}
 	/**
@@ -54,20 +54,20 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testTrimFront() {
 		$this->assertEquals(
-				'--   == test ==   -- ',
+				"--   == test ==   --\t",
 				Strings::TrimFront(self::TRIM_TEST_DATA)
 		);
 		$this->assertEquals(
-				'test ==   -- ',
-				Strings::TrimFront(self::TRIM_TEST_DATA, ' ', '-', '=')
+				"test ==   --\t",
+				Strings::TrimFront(self::TRIM_TEST_DATA, ' ', '-', '=', "\t")
 		);
 		$this->assertEquals(
-				'test ==   -- ',
-				Strings::TrimFront(self::TRIM_TEST_DATA, ' ', '--', '==')
+				"test ==   --\t",
+				Strings::TrimFront(self::TRIM_TEST_DATA, ' ', '--', '==', "\t")
 		);
 		$this->assertEquals(
-				'--   == test ==   -- ',
-				Strings::TrimFront(self::TRIM_TEST_DATA, ' ', '=')
+				"--   == test ==   --\t",
+				Strings::TrimFront(self::TRIM_TEST_DATA, ' ', '=', "\t")
 		);
 	}
 	/**
@@ -75,20 +75,20 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testTrimEnd() {
 		$this->assertEquals(
-				' --   == test ==   --',
+				"\t--   == test ==   --",
 				Strings::TrimEnd(self::TRIM_TEST_DATA)
 		);
 		$this->assertEquals(
-				' --   == test',
-				Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', '-', '=')
+				"\t--   == test",
+				Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', '-', '=', "\t")
 		);
 		$this->assertEquals(
-				' --   == test',
-				Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', '--', '==')
+				"\t--   == test",
+				Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', '--', '==', "\t")
 		);
 		$this->assertEquals(
-				' --   == test ==   --',
-				Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', '=')
+				"\t--   == test ==   --",
+				Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', '=', "\t")
 		);
 	}
 
