@@ -25,7 +25,7 @@ class qTimeTest extends \PHPUnit_Framework_Testcase {
 	}
 	public function testLonger() {
 		// times are in seconds
-		$this->PerformTest(0.5);
+		$this->PerformTest(0.500);
 	}
 	/**
 	 * @covers ::getTimeSinceStart
@@ -33,32 +33,41 @@ class qTimeTest extends \PHPUnit_Framework_Testcase {
 	 * @covers \pxn\phpUtils\General::Sleep
 	 */
 	private function PerformTest($sleepTime) {
-		$q = new qTime();
-		$a = $q->getTimeSinceStart();
+		// test global
+		qTime::getGlobal()->Reset();
+		$g = qTime::getGlobalSinceStart();
+		$this->assertGreaterThanOrEqual(0.0, $g);
+		$this->assertLessThan(          0.1, $g);
+		unset($g);
+		// test local instance
+		$timer = new qTime(TRUE);
+		$a = $timer->getTimeSinceStart();
 		// wait a short while
 		General::Sleep($sleepTime * 1000.0);
-		$b = $q->getTimeSinceLast();
+		$b = $timer->getTimeSinceLast();
 		// wait a short while again
 		General::Sleep($sleepTime * 1000.0);
-		$c = $q->getTimeSinceLast();
+		$c = $timer->getTimeSinceLast();
 		// test time to start
 		$this->assertGreaterThanOrEqual(0.0, $a);
 		$this->assertLessThan(          0.1, $a);
 		// test 1x sleep
-		$this->assertGreaterThan($sleepTime * 0.8, $b);
-		$this->assertLessThan(   $sleepTime * 1.5, $b);
+		$this->assertGreaterThan($sleepTime * 0.9, $b);
+		$this->assertLessThan(   $sleepTime * 1.9, $b);
 		// test 2x sleep
-		$this->assertGreaterThan($sleepTime * 0.8, $c);
-		$this->assertLessThan(   $sleepTime * 1.5, $c);
+		$this->assertGreaterThan($sleepTime * 0.9, $c);
+		$this->assertLessThan(   $sleepTime * 1.9, $c);
 		// test deviation
 		$deviation = \abs($c - $b);
 		$this->assertGreaterThanOrEqual(0.0, $deviation);
 		$this->assertLessThan(          0.1, $deviation);
 		// test overall time
-		$finish = $q->getTimeSinceStart();
-		$this->assertGreaterThan($sleepTime * 1.8, $finish);
+		$finish = $timer->getTimeSinceStart();
+		$this->assertGreaterThan($sleepTime * 1.9, $finish);
 		$this->assertLessThan(   $sleepTime * 10.0, $finish);
-		unset($a, $b, $c);
+		// test global
+		qTime::getGlobalSinceLast();
+		unset($timer, $a, $b, $c);
 	}
 
 
