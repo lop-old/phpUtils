@@ -35,7 +35,7 @@ class qTime {
 		if($start == Defines::INT_MIN)
 			return FALSE;
 		if($start > $now)
-			return 0;
+			return 0.0;
 		return $now - $start;
 	}
 	public function getTimeSinceLast() {
@@ -48,7 +48,7 @@ class qTime {
 			$last = $start;
 		}
 		if($last > $now)
-			return 0;
+			return 0.0;
 		$since = $now - $last;
 		$this->last = $now;
 		return $since;
