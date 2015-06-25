@@ -11,6 +11,9 @@ namespace pxn\phpUtils\tests;
 
 use pxn\phpUtils\Strings;
 
+/**
+ * @coversDefaultClass \pxn\phpUtils\Strings
+ */
 class StringsTest extends \PHPUnit_Framework_TestCase {
 
 
@@ -25,6 +28,9 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::Trim
+	 */
 	public function testTrim() {
 		$this->assertEquals(
 				'--   == test ==   --',
@@ -43,6 +49,9 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 				Strings::Trim(self::TRIM_TEST_DATA, ' ', '=')
 		);
 	}
+	/**
+	 * @covers ::TrimFront
+	 */
 	public function testTrimFront() {
 		$this->assertEquals(
 				'--   == test ==   -- ',
@@ -61,6 +70,9 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 				Strings::TrimFront(self::TRIM_TEST_DATA, ' ', '=')
 		);
 	}
+	/**
+	 * @covers ::TrimEnd
+	 */
 	public function testTrimEnd() {
 		$this->assertEquals(
 				' --   == test ==   --',
@@ -82,6 +94,9 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::TrimQuotes
+	 */
 	public function testTrimQuotes() {
 		// matching quotes
 		$this->assertEquals('test', Strings::TrimQuotes( '"test"' ));
@@ -108,6 +123,9 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::StartsWith
+	 */
 	public function testStartsWith() {
 		// case-sensitive
 		$this->assertTrue (Strings::StartsWith(self::STARTSENDS_DATA, 'abc', FALSE));
@@ -120,6 +138,9 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertFalse(Strings::StartsWith(self::STARTSENDS_DATA, 'bcd', TRUE));
 		$this->assertFalse(Strings::StartsWith(self::STARTSENDS_DATA, 'Bcd', TRUE));
 	}
+	/**
+	 * @covers ::EndsWith
+	 */
 	public function testEndsWith() {
 		// case-sensitive
 		$this->assertTrue (Strings::EndsWith(self::STARTSENDS_DATA, 'efg', FALSE));
@@ -146,6 +167,9 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::ForceStartsWith
+	 */
 	public function testForceStartsWith() {
 		$this->assertEquals(
 				self::FORCE_APPEND.self::FORCE_DATA,
@@ -162,6 +186,9 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 				)
 		);
 	}
+	/**
+	 * @covers ::ForceEndsWith
+	 */
 	public function testForceEndsWith() {
 		$this->assertEquals(
 				self::FORCE_DATA.self::FORCE_APPEND,

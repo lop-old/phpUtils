@@ -11,6 +11,9 @@ namespace pxn\phpUtils\tests;
 
 use pxn\phpUtils\Numbers;
 
+/**
+ * @coversDefaultClass \pxn\phpUtils\Numbers
+ */
 class NumbersTest extends \PHPUnit_Framework_TestCase {
 
 
@@ -21,6 +24,9 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::MinMax
+	 */
 	public function testMinMax() {
 		$this->assertEquals(999.9, Numbers::MinMax( 999.9));
 		// min/max
@@ -42,6 +48,9 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::Round
+	 */
 	public function testRound() {
 		$this->assertEquals('123.00', Numbers::Round(123,     2));
 		$this->assertEquals('123.45', Numbers::Round(123.45,  2));
@@ -50,6 +59,9 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('123.5',  Numbers::Round(123.45,  1));
 		$this->assertEquals('130',    Numbers::Round(125.6,  -1));
 	}
+	/**
+	 * @covers ::Floor
+	 */
 	public function testFloor() {
 		$this->assertEquals('123.00', Numbers::Floor(123,     2));
 		$this->assertEquals('123.45', Numbers::Floor(123.45,  2));
@@ -58,6 +70,9 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('123.4',  Numbers::Floor(123.45,  1));
 		$this->assertEquals('120',    Numbers::Floor(125.6,  -1));
 	}
+	/**
+	 * @covers ::Ceil
+	 */
 	public function testCeil() {
 		$this->assertEquals('123.00', Numbers::Ceil(123,      2));
 		$this->assertEquals('123.45', Numbers::Ceil(123.45,   2));
@@ -66,6 +81,9 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('123.5',  Numbers::Ceil(123.45,   1));
 		$this->assertEquals('130',    Numbers::Ceil(125.6,   -1));
 	}
+	/**
+	 * @covers ::PadZeros
+	 */
 	public function testPadZeros() {
 		$this->assertEquals('1',     Numbers::PadZeros(1,     0));
 		$this->assertEquals('1.000', Numbers::PadZeros(1,     3));
@@ -76,6 +94,9 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::FormatBytes
+	 */
 	public function testFormatBytes() {
 		$this->assertEquals('1B',     Numbers::FormatBytes( 1    ));
 		$this->assertEquals('1KB',    Numbers::FormatBytes( 1024 ));
@@ -94,7 +115,10 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 
 
 
-	public function testNumberToRoman() {
+	/**
+	 * @covers ::FormatRoman
+	 */
+	public function testFormatRoman() {
 		$this->assertEquals('I',    Numbers::FormatRoman(1   ));
 		$this->assertEquals('II',   Numbers::FormatRoman(2   ));
 		$this->assertEquals('III',  Numbers::FormatRoman(3   ));
@@ -130,6 +154,9 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::StringToSeconds
+	 */
 	public function testStringToSeconds() {
 		$this->assertEquals(1,        Numbers::StringToSeconds('1s'        ));
 		$this->assertEquals(42,       Numbers::StringToSeconds('42s'       ));
@@ -147,6 +174,9 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::SecondsToString
+	 */
 	public function testSecondsToString() {
 		$this->assertEquals('1s',        Numbers::SecondsToString(1       ));
 		$this->assertEquals('42s',       Numbers::SecondsToString(42      ));

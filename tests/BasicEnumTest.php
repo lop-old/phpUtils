@@ -12,6 +12,9 @@ namespace pxn\phpUtils\tests;
 use pxn\phpUtils\Defines;
 use pxn\phpUtils\Examples\BasicEnumExample;
 
+/**
+ * @coversDefaultClass \pxn\phpUtils\BasicEnum
+ */
 class BasicEnumTest extends \PHPUnit_Framework_TestCase {
 
 	const EXAMPLE_CONSTANTS = [
@@ -24,6 +27,9 @@ class BasicEnumTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::getConstants
+	 */
 	public function testConstants() {
 		// verify constants exist
 		$this->assertEquals(
@@ -31,6 +37,12 @@ class BasicEnumTest extends \PHPUnit_Framework_TestCase {
 				print_r(BasicEnumExample::getConstants(), TRUE)
 		);
 	}
+	/**
+	 * @covers ::isValidName
+	 * @covers ::isValidValue
+	 * @covers ::getByName
+	 * @covers ::getByValue
+	 */
 	public function testNamesValues() {
 		// isValid functions
 		$this->assertTrue (BasicEnumExample::isValidName('DOG'));

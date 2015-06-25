@@ -11,11 +11,21 @@ namespace pxn\phpUtils\tests;
 
 use pxn\phpUtils\qTime;
 
+/**
+ * @coversDefaultClass \pxn\phpUtils\qTime
+ */
 class qTimeTest extends \PHPUnit_Framework_Testcase {
 
 
 
 	public function testShort() {
+	}
+	/**
+	 * @covers ::getTimeSinceStart
+	 * @covers ::getTimeSinceLast
+	 * @covers \pxn\phpUtils\General::Sleep
+	 */
+	private function PerformTest($sleepTime) {
 		$q = new qTime();
 		// test initial value
 		$first = $q->getTimeSinceStart();

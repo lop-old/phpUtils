@@ -11,6 +11,9 @@ namespace pxn\phpUtils\tests;
 
 use pxn\phpUtils\General;
 
+/**
+ * @coversDefaultClass \pxn\phpUtils\General
+ */
 class GeneralTest extends \PHPUnit_Framework_TestCase {
 
 
@@ -23,6 +26,10 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 				30  // max expected time
 		);
 	}
+	/**
+	 * @covers ::getTimestamp
+	 * @covers ::Sleep
+	 */
 	private function PerformTimestampTest($sleepTime, $minExpected, $maxExpected) {
 		$a = General::getTimestamp();
 		\usleep($sleepTime * 1000);
