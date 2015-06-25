@@ -30,30 +30,33 @@ abstract class BasicEnum {
 
 
 
-	public static function isValidName($name, $strict=FALSE) {
+	public static function isValidName($name, $ignoreCase=TRUE) {
 		$constants = self::getConstants();
-		if($strict)
-			return \array_key_exists($name, $constants);
+		if(\array_key_exists($name, $constants))
+			return TRUE;
+		if(!$ignoreCase)
+			return FALSE;
 		$keys = \array_map('\\strtolower', \array_keys($constants));
 		return \in_array(\strtolower($name), $keys);
 	}
-	public static function isValidValue($value, $strict=FALSE) {
+	public static function isValidValue($value, $ignoreCase=TRUE) {
 		$values = \array_values(self::getConstants());
-		if($strict)
-			return \in_array($value, $values);
+		if(\in_array($value, $values))
+			return TRUE;
+		if(!$ignoreCase)
+			return FALSE;
 		$vals = \array_map('\\strtolower', \array_values($values));
 		return \in_array(\strtolower($value), $vals);
 	}
 
 
 
-	public static function getByName($name, $strict=FALSE) {
+	public static function getByName($name, $ignoreCase=TRUE) {
 		$constants = self::getConstants();
-		if($strict) {
-			if(!\array_key_exists($name, $constants))
-				return NULL;
+		if(\array_key_exists($name, $constants))
 			return $constants[$name];
-		}
+		if(!$ignoreCase)
+			return NULL;
 		$n = \strtolower($name);
 		foreach($constants as $k => $v) {
 			if(\strtolower($k) == $n)
@@ -61,14 +64,13 @@ abstract class BasicEnum {
 		}
 		return NULL;
 	}
-	public static function getByValue($value, $strict=FALSE) {
+	public static function getByValue($value, $ignoreCase=TRUE) {
 		$constants = self::getConstants();
-		if($strict) {
-			$result = \array_search($value, $constants, TRUE);
-			if(!$result)
-				return NULL;
+		$result = \array_search($value, $constants, TRUE);
+		if($result != FALSE)
 			return $result;
-		}
+		if(!$ignoreCase)
+			return NULL;
 		$val = \strtolower($value);
 		foreach($constants as $k => $v) {
 			if(\strtolower($v) == $val)

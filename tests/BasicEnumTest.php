@@ -48,19 +48,19 @@ class BasicEnumTest extends \PHPUnit_Framework_TestCase {
 		// isValidName
 		$this->assertTrue (BasicEnumExample::isValidName('DOG'));
 		$this->assertFalse(BasicEnumExample::isValidName('COW'));
-		$this->assertTrue (BasicEnumExample::isValidName('DOG', TRUE));
-		$this->assertFalse(BasicEnumExample::isValidName('COW', TRUE));
-		$this->assertFalse(BasicEnumExample::isValidName('Dog', TRUE));
-		$this->assertFalse(BasicEnumExample::isValidName('Cow', TRUE));
-		$this->assertTrue (BasicEnumExample::isValidName('Dog', FALSE));
+		$this->assertTrue (BasicEnumExample::isValidName('DOG', FALSE));
+		$this->assertFalse(BasicEnumExample::isValidName('COW', FALSE));
+		$this->assertFalse(BasicEnumExample::isValidName('Dog', FALSE));
 		$this->assertFalse(BasicEnumExample::isValidName('Cow', FALSE));
-		// getByName functions
+		$this->assertTrue (BasicEnumExample::isValidName('Dog', TRUE ));
+		$this->assertFalse(BasicEnumExample::isValidName('Cow', TRUE ));
+		// getByName
 		$this->assertEquals('churp', BasicEnumExample::getByName('BIRD'));
 		$this->assertEquals(NULL,    BasicEnumExample::getByName('Brd' ));
-		$this->assertEquals('churp', BasicEnumExample::getByName('BIRD', TRUE));
-		$this->assertEquals(NULL,    BasicEnumExample::getByName('Bird', TRUE));
-		$this->assertEquals('churp', BasicEnumExample::getByName('Bird', FALSE));
-		$this->assertEquals(NULL,    BasicEnumExample::getByName('Brd',  FALSE));
+		$this->assertEquals('churp', BasicEnumExample::getByName('BIRD', FALSE));
+		$this->assertEquals(NULL,    BasicEnumExample::getByName('Bird', FALSE));
+		$this->assertEquals('churp', BasicEnumExample::getByName('Bird', TRUE ));
+		$this->assertEquals(NULL,    BasicEnumExample::getByName('Brd',  TRUE ));
 	}
 
 
@@ -73,19 +73,19 @@ class BasicEnumTest extends \PHPUnit_Framework_TestCase {
 		// isValidValue
 		$this->assertTrue (BasicEnumExample::isValidValue('woof'));
 		$this->assertFalse(BasicEnumExample::isValidValue('moo' ));
-		$this->assertTrue (BasicEnumExample::isValidValue('woof', TRUE));
-		$this->assertFalse(BasicEnumExample::isValidValue('moo',  TRUE));
-		$this->assertFalse(BasicEnumExample::isValidValue('Woof', TRUE));
-		$this->assertFalse(BasicEnumExample::isValidValue('Moo',  TRUE));
-		$this->assertTrue (BasicEnumExample::isValidValue('Woof', FALSE));
+		$this->assertTrue (BasicEnumExample::isValidValue('woof', FALSE));
+		$this->assertFalse(BasicEnumExample::isValidValue('moo',  FALSE));
+		$this->assertFalse(BasicEnumExample::isValidValue('Woof', FALSE));
 		$this->assertFalse(BasicEnumExample::isValidValue('Moo',  FALSE));
+		$this->assertTrue (BasicEnumExample::isValidValue('Woof', TRUE ));
+		$this->assertFalse(BasicEnumExample::isValidValue('Moo',  TRUE ));
 		// getByValue
 		$this->assertEquals('CAT', BasicEnumExample::getByValue('meow'));
 		$this->assertEquals(NULL,  BasicEnumExample::getByValue('mow'));
-		$this->assertEquals('CAT', BasicEnumExample::getByValue('meow', TRUE));
-		$this->assertEquals(NULL,  BasicEnumExample::getByValue('Meow', TRUE));
-		$this->assertEquals('CAT', BasicEnumExample::getByValue('Meow', FALSE));
-		$this->assertEquals(NULL,  BasicEnumExample::getByValue('mow',  FALSE));
+		$this->assertEquals('CAT', BasicEnumExample::getByValue('meow', FALSE));
+		$this->assertEquals(NULL,  BasicEnumExample::getByValue('Meow', FALSE));
+		$this->assertEquals('CAT', BasicEnumExample::getByValue('Meow', TRUE ));
+		$this->assertEquals(NULL,  BasicEnumExample::getByValue('mow',  TRUE ));
 	}
 
 
