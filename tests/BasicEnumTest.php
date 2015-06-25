@@ -48,10 +48,27 @@ class BasicEnumTest extends \PHPUnit_Framework_TestCase {
 		// isValid functions
 		$this->assertTrue (BasicEnumExample::isValidName('DOG'));
 		$this->assertFalse(BasicEnumExample::isValidName('COW'));
+		$this->assertTrue (BasicEnumExample::isValidName('DOG', TRUE));
+		$this->assertFalse(BasicEnumExample::isValidName('COW', TRUE));
+		$this->assertFalse(BasicEnumExample::isValidName('Dog', TRUE));
+		$this->assertFalse(BasicEnumExample::isValidName('Cow', TRUE));
+		$this->assertTrue (BasicEnumExample::isValidName('Dog', FALSE));
+		$this->assertFalse(BasicEnumExample::isValidName('Cow', FALSE));
 		// getBy functions
 		$this->assertEquals   (4, BasicEnumExample::getByName('PENGUIN'));
 		$this->assertNotEquals(8, BasicEnumExample::getByName('PENGUIN'));
+		$this->assertEquals(NULL, BasicEnumExample::getByName('Pen'    ));
+		$this->assertEquals   (4, BasicEnumExample::getByName('PENGUIN', TRUE));
+		$this->assertNotEquals(8, BasicEnumExample::getByName('PENGUIN', TRUE));
+		$this->assertEquals(NULL, BasicEnumExample::getByName('Penguin', TRUE));
+		$this->assertEquals(NULL, BasicEnumExample::getByName('Penguin', TRUE));
+		$this->assertEquals   (4, BasicEnumExample::getByName('Penguin', FALSE));
+		$this->assertNotEquals(8, BasicEnumExample::getByName('Penguin', FALSE));
+		$this->assertEquals(NULL, BasicEnumExample::getByName('Pen',     FALSE));
 	}
+
+
+
 	/**
 	 * @covers ::isValidValue
 	 * @covers ::getByValue
