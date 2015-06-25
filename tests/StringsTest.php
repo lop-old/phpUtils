@@ -208,4 +208,21 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	##############
+	## Contains ##
+	##############
+
+
+
+	/**
+	 * @covers ::Contains
+	 */
+	public function testContains() {
+		$this->assertTrue( Strings::Contains(self::TRIM_TEST_DATA, 'test'));
+		$this->assertTrue( Strings::Contains(self::TRIM_TEST_DATA, 'Test', TRUE ));
+		$this->assertFalse(Strings::Contains(self::TRIM_TEST_DATA, 'Test', FALSE));
+	}
+
+
+
 }

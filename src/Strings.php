@@ -200,4 +200,22 @@ final class Strings {
 
 
 
+	##############
+	## Contains ##
+	##############
+
+
+
+	public static function Contains($haystack, $needle, $ignoreCase=FALSE) {
+		if(empty($haystack) || empty($needle))
+			return FALSE;
+		if($ignoreCase) {
+			$haystack = \strtolower($haystack);
+			$needle   = \strtolower($needle);
+		}
+		return (\strpos($haystack, $needle) !== FALSE);
+	}
+
+
+
 }
