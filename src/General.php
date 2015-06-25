@@ -9,9 +9,9 @@
  */
 namespace pxn\phpUtils;
 
-if(!\ini_get('date.timezone')) {
-	\ini_set('date.timezone', 'UTC');
-}
+if(!\ini_get('date.timezone')) {      // @codeCoverageIgnore
+	\ini_set('date.timezone', 'UTC'); // @codeCoverageIgnore
+}                                     // @codeCoverageIgnore
 
 final class General {
 	private final function __construct() {}
@@ -51,6 +51,7 @@ final class General {
 	/**
 	 * Sends http headers to disable page caching.
 	 * @return boolean - TRUE if successful; FALSE if headers already sent.
+	 * @codeCoverageIgnore
 	 */
 	public static function NoPageCache() {
 		if(self::$INITED_NoPageCache)
@@ -73,6 +74,7 @@ final class General {
 	 * Forward to provided url.
 	 * @param string $url - The url/address in which to forward to.
 	 * @param number $delay - Optional delay in seconds before forwarding.
+	 * @codeCoverageIgnore
 	 */
 	public static function ForwardTo($url, $delay=0) {
 		if(\headers_sent() || $delay > 0) {
@@ -90,6 +92,7 @@ final class General {
 	/**
 	 * Scroll to the bottom of the page.
 	 * @param string $id - Optional id of element in which to scroll.
+	 * @codeCoverageIgnore
 	 */
 	public static function ScrollToBottom($id='') {
 		if(empty($id)) $id = 'document';
