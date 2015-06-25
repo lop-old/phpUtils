@@ -37,7 +37,7 @@ final class General {
 	 * @param int $ms - Milliseconds to sleep.
 	 */
 	public static function Sleep($ms) {
-		\usleep( ((int) $ms) * 1000 );
+		\usleep($ms * 1000.0);
 	}
 
 
@@ -138,12 +138,12 @@ final class General {
 	 * @param object $object - Object to validate.
 	 */
 	public static function ValidateClass($className, $object) {
-		if(empty($classname))
+		if(empty($className))
 			throw new \InvalidArgumentException('classname not defined');
 		if($object == NULL)
 			throw new \InvalidArgumentException('object not defined');
-		if(!self::isClass($classname, $object))
-			throw new \InvalidArgumentException('Class object isn\'t of type '.$classname);
+		if(!self::InstanceOfClass($className, $object))
+			throw new \InvalidArgumentException('Class object isn\'t of type '.$className);
 	}
 
 
