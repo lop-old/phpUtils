@@ -37,21 +37,30 @@ class BasicEnumTest extends \PHPUnit_Framework_TestCase {
 				print_r(BasicEnumExample::getConstants(), TRUE)
 		);
 	}
+
+
+
 	/**
 	 * @covers ::isValidName
-	 * @covers ::isValidValue
 	 * @covers ::getByName
-	 * @covers ::getByValue
 	 */
-	public function testNamesValues() {
+	public function testByName() {
 		// isValid functions
 		$this->assertTrue (BasicEnumExample::isValidName('DOG'));
 		$this->assertFalse(BasicEnumExample::isValidName('COW'));
-		$this->assertTRUE (BasicEnumExample::isValidValue(2 ));
-		$this->assertFalse(BasicEnumExample::isValidValue(16));
 		// getBy functions
 		$this->assertEquals   (4, BasicEnumExample::getByName('PENGUIN'));
 		$this->assertNotEquals(8, BasicEnumExample::getByName('PENGUIN'));
+	}
+	/**
+	 * @covers ::isValidValue
+	 * @covers ::getByValue
+	 */
+	public function testByValue() {
+		// isValid functions
+		$this->assertTRUE (BasicEnumExample::isValidValue(2 ));
+		$this->assertFalse(BasicEnumExample::isValidValue(16));
+		// getBy functions
 		$this->assertEquals   ('PENGUIN', BasicEnumExample::getByValue(4));
 		$this->assertNotEquals('PENGUIN', BasicEnumExample::getByValue(8));
 	}
