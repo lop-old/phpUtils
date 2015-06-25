@@ -121,7 +121,7 @@ final class General {
 	 * @param object $object - Object to validate.
 	 * @return boolean - TRUE if object matches class name.
 	 */
-	public static function instance_of_class($className, $object) {
+	public static function InstanceOfClass($className, $object) {
 		if(empty($className)) return FALSE;
 		if($object == NULL)   return FALSE;
 		//echo '<p>$className - '.$className.'</p>';
@@ -137,7 +137,7 @@ final class General {
 	 * @param string $className - Name of class to check for.
 	 * @param object $object - Object to validate.
 	 */
-	public static function validate_class($className, $object) {
+	public static function ValidateClass($className, $object) {
 		if(empty($classname))
 			throw new \InvalidArgumentException('classname not defined');
 		if($object == NULL)
