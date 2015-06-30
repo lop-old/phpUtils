@@ -10,7 +10,7 @@
 namespace pxn\phpUtils\tests;
 
 use pxn\phpUtils\Defines;
-use pxn\phpUtils\Examples\BasicEnumExample;
+use pxn\phpUtils\examples\BasicEnumExample;
 
 /**
  * @coversDefaultClass \pxn\phpUtils\BasicEnum
