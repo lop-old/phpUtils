@@ -15,6 +15,9 @@ class ComposerTools {
 
 
 
+	public static function get($path=NULL) {
+		return new static($path);
+	}
 	public function __construct($path=NULL) {
 		if(empty($path))
 			$path = __DIR__.'/../';
