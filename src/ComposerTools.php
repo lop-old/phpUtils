@@ -9,7 +9,7 @@
  */
 namespace pxn\phpUtils;
 
-class Composer {
+class ComposerTools {
 
 	protected $json;
 
