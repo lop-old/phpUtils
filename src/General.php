@@ -55,7 +55,7 @@ final class General {
 	 */
 	public static function NoPageCache() {
 		if(self::$INITED_NoPageCache)
-			return FALSE;
+			return TRUE;
 		if(\headers_sent())
 			return FALSE;
 		@\header('Expires: Mon, 26 Jul 1990 05:00:00 GMT');
