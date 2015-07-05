@@ -9,7 +9,7 @@
  */
 namespace pxn\phpUtils\tests;
 
-use pxn\phpUtils\Composer;
+use pxn\phpUtils\ComposerTools;
 use pxn\phpUtils\Strings;
 
 class ComposerTest extends \PHPUnit_Framework_TestCase {
@@ -17,14 +17,14 @@ class ComposerTest extends \PHPUnit_Framework_TestCase {
 
 
 	public function testGetVersion() {
-		$composer = new Composer(__DIR__.'/../');
+		$composer = new ComposerTools(__DIR__.'/../');
 		$this->assertNotNull($composer);
 		$version = $composer->getVersion();
 		$this->assertNotEmpty($version);
 		$this->assertTrue(\strpos($version, '.') !== FALSE);
 	}
 	public function testGetHomepage() {
-		$composer = new Composer(__DIR__.'/../');
+		$composer = new ComposerTools(__DIR__.'/../');
 		$this->assertNotNull($composer);
 		$homepage = $composer->getHomepage();
 		$this->assertNotEmpty($homepage);
