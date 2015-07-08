@@ -16,16 +16,14 @@ class ComposerTest extends \PHPUnit_Framework_TestCase {
 
 
 
-	public function testGetVersion() {
-		$composer = new ComposerTools(__DIR__.'/../');
+	public function testValues() {
+		$composer = ComposerTools::get(__DIR__.'/../');
 		$this->assertNotNull($composer);
+		// version
 		$version = $composer->getVersion();
 		$this->assertNotEmpty($version);
 		$this->assertTrue(\strpos($version, '.') !== FALSE);
-	}
-	public function testGetHomepage() {
-		$composer = new ComposerTools(__DIR__.'/../');
-		$this->assertNotNull($composer);
+		// homepage
 		$homepage = $composer->getHomepage();
 		$this->assertNotEmpty($homepage);
 		$this->assertTrue(Strings::StartsWith($homepage, 'http'));
