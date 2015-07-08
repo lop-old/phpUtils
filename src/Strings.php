@@ -30,28 +30,44 @@ final class Strings {
 				break;
 			}
 		}
+		// trim single chars
 		if($allshort) {
-			while(\in_array(\substr($text, 0, 1), $remove))
+			$last = $text;
+			while(\in_array(\substr($text, 0, 1), $remove)) {
 				$text = \substr($text, 1);
-			while(\in_array(\substr($text, -1, 1), $remove))
+				if($text === $last) break;
+				$last = $text;
+			}
+			while(\in_array(\substr($text,-1, 1), $remove)) {
 				$text = \substr($text, 0, -1);
+				if($text === $last) break;
+				$last = $text;
+			}
+			unset($last);
+		// trim variable length strings
 		} else {
 			do {
 				$more = FALSE;
 				foreach($remove as $str) {
 					$len = \strlen($str);
 					if($len == 0) continue;
+					$last = $text;
 					while(\substr($text, 0, $len) == $str) {
 						$text = \substr($text, $len);
+						if($text === $last) break;
+						$last = $text;
 						$more = TRUE;
 					}
 					while(\substr($text, 0 - $len, $len) == $str) {
 						$text = \substr($text, 0, 0 - $len);
+						if($text === $last) break;
+						$last = $text;
 						$more = TRUE;
 					}
 					if($more) break;
 				}
 			} while($more);
+			unset($last);
 		}
 		return $text;
 	}
@@ -65,22 +81,33 @@ final class Strings {
 				break;
 			}
 		}
+		// trim single chars
 		if($allshort) {
-			while(\in_array(\substr($text, 0, 1), $remove))
+			$last = $text;
+			while(\in_array(\substr($text, 0, 1), $remove)) {
 				$text = \substr($text, 1);
+				if($text === $last) break;
+				$last = $text;
+			}
+			unset($last);
+		// trim variable length strings
 		} else {
 			do {
 				$more = FALSE;
 				foreach($remove as $str) {
 					$len = \strlen($str);
 					if($len == 0) continue;
+					$last = $text;
 					while(\substr($text, 0, $len) == $str) {
 						$text = \substr($text, $len);
+						if($text === $last) break;
+						$last = $text;
 						$more = TRUE;
 					}
 					if($more) break;
 				}
 			} while($more);
+			unset($last);
 		}
 		return $text;
 	}
@@ -94,22 +121,33 @@ final class Strings {
 				break;
 			}
 		}
+		// trim single chars
 		if($allshort) {
-			while(\in_array(\substr($text, -1, 1), $remove))
+			$last = $text;
+			while(\in_array(\substr($text, -1, 1), $remove)) {
 				$text = \substr($text, 0, -1);
+				if($text === $last) break;
+				$last = $text;
+			}
+			unset($last);
+		// trim variable length strings
 		} else {
 			do {
 				$more = FALSE;
 				foreach($remove as $str) {
 					$len = \strlen($str);
 					if($len == 0) continue;
+					$last = $text;
 					while(\substr($text, 0 - $len, $len) == $str) {
 						$text = \substr($text, 0, 0 - $len);
+						if($text === $last) break;
+						$last = $text;
 						$more = TRUE;
 					}
 					if($more) break;
 				}
 			} while($more);
+			unset($last);
 		}
 		return $text;
 	}
@@ -122,7 +160,7 @@ final class Strings {
 	 * @return string - String with ' and " quotes removed.
 	 */
 	public static function TrimQuotes($text) {
-		while(\strlen($text) > 2) {
+		while(\strlen($text) > 1) {
 			$f = \substr($text, 0, 1);
 			$e = \substr($text, -1, 1);
 			// trim ' quotes
