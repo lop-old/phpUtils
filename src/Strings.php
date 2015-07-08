@@ -256,4 +256,29 @@ final class Strings {
 
 
 
+	################
+	## File Paths ##
+	################
+
+
+
+	public static function BuildPath(...$parts) {
+		if(empty($parts)) return '';
+		$prepend = self::StartsWith(\reset($parts), '/');
+		$append  = self::EndsWith  (\end($parts),   '/');
+		$cleaned = [];
+		foreach($parts as $str) {
+			if(empty($str)) continue;
+			$trimmed = self::Trim($str, '/', '\\', ' ');
+			if(empty($trimmed)) continue;
+			$cleaned[] = $trimmed;
+		}
+		return
+			($prepend ? '/' : '').
+			implode('/', $cleaned).
+			($append  ? '/' : '');
+	}
+
+
+
 }

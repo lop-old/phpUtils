@@ -253,4 +253,20 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	################
+	## File Paths ##
+	################
+
+
+
+	public function testBuildPath() {
+		$this->assertEquals( 'home/user/Desktop',  Strings::BuildPath(     'home',   'user',   'Desktop'     ));
+		$this->assertEquals('/home/user/Desktop',  Strings::BuildPath('/', 'home',   'user',   'Desktop'     ));
+		$this->assertEquals('/home/user/Desktop/', Strings::BuildPath(    '/home',   'user',   'Desktop', '/'));
+		$this->assertEquals('/home/user/Desktop/', Strings::BuildPath(    '/home/', '/user/', '/Desktop/'    ));
+		$this->assertEquals('home', Strings::BuildPath('', 'home', ''));
+	}
+
+
+
 }
