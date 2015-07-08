@@ -14,6 +14,25 @@ final class Numbers {
 
 
 
+	/**
+	 * This function is a more specific test of a value. The native
+	 * \is_numeric() function also returns true for hex values.
+	 * @param string $value
+	 * @return boolean Returns true if only contains number characters after
+	 *         being trimmed.
+	 */
+	public static function isNumber($value) {
+		if($value == NULL) return FALSE;
+		$value = \trim( (string)$value );
+		if($value == '') return FALSE;
+		$value = Strings::TrimFront($value, '0');
+		if($value == '') return TRUE;
+		$i = ((string) ((int)$value) );
+		return ($value === $i);
+	}
+
+
+
 	##########
 	## Math ##
 	##########
@@ -174,7 +193,7 @@ final class Numbers {
 		$value = 0;
 		for($i = 0; $i < \strlen($text); $i++) {
 			$s = \substr($text, $i, 1);
-			if(\is_numeric($s)) {
+			if(self::isNumber($s)) {
 				$str .= $s;
 				continue;
 			}

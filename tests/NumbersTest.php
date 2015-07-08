@@ -18,6 +18,24 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	public function testIsNumber() {
+		$this->assertTrue (Numbers::isNumber('1'       ), "Value: '1'"       );
+		$this->assertTrue (Numbers::isNumber('0'       ), "Value: '0'"       );
+		$this->assertTrue (Numbers::isNumber('000'     ), "Value: '000'"     );
+		$this->assertTrue (Numbers::isNumber('-1'      ), "Value: '-1'"      );
+		$this->assertTrue (Numbers::isNumber(' 1 '     ), "Value: ' 1 '"     );
+		$this->assertFalse(Numbers::isNumber(' - 1 '   ), "Value: ' - 1 '"   );
+		$this->assertFalse(Numbers::isNumber('1a'      ), "Value: '1a'"      );
+		$this->assertFalse(Numbers::isNumber('a1'      ), "Value: 'a1'"      );
+		$this->assertFalse(Numbers::isNumber('1 a'     ), "Value: '1 a'"     );
+		$this->assertFalse(Numbers::isNumber('a'       ), "Value: 'a'"       );
+		$this->assertTrue (Numbers::isNumber('99999999'), "Value: '99999999'");
+		$this->assertTrue (Numbers::isNumber('007'     ), "Value: '007'"     );
+		$this->assertFalse(Numbers::isNumber('0x5F12'  ), "Value: '0x5F12'"  );
+	}
+
+
+
 	##########
 	## Math ##
 	##########
