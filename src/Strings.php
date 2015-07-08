@@ -275,7 +275,7 @@ final class Strings {
 		}
 		return
 			($prepend ? '/' : '').
-			implode('/', $cleaned).
+			\implode('/', $cleaned).
 			($append  ? '/' : '');
 	}
 
