@@ -9,6 +9,8 @@
  */
 namespace pxn\phpUtils;
 
+use pxn\phpUtils\Arrays;
+
 final class Strings {
 	private final function __construct() {}
 
@@ -21,7 +23,10 @@ final class Strings {
 
 
 	public static function Trim($text, ...$remove) {
-		if(!\is_array($remove) || \count($remove) == 0)
+		if(!\is_array($remove))
+			$remove = [ (string)$remove ];
+		Arrays::TrimFlat($remove);
+		if(\count($remove) == 0)
 			$remove = [ ' ', "\t", "\r", "\n" ];
 		$allshort = TRUE;
 		foreach($remove as $str) {
@@ -72,7 +77,10 @@ final class Strings {
 		return $text;
 	}
 	public static function TrimFront($text, ...$remove) {
-		if(!\is_array($remove) || \count($remove) == 0)
+		if(!\is_array($remove))
+			$remove = [ (string)$remove ];
+		Arrays::TrimFlat($remove);
+		if(\count($remove) == 0)
 			$remove = [ ' ', "\t", "\r", "\n" ];
 		$allshort = TRUE;
 		foreach($remove as $str) {
@@ -112,7 +120,10 @@ final class Strings {
 		return $text;
 	}
 	public static function TrimEnd($text, ...$remove) {
-		if(!\is_array($remove) || \count($remove) == 0)
+		if(!\is_array($remove))
+			$remove = [ (string)$remove ];
+		Arrays::TrimFlat($remove);
+		if(\count($remove) == 0)
 			$remove = [ ' ', "\t", "\r", "\n" ];
 		$allshort = TRUE;
 		foreach($remove as $str) {
