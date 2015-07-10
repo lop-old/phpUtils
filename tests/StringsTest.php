@@ -253,6 +253,63 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	##############
+	## Get Part ##
+	##############
+
+
+
+	const PART_TEST_DATA  = "aaa bbb  ccc\tddd";
+
+
+
+	public function test_findPart() {
+		$data = self::PART_TEST_DATA;
+		// find space
+		$result = Strings::findPart($data, ' ');
+		$this->assertTrue(\is_array($result));
+		$this->assertEquals(3,   $result['POS']);
+		$this->assertEquals(' ', $result['PAT']);
+		// find double-space
+		$result = Strings::findPart($data, '  ');
+		$this->assertTrue(\is_array($result));
+		$this->assertEquals(7,    $result['POS']);
+		$this->assertEquals('  ', $result['PAT']);
+		// find tab
+		$result = Strings::findPart($data, "\t");
+		$this->assertTrue(\is_array($result));
+		$this->assertEquals(12,   $result['POS']);
+		$this->assertEquals("\t", $result['PAT']);
+		// find nothing
+		$result = Strings::findPart($data, '-');
+		$this->assertFalse(\is_array($result));
+		$this->assertEquals(NULL, $result);
+		unset($data, $result);
+	}
+	public function test_peakPart_grapPart() {
+		$data = self::PART_TEST_DATA;
+		// aaa
+		$this->assertEquals('aaa', Strings::peakPart($data, ' '));
+		$this->assertEquals('aaa', Strings::grabPart($data, ' '));
+		$this->assertEquals("bbb  ccc\tddd", $data);
+		// bbb
+		$this->assertEquals('bbb', Strings::peakPart($data, ' '));
+		$this->assertEquals('bbb', Strings::grabPart($data, ' '));
+		$this->assertEquals("ccc\tddd", $data);
+		// ccc
+		$this->assertEquals("ccc\tddd", Strings::peakPart($data, ' '));
+		$this->assertEquals('ccc',      Strings::peakPart($data, [' ', "\t"]));
+		$this->assertEquals('ccc',      Strings::grabPart($data, [' ', "\t"]));
+		$this->assertEquals('ddd', $data);
+		// ddd
+		$this->assertEquals('ddd', Strings::peakPart($data, ' '));
+		$this->assertEquals('ddd', Strings::grabPart($data, ' '));
+		$this->assertEquals('', $data);
+		unset($data);
+	}
+
+
+
 	################
 	## File Paths ##
 	################

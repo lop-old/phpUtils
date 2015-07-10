@@ -256,6 +256,75 @@ final class Strings {
 
 
 
+	##############
+	## Get Part ##
+	##############
+
+
+
+	public static function peakPart(&$data, $patterns=' ') {
+		$result = self::findPart($data, $patterns);
+		// pattern not found
+		if($result == NULL)
+			return $data;
+		return \substr($data, 0, $result['POS']);
+	}
+	public static function grabPart(&$data, $patterns=' ') {
+		$result = self::findPart($data, $patterns);
+		// pattern not found
+		if($result == NULL) {
+			$part = $data;
+			$data = '';
+			return $part;
+		}
+		// get part
+		$part = \substr(
+				$data,
+				0,
+				$result['POS']
+		);
+		// remove part from data
+		$data = self::TrimFront(
+				\substr(
+						$data,
+						$result['POS']+\strlen($result['PAT'])
+				),
+				$result['PAT']
+		);
+		return $part;
+	}
+	public static function findPart(&$data, $patterns) {
+		if(empty($data)) return NULL;
+		$data = (string) $data;
+		if(!\is_array($patterns))
+			$patterns = [$patterns];
+		// find next delim
+		$pos   = \strlen($data);
+		$delim = NULL;
+		foreach($patterns as $pat) {
+			if(empty($pat)) continue;
+			$pat = (string) $pat;
+			$p = \strpos($data, $pat);
+			if($p === FALSE) continue;
+			// found a sooner delim
+			if($p < $pos) {
+				$pos   = $p;
+				$delim = $pat;
+			}
+			// found delim at start
+			if($p == 0)
+				break;
+		}
+		if($delim == NULL)
+			return NULL;
+		return [
+				'POS' => $pos,
+				'PAT' => $delim
+		];
+	}
+
+
+
 	################
 	## File Paths ##
 	################
