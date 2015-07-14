@@ -16,10 +16,21 @@ use pxn\phpUtils\General;
  */
 class GeneralTest extends \PHPUnit_Framework_TestCase {
 
+	const EXPECTED_CLASS_STRING = 'pxn\\phpUtils\\tests\\GeneralTest';
+
 
 
 	public function testArray() {
 		$this->assertEmpty([]);
+	}
+
+
+
+	public function testClassName() {
+		$this->assertEquals(
+				self::EXPECTED_CLASS_STRING,
+				\get_class($this)
+		);
 	}
 
 
@@ -63,26 +74,13 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 
 
 
-	const VALIDATE_CLASS_STRING = 'pxn\\phpUtils\\tests\\GeneralTest';
-
-
-
-	public function testClassName() {
-		$this->assertEquals(
-				self::VALIDATE_CLASS_STRING,
-				\get_class($this)
-		);
-	}
-
-
-
 	/**
 	 * @covers ::InstanceOfClass
 	 */
 	public function testInstanceOfClass() {
 		$this->assertTrue(
 				General::InstanceOfClass(
-						self::VALIDATE_CLASS_STRING,
+						self::EXPECTED_CLASS_STRING,
 						$this
 				)
 		);
@@ -95,7 +93,7 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testValidateClass() {
 		General::ValidateClass(
-				self::VALIDATE_CLASS_STRING,
+				self::EXPECTED_CLASS_STRING,
 				$this
 		);
 	}
@@ -141,7 +139,7 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 	public function testValidateClass_NullObject() {
 		try {
 			General::ValidateClass(
-					self::VALIDATE_CLASS_STRING,
+					self::EXPECTED_CLASS_STRING,
 					NULL
 			);
 		} catch (\InvalidArgumentException $e) {
@@ -159,13 +157,13 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 	public function testValidateClass_ClassType() {
 		try {
 			General::ValidateClass(
-					self::VALIDATE_CLASS_STRING.'_invalid',
+					self::EXPECTED_CLASS_STRING.'_invalid',
 					$this
 			);
 		} catch (\InvalidArgumentException $e) {
 			$this->assertEquals(
 					'Class object isn\'t of type '.
-						self::VALIDATE_CLASS_STRING.'_invalid',
+						self::EXPECTED_CLASS_STRING.'_invalid',
 					$e->getMessage()
 			);
 			return;
