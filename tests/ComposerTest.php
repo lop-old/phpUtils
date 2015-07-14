@@ -12,10 +12,19 @@ namespace pxn\phpUtils\tests;
 use pxn\phpUtils\ComposerTools;
 use pxn\phpUtils\Strings;
 
+/**
+ * @coversDefaultClass \pxn\phpUtils\ComposerTools
+ */
 class ComposerTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::get
+	 * @covers ::__construct
+	 * @covers ::getVersion
+	 * @covers ::getHomepage
+	 */
 	public function testValues() {
 		$composer = ComposerTools::get(__DIR__.'/../');
 		$this->assertNotNull($composer);

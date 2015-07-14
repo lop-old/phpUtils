@@ -22,6 +22,9 @@ class ArraysTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::TrimFlat
+	 */
 	public function testTrimFlat() {
 		// clean
 		$array = self::CLEAN_ARRAY;
@@ -69,6 +72,9 @@ class ArraysTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::Flatten
+	 */
 	public function testFlatten() {
 		// clean
 		$array = self::CLEAN_ARRAY;
@@ -107,6 +113,9 @@ class ArraysTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::Trim
+	 */
 	public function testTrim() {
 		// clean
 		$array = self::CLEAN_ARRAY;

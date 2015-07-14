@@ -275,6 +275,9 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::findPart
+	 */
 	public function test_findPart() {
 		$data = self::PART_TEST_DATA;
 		// find space
@@ -298,6 +301,10 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals(NULL, $result);
 		unset($data, $result);
 	}
+	/**
+	 * @covers ::peakPart
+	 * @covers ::grabPart
+	 */
 	public function test_peakPart_grapPart() {
 		$data = self::PART_TEST_DATA;
 		// aaa
@@ -328,6 +335,9 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::BuildPath
+	 */
 	public function testBuildPath() {
 		$this->assertEquals( 'home/user/Desktop',  Strings::BuildPath(     'home',   'user',   'Desktop'     ));
 		$this->assertEquals('/home/user/Desktop',  Strings::BuildPath('/', 'home',   'user',   'Desktop'     ));

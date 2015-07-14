@@ -18,6 +18,9 @@ class NumbersTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	/**
+	 * @covers ::isNumber
+	 */
 	public function testIsNumber() {
 		$this->assertTrue (Numbers::isNumber('1'       ), "Value: '1'"       );
 		$this->assertTrue (Numbers::isNumber('0'       ), "Value: '0'"       );
