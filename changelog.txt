@@ -1,0 +1,10 @@
+xBuild 0.x - Change Log
+
+
+2015-07-15 xBuild 0.1.5
+=======================
+
+* added optional ConsoleApp class (must require symfony/console in your project composer.json file)
+* added optional Logger class (must require monolog/monolog in your project composer.json file)
+* added Arrays class
+* added peakPart() grabPart() and findPart() functions to Strings class
