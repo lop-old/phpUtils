@@ -20,6 +20,9 @@ namespace pxn\phpUtils;
  * EMERGENCY (600): Emergency: system is unusable.
  */
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Formatter\LineFormatter;
+
 \pxn\phpUtils\General::Init();
 
 class Logger extends \Monolog\Logger {
@@ -31,8 +34,19 @@ class Logger extends \Monolog\Logger {
 	public static function get($name='') {
 		$name = self::ValidateName($name);
 		// new logger
-		if(!isset(self::$loggers[$name]))
-			self::$loggers[$name] = new static($name);
+		if(!isset(self::$loggers[$name])) {
+			$log = new self($name);
+			self::$loggers[$name] = $log;
+			$handler = new StreamHandler('php://stderr', Logger::DEBUG);
+			$formatter = new LineFormatter(
+					'[%datetime%] [%channel%|%level_name%]  %message%  %context% %extra%'."\n",
+					'Y-m-d H:i:s',
+					FALSE,
+					TRUE
+			);
+			$handler->setFormatter($formatter);
+			$log->pushHandler($handler);
+		}
 		return self::$loggers[$name];
 	}
 	public static function set($name, $logger) {
