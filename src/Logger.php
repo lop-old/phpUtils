@@ -9,6 +9,8 @@
  */
 namespace pxn\phpUtils;
 
+\pxn\phpUtils\General::Init();
+
 class Logger extends \Monolog\Logger {
 
 	private static $loggers = [];
