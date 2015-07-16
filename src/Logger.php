@@ -29,23 +29,35 @@ class Logger extends \Monolog\Logger {
 
 
 	public static function get($name='') {
-		// default to last part of namespace
-		if(empty($name)) {
-			$trace = \debug_backtrace(FALSE, 2);
-			$temp = \strrev($trace[1]['class']);
-			unset($trace);
-			Strings::grabPart($temp, '\\');
-			$name = \strrev(Strings::grabPart($temp, '\\'));
-			if(empty($name)) $name = '';
-			unset($temp);
-		}
+		$name = self::ValidateName($name);
 		// new logger
 		if(!isset(self::$loggers[$name]))
 			self::$loggers[$name] = new static($name);
 		return self::$loggers[$name];
 	}
+	public static function set($name, $logger) {
+		$name = ValidateName($name);
+		$existed = isset(self::$loggers[$name]);
+		self::$loggers[$name] = $logger;
+		return $existed;
+	}
 	public function __construct($name, array $handlers=[], array $processors=[]) {
 		parent::__construct($name, $handlers, $processors);
+	}
+
+
+
+	public static function ValidateName($name) {
+		// default to last part of namespace
+		if(empty($name)) {
+			$trace = \debug_backtrace(FALSE, 3);
+			$str = \strrev($trace[2]['class']);
+			unset($trace);
+			Strings::grabPart($str, '\\');
+			$name = \strrev(Strings::grabPart($str, '\\'));
+		}
+		if(empty($name)) $name = '';
+		return $name;
 	}
 
 
