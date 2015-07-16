@@ -30,4 +30,15 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	public function testEmpty() {
+		$a = Logger::get();
+		$b = Logger::get('');
+		$c = Logger::get(NULL);
+		$this->assertTrue ($a === $b);
+		$this->assertTrue ($a === $c);
+		$this->assertFalse($a === Logger::get('test'));
+	}
+
+
+
 }
