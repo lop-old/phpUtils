@@ -18,6 +18,10 @@ final class General {
 
 
 
+	public static function Init() {}
+
+
+
 	##########
 	## Time ##
 	##########
