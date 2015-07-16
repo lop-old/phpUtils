@@ -19,6 +19,7 @@ class ConsoleApp extends Application {
 	public function __construct($name='UNKNOWN', $version='UNKNOWN') {
 		parent::__construct($name, $version);
 		$this->setDefaultCommand('help');
+		echo shell_exec('clear');
 	}
 
 
