@@ -50,7 +50,7 @@ class Logger extends \Monolog\Logger {
 		return self::$loggers[$name];
 	}
 	public static function set($name, $logger) {
-		$name = ValidateName($name);
+		$name = self::ValidateName($name);
 		$existed = isset(self::$loggers[$name]);
 		self::$loggers[$name] = $logger;
 		return $existed;
