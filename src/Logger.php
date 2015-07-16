@@ -16,7 +16,17 @@ class Logger extends \Monolog\Logger {
 
 
 	public static function get($name='') {
-		if($name === NULL) $name = '';
+		// default to last part of namespace
+		if(empty($name)) {
+			$trace = \debug_backtrace(FALSE, 2);
+			$temp = \strrev($trace[1]['class']);
+			unset($trace);
+			Strings::grabPart($temp, '\\');
+			$name = \strrev(Strings::grabPart($temp, '\\'));
+			if(empty($name)) $name = '';
+			unset($temp);
+		}
+		// new logger
 		if(!isset(self::$loggers[$name]))
 			self::$loggers[$name] = new static($name);
 		return self::$loggers[$name];
