@@ -35,6 +35,7 @@ class ComposerToolsTest extends \PHPUnit_Framework_TestCase {
 
 	/**
 	 * @covers ::getFilePath
+	 * @covers ::SanPath
 	 */
 	public function testPaths() {
 		$expect = \realpath(__DIR__.'/../composer.json');
