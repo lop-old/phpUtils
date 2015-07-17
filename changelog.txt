@@ -1,6 +1,12 @@
 xBuild 0.x - Change Log
 
 
+2015-07-17 xBuild 0.1.6
+=======================
+* improvements to simplify using ConsoleApp
+* bug fixes and improvements to ComposerTools and ConsoleApp classes
+
+
 2015-07-15 xBuild 0.1.5
 =======================
 
