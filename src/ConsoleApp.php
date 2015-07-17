@@ -31,11 +31,17 @@ class ConsoleApp extends \Symfony\Component\Console\Application {
 
 
 
+	/**
+	 * @codeCoverageIgnoreStart
+	 */
 	protected function getDefaultCommands() {
 		return [
 				new HelpCommand()
 		];
 	}
+	/**
+	 * @codeCoverageIgnoreEnd
+	 */
 
 
 

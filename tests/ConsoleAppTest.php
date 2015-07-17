@@ -9,8 +9,7 @@
  */
 namespace pxn\phpUtils\tests;
 
-use pxn\phpUtils\ConsoleApp;
-use Symfony\Component\Console\Command\Command;
+use pxn\phpUtils\ConsoleAppFactory;
 
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -23,38 +22,55 @@ class ConsoleAppTest extends \PHPUnit_Framework_TestCase {
 
 
 	/**
+	 * @covers \pxn\phpUtils\ConsoleAppFactory::get
 	 * @covers ::__construct
-	 * @covers ::getDefaultCommands
 	 */
-	public function testDefaultCommands() {
-		$console = new ConsoleApp();
-		$console->add(
-				$this->getTestCommand()
-		);
-		$commands = $console->all();
-		$expected = [
-				'help',
-				'test-command',
-				'testcommand'
-		];
-		$this->assertEquals(
-				\print_r($expected, TRUE),
-				\print_r(\array_keys($commands), TRUE)
-		);
+	public function testInstances() {
+		$a = ConsoleAppFactory::get();
+		$b = ConsoleAppFactory::get();
+		$this->assertTrue($a === $b);
 	}
 
 
 
-	protected function getTestCommand() {
-		return (new Command('test-command'))
-				->setAliases(['testcommand'])
-				->setDescription('This command is for testing only')
-				->setHelp('This is help for a test command')
-				->addUsage('Usage for a test command')
-				->setDefinition([])
-				->setCode(function(ArgvInput $input, ConsoleOutput $output) {
+	/**
+	 * @covers ::__construct
+	 * @covers ::getDefaultCommands
+	 * @covers ::newCommand
+	 */
+	public function testCommands() {
+		$console = ConsoleAppFactory::get();
+		$this->assertNotNull($console);
+		// get commands
+		$expected = [
+				'help'
+		];
+		$commands = $console->all();
+		$this->assertEquals(
+				\print_r($expected, TRUE),
+				\print_r(\array_keys($commands), TRUE)
+		);
+		// add a test command
+		$command = $console->newCommand(
+				'test-command',
+				function(ArgvInput $input, ConsoleOutput $output) {
 					echo 'This is a test command.';
 				}
+		);
+		$command
+			->setAliases(['testcommand'])
+			->setDescription('Description of a test command')
+			->setHelp('This is help for a test command')
+			->addUsage('Usage for a test command');
+		// verify commands exist
+		$expected = [
+				'help',
+				'test-command'
+		];
+		$commands = $console->all();
+		$this->assertEquals(
+				\print_r($expected, TRUE),
+				\print_r(\array_keys($commands), TRUE)
 		);
 	}
 

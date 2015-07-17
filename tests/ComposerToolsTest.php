@@ -22,7 +22,19 @@ class ComposerToolsTest extends \PHPUnit_Framework_TestCase {
 	/**
 	 * @covers ::get
 	 * @covers ::__construct
-	 * @covers ::getPath
+	 */
+	public function testInstances() {
+		$a = ComposerTools::get();
+		$b = ComposerTools::get();
+		$this->assertNotNull($a);
+		$this->assertNotNull($b);
+		$this->assertTrue($a === $b);
+	}
+
+
+
+	/**
+	 * @covers ::getFilePath
 	 */
 	public function testPaths() {
 		$expect = \realpath(__DIR__.'/../composer.json');
@@ -47,23 +59,17 @@ class ComposerToolsTest extends \PHPUnit_Framework_TestCase {
 
 
 
-	public function testInstances() {
-		$a = ComposerTools::get();
-		$b = ComposerTools::get();
-		$this->assertTrue($a === $b);
-	}
-
-
-
 	/**
-	 * @covers ::get
-	 * @covers ::__construct
+	 * @covers ::getName
 	 * @covers ::getVersion
 	 * @covers ::getHomepage
 	 */
 	public function testValues() {
 		$composer = ComposerTools::get();
 		$this->assertNotNull($composer);
+		// name
+		$name = $composer->getName();
+		$this->assertEquals('pxn/phputils', $name);
 		// version
 		$version = $composer->getVersion();
 		$this->assertNotEmpty($version);
