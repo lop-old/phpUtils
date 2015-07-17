@@ -18,6 +18,18 @@ class ComposerTools {
 
 
 
+	public static function find($depth=2) {
+		for($i=0; $i<=$depth; $i++) {
+			$path = \str_repeat('/..', $i);
+			$path = \realpath( '.'.$path.'/' ).'/composer.json';
+			// found file
+			if(\file_exists($path)) {
+				return self::get($path);
+				break;
+			}
+		}
+		return NULL;
+	}
 	public static function get($path=NULL) {
 		$path = self::SanPath($path);
 		if(isset(self::$instances[$path])) {
