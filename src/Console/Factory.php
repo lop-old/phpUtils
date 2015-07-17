@@ -7,9 +7,10 @@
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
-namespace pxn\phpUtils;
+namespace pxn\phpUtils\Console;
 
-class ConsoleAppFactory {
+class Factory {
+	private function __construct() {}
 
 	private static $instance = NULL;
 

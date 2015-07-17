@@ -9,7 +9,7 @@
  */
 namespace pxn\phpUtils\tests;
 
-use pxn\phpUtils\ConsoleAppFactory;
+use pxn\phpUtils\Console\Factory;
 
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -26,8 +26,8 @@ class ConsoleAppTest extends \PHPUnit_Framework_TestCase {
 	 * @covers ::__construct
 	 */
 	public function testInstances() {
-		$a = ConsoleAppFactory::get();
-		$b = ConsoleAppFactory::get();
+		$a = Factory::get();
+		$b = Factory::get();
 		$this->assertTrue($a === $b);
 	}
 
@@ -39,7 +39,7 @@ class ConsoleAppTest extends \PHPUnit_Framework_TestCase {
 	 * @covers ::newCommand
 	 */
 	public function testCommands() {
-		$console = ConsoleAppFactory::get();
+		$console = Factory::get();
 		$this->assertNotNull($console);
 		// get commands
 		$expected = [
@@ -58,10 +58,10 @@ class ConsoleAppTest extends \PHPUnit_Framework_TestCase {
 				}
 		);
 		$command
-			->setAliases(['testcommand'])
+			->setAliases    (['testcommand'])
 			->setDescription('Description of a test command')
-			->setHelp('This is help for a test command')
-			->addUsage('Usage for a test command');
+			->setHelp       ('This is help for a test command')
+			->addUsage      ('Usage for a test command');
 		// verify commands exist
 		$expected = [
 				'help',
