@@ -39,4 +39,15 @@ class ConsoleApp extends \Symfony\Component\Console\Application {
 
 
 
+	public function newCommand($name, Callable $callback) {
+		if(empty($name))      throw new \Exception('Command name argument is required');
+		if($callback == NULL) throw new \Exception('Callback argument is required');
+		$command = new Command($name);
+		$command->setCode($callback);
+		$this->add($command);
+		return $command;
+	}
+
+
+
 }
