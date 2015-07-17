@@ -9,14 +9,22 @@
  */
 namespace pxn\phpUtils;
 
-use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Command\HelpCommand;
 
-class ConsoleApp extends Application {
+class ConsoleApp extends \Symfony\Component\Console\Application {
 
 
 
-	public function __construct($name='UNKNOWN', $version='UNKNOWN') {
+	public function __construct($name=NULL, $version=NULL) {
+		if(empty($name)) {
+			$name = ComposerTools::get()
+					->getName();
+		}
+		if(empty($version)) {
+			$version = ComposerTools::get()
+					->getVersion();
+		}
 		parent::__construct($name, $version);
 		$this->setDefaultCommand('help');
 	}
