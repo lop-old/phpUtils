@@ -1,6 +1,6 @@
 {
 	"name":        "pxn/phputils",
-	"description": "PHP Utils for PoiXson projects",
+	"description": "Utilities for PoiXson PHP projects",
 	"version":     "0.1.6",
 	"type":        "library",
 	"homepage":    "http://poixson.com/",
