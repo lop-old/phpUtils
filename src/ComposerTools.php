@@ -11,32 +11,64 @@ namespace pxn\phpUtils;
 
 class ComposerTools {
 
+	private static $instances = [];
+
+	protected $path;
 	protected $json;
 
 
 
 	public static function get($path=NULL) {
-		return new static($path);
-	}
-	public function __construct($path=NULL) {
-		if(empty($path))
-			$path = __DIR__.'/../';
-		if(!Strings::EndsWith($path, 'composer.json')) {
-			if(!Strings::EndsWith($path, 'composer.json'))
-				$path .= '/';
-			$path .= 'composer.json';
+		$path = self::SanPath($path);
+		if(isset(self::$instances[$path])) {
+			$instance = self::$instances[$path];
+		} else {
+			$instance = new static($path);
+			self::$instances[$path] = $instance;
 		}
-		$data = \file_get_contents($path);
+		return $instance;
+	}
+	protected function __construct($filePath=NULL) {
+		if(empty($filePath) || !\is_file($filePath))
+			throw new \Exception('Invalid composer.json file: '.$filePath);
+		// read file contents
+		$data = \file_get_contents($filePath);
 		if($data === FALSE)
-			throw new \Exception('Failed to load composer.json '.$path);
+			throw new \Exception('Failed to load composer.json '.$filePath);
 		$this->json = \json_decode($data);
 		unset($data);
 		if(!isset($this->json->version))
-			throw new \Exception('Failed to load composer.json');
+			throw new \Exception('Failed to parse composer.json');
+		$this->path = $filePath;
 	}
 
 
 
+	public static function SanPath($path) {
+		// trim filename from end
+		if(Strings::EndsWith($path, 'composer.json', FALSE))
+			$path = \dirname($path);
+		// normalize path
+		$path = \realpath($path);
+		// trim /src from end of path
+		if(Strings::EndsWith($path, '/src', FALSE))
+			$path = \realpath($path.'/../');
+		// validate path
+		if(empty($path) || $path == '/') throw new \Exception('Invalid path');
+		// append filename
+		return $path.'/composer.json';
+	}
+	public function getFilePath() {
+		return $this->path;
+	}
+
+
+
+	public function getName() {
+		if(!isset($this->json->name))
+			return NULL;
+		return $this->json->name;
+	}
 	public function getVersion() {
 		if(!isset($this->json->version))
 			return NULL;
