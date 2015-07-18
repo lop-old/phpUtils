@@ -9,11 +9,11 @@
  */
 namespace pxn\phpUtils\Console;
 
-use pxn\phpUtils\Console\Commands\Help as HelpCommand;
 use pxn\phpUtils\ComposerTools;
 
 class ConsoleApp extends \Symfony\Component\Console\Application {
 
+	protected $router   = NULL;
 	protected $composer = NULL;
 
 
@@ -28,7 +28,6 @@ class ConsoleApp extends \Symfony\Component\Console\Application {
 					->getVersion();
 		}
 		parent::__construct($name, $version);
-		$this->setDefaultCommand('help');
 	}
 
 
@@ -43,28 +42,11 @@ class ConsoleApp extends \Symfony\Component\Console\Application {
 
 
 
-
-	/**
-	 * @codeCoverageIgnoreStart
-	 */
-	protected function getDefaultCommands() {
-		return [
-				new HelpCommand()
-		];
+	public function getRouter() {
+		return $this->router;
 	}
-	/**
-	 * @codeCoverageIgnoreEnd
-	 */
-
-
-
-	public function newCommand($name, Callable $callback) {
-		if(empty($name))      throw new \Exception('Command name argument is required');
-		if($callback == NULL) throw new \Exception('Callback argument is required');
-		$command = new Command($name);
-		$command->setCode($callback);
-		$this->add($command);
-		return $command;
+	public function setRouter(Router $router) {
+		$this->router = $router;
 	}
 
 
