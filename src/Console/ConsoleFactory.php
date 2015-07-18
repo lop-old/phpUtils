@@ -9,7 +9,7 @@
  */
 namespace pxn\phpUtils\Console;
 
-class Factory {
+class ConsoleFactory {
 	private function __construct() {}
 
 	private static $instance = NULL;
