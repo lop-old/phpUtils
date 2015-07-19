@@ -31,13 +31,13 @@ class Command extends \Symfony\Component\Console\Command\Command {
 
 
 
-	public function setInfo($desc=NULL, $help=NULL) {
+	public function setInfo($desc=NULL, $help=NULL, $usage=NULL) {
 		if(!empty($desc))
 			$this->setDescription($desc);
 		if(!empty($help))
 			$this->setHelp($help);
-		//TODO:
-		//->addUsage
+		if(!empty($usage))
+			$this->addUsage($usage);
 	}
 
 
