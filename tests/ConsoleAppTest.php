@@ -10,14 +10,20 @@
 namespace pxn\phpUtils\tests;
 
 use pxn\phpUtils\Console\ConsoleFactory;
+use pxn\phpUtils\Console\Command;
+
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * @coversDefaultClass \pxn\phpUtils\ConsoleApp
  */
 class ConsoleAppTest extends \PHPUnit_Framework_TestCase {
+
+	private $ranCommandB = FALSE;
+	private $ranCommandC = FALSE;
 
 
 
@@ -40,38 +46,81 @@ class ConsoleAppTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testCommands() {
 		$console = ConsoleFactory::get();
+		$console->setAutoExit(FALSE);
 		$this->assertNotNull($console);
-		// get commands
-		$expected = [
-				'help'
-		];
+		// default commands
 		$commands = $console->all();
 		$this->assertEquals(
-				\print_r($expected, TRUE),
+				\print_r([
+						'help',
+						'list'
+				],
+				TRUE),
 				\print_r(\array_keys($commands), TRUE)
 		);
-		// add a test command
-		$command = $console->newCommand(
-				'test-command',
-				function(ArgvInput $input, ConsoleOutput $output) {
-					echo 'This is a test command.';
+		// class command
+		$commandA = CommandTest::get();
+		// inline command
+		$commandB = Command::RegisterNew(
+				'test-command-inline',
+				function(InputInterface $input, OutputInterface $output) {
+					$this->ranCommandB = TRUE;
 				}
 		);
-		$command
-			->setAliases    (['testcommand'])
-			->setDescription('Description of a test command')
-			->setHelp       ('This is help for a test command')
-			->addUsage      ('Usage for a test command');
+		$commandB->setAliases(['test-b']);
+		$commandB->setInfo(
+				'Example command B',
+				'HELP!'
+		);
+		// method command
+		$commandC = Command::RegisterNew(
+				'test-command-method',
+				[ $this, 'runCommand' ]
+		);
+		$commandC->setAliases(['test-c']);
+		$commandC->setInfo(
+				'Example command C',
+				'HELP!'
+		);
 		// verify commands exist
-		$expected = [
-				'help',
-				'test-command'
-		];
 		$commands = $console->all();
 		$this->assertEquals(
-				\print_r($expected, TRUE),
+				\print_r([
+						'help',
+						'list',
+						'test-command-class',
+						'test-command-inline',
+						'test-command-method'
+				],
+				TRUE),
 				\print_r(\array_keys($commands), TRUE)
 		);
+		// run test commands
+		$this->assertFalse($commandA->hasRun,  'Invalid state for command A');
+		$this->assertFalse($this->ranCommandB, 'Invalid state for command B');
+		$this->assertFalse($this->ranCommandC, 'Invalid state for command C');
+		// run command A
+		$console->run(new ArgvInput(['', 'test-command-class']));
+		$this->assertTrue ($commandA->hasRun,  'Failed to run command A');
+		$this->assertFalse($this->ranCommandB, 'Invalid state for command B');
+		$this->assertFalse($this->ranCommandC, 'Invalid state for command C');
+
+		// run command B
+		$console->run(new ArgvInput(['', 'test-command-inline']));
+		$this->assertTrue ($commandA->hasRun,  'Failed to run command A');
+		$this->assertTrue ($this->ranCommandB, 'Failed to run command B');
+		$this->assertFALSE($this->ranCommandC, 'Invalid state for command C');
+		// run command C
+		$console->run(new ArgvInput(['', 'test-command-method']));
+		$this->assertTrue($commandA->hasRun,  'Failed to run command A');
+		$this->assertTrue($this->ranCommandB, 'Failed to run command B');
+		$this->assertTrue($this->ranCommandC, 'Failed to run command C');
+	}
+
+
+
+	public function runCommand() {
+		$this->ranCommandC = TRUE;
 	}
 
 
