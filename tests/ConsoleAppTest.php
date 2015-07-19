@@ -9,7 +9,7 @@
  */
 namespace pxn\phpUtils\tests;
 
-use pxn\phpUtils\Console\Factory;
+use pxn\phpUtils\Console\ConsoleFactory;
 
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -26,8 +26,8 @@ class ConsoleAppTest extends \PHPUnit_Framework_TestCase {
 	 * @covers ::__construct
 	 */
 	public function testInstances() {
-		$a = Factory::get();
-		$b = Factory::get();
+		$a = ConsoleFactory::get();
+		$b = ConsoleFactory::get();
 		$this->assertTrue($a === $b);
 	}
 
@@ -39,7 +39,7 @@ class ConsoleAppTest extends \PHPUnit_Framework_TestCase {
 	 * @covers ::newCommand
 	 */
 	public function testCommands() {
-		$console = Factory::get();
+		$console = ConsoleFactory::get();
 		$this->assertNotNull($console);
 		// get commands
 		$expected = [
