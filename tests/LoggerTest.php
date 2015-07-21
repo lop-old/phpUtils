@@ -18,6 +18,21 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 
 
 
+	public function testValidateName() {
+		$expected = 'LoggerTest';
+		// null
+		$result = Logger::ValidateName(NULL);
+		$this->assertEquals($expected, $result);
+		// blank
+		$result = Logger::ValidateName('');
+		$this->assertEquals($expected, $result);
+		// string
+		$result = Logger::ValidateName('testname');
+		$this->assertEquals('testname', $result);
+	}
+
+
+
 	public function testInstances() {
 		$a = Logger::get('a');
 		$b = Logger::get('b');

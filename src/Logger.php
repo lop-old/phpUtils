@@ -62,13 +62,14 @@ class Logger extends \Monolog\Logger {
 
 
 	public static function ValidateName($name) {
-		// default to last part of namespace
+		// default to class name
 		if(empty($name)) {
 			$trace = \debug_backtrace(FALSE, 3);
-			$str = \strrev($trace[2]['class']);
-			unset($trace);
-			Strings::grabPart($str, '\\');
-			$name = \strrev(Strings::grabPart($str, '\\'));
+			$str = $trace[2]['class'];
+			if($str == 'ReflectionMethod')
+				$str = $trace[1]['class'];
+			$pos = \strrpos($str, '\\');
+			$name = ($pos === FALSE ? $str : \substr($str, $pos+1));
 		}
 		if(empty($name)) $name = '';
 		return $name;
