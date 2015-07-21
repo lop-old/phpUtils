@@ -10,7 +10,6 @@
 namespace pxn\phpUtils\examples\Console;
 
 use pxn\phpUtils\Console\Command;
-//use pxn\phpUtils\examples\Console\Commands;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -41,7 +40,8 @@ class Router implements \pxn\phpUtils\Console\Router {
 		);
 		$command->setInfo(
 				'Example command calls inline callable',
-				'HELP!'
+				'HELP!',
+				'USAGE?'
 		);
 		// method command
 		$command = Command::RegisterNew(
@@ -50,7 +50,8 @@ class Router implements \pxn\phpUtils\Console\Router {
 		);
 		$command->setInfo(
 				'Example command runs a method',
-				'HELP!'
+				'HELP!',
+				'USAGE?'
 		);
 	}
 

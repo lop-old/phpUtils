@@ -26,7 +26,8 @@ class Random extends \pxn\phpUtils\Console\Command {
 			$command->setAliases(['rand']);
 			$command->setInfo(
 					'Example command displays ramdom numbers',
-					'HELP!'
+					'HELP!',
+					'USAGE?'
 			);
 			self::$instance = $command;
 		}
