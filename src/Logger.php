@@ -32,7 +32,7 @@ class Logger extends \Monolog\Logger {
 
 
 	public static function get($name='') {
-		$name = self::ValidateName($name);
+//		$name = self::ValidateName($name);
 		// new logger
 		if(!isset(self::$loggers[$name])) {
 			$log = new self($name);
@@ -50,7 +50,7 @@ class Logger extends \Monolog\Logger {
 		return self::$loggers[$name];
 	}
 	public static function set($name, $logger) {
-		$name = self::ValidateName($name);
+//		$name = self::ValidateName($name);
 		$existed = isset(self::$loggers[$name]);
 		self::$loggers[$name] = $logger;
 		return $existed;
@@ -61,19 +61,19 @@ class Logger extends \Monolog\Logger {
 
 
 
-	public static function ValidateName($name) {
-		// default to class name
-		if(empty($name)) {
-			$trace = \debug_backtrace(FALSE, 3);
-			$str = $trace[2]['class'];
-			if($str == 'ReflectionMethod')
-				$str = $trace[1]['class'];
-			$pos = \strrpos($str, '\\');
-			$name = ($pos === FALSE ? $str : \substr($str, $pos+1));
-		}
-		if(empty($name)) $name = '';
-		return $name;
-	}
+//	public static function ValidateName($name) {
+//		// default to class name
+//		if(empty($name)) {
+//			$trace = \debug_backtrace(FALSE, 3);
+//			$str = $trace[2]['class'];
+//			if($str == 'ReflectionMethod')
+//				$str = $trace[1]['class'];
+//			$pos = \strrpos($str, '\\');
+//			$name = ($pos === FALSE ? $str : \substr($str, $pos+1));
+//		}
+//		if(empty($name)) $name = '';
+//		return $name;
+//	}
 
 
 
