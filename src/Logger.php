@@ -39,7 +39,7 @@ class Logger extends \Monolog\Logger {
 			self::$loggers[$name] = $log;
 			$handler = new StreamHandler('php://stderr', Logger::DEBUG);
 			$formatter = new LineFormatter(
-					'[%datetime%] [%channel%|%level_name%]  %message%  %context% %extra%'."\n",
+					'[%datetime%] [%level_name%] [%channel%]  %message%  %context% %extra%'."\n",
 					'Y-m-d H:i:s',
 					FALSE,
 					TRUE
