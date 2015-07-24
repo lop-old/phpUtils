@@ -18,10 +18,10 @@ final class San {
 		return \preg_replace("/[^a-z0-9]+/i", '', $str);
 	}
 	public static function AlphaNumSafe($str) {
-		return \preg_replace("/[^a-z0-9_-]+/i", '', $str);
+		return \preg_replace("/[^a-z0-9-._]+/i", '', $str);
 	}
 	public static function AlphaNumSpaces($str) {
-		return \preg_replace("/[^\sa-z0-9_-]+/i", '', $str);
+		return \preg_replace("/[^\sa-z0-9-_]+/i", '', $str);
 	}
 	public static function AlphaNumFile($str) {
 		$filter = '[:alnum:]\(\)\_\.\,\'\&\?\+\-\=\!';
