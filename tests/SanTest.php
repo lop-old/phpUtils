@@ -30,7 +30,7 @@ class SanTest extends \PHPUnit_Framework_TestCase {
 	 * @covers ::AlphaNumSafe
 	 */
 	public function testAlphaNumSafe() {
-		$this->assertEquals('abcdABCD1234-_', San::AlphaNumSafe(self::TEST_DATA));
+		$this->assertEquals('abcdABCD1234-_.', San::AlphaNumSafe(self::TEST_DATA));
 	}
 	/**
 	 * @covers ::AlphaNumSpaces
