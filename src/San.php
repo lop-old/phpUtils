@@ -30,4 +30,34 @@ final class San {
 
 
 
+	public static function SafePath($path) {
+		$path = Strings::Trim($path, ' ');
+		if(empty($path)) $path = \getcwd();
+		$temp = \realpath($path);
+		if(empty($temp)) throw new \Exception(\sprintf('Path not found! %s', $path));
+		$path = $temp;
+		unset($temp);
+		return $path.'/';
+	}
+	public static function SafeDir($dir) {
+		$dir = Strings::Trim($dir, ' ', '/');
+		if(empty($dir)) throw new \Exception('dir argument is required');
+		$temp = self::AlphaNumSafe($dir);
+		if($dir != $temp) {
+			throw new \Exception(sprintf(
+					'dir argument contains illegal characters! %s != %s',
+					$dir,
+					$temp
+			));
+		}
+		unset($temp);
+		if(Strings::StartsWith($dir, '.'))
+			throw new \Exception('Invalid dir argument, cannot start with .');
+		if(\strpos($dir, '..') !== FALSE)
+			throw new \Exception('Invalid dir argument, cannot contain ..');
+		return $dir.'/';
+	}
+
+
+
 }
