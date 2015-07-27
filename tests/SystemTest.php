@@ -29,38 +29,40 @@ class SystemTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function test_mkDir_rmDir() {
 		$cwd = $this->getCWD();
+		// ensure clean
+		$this->assertFalse(
+				\is_dir($cwd.self::TEST_DIR1),
+				\sprintf(
+						'Temporary test directory already exists: %s',
+						self::TEST_DIR1
+				)
+		);
 		// create test dirs
-		System::mkDir($cwd,self::TEST_DIR1);
-		System::mkDir($cwd.self::TEST_DIR1, self::TEST_DIR2);
-		$this->assertTrue(\is_dir($cwd.self::TEST_DIR1.self::TEST_DIR2));
+		System::mkDir($cwd.self::TEST_DIR1.self::TEST_DIR2, 700);
+		$this->assertTrue(
+				\is_dir($cwd.self::TEST_DIR1.self::TEST_DIR2),
+				\sprintf(
+						'Failed to create temporary test directory: %s',
+						$cwd.self::TEST_DIR1.self::TEST_DIR2
+				)
+		);
 		// create test file
-		$filepath = $cwd.self::TEST_DIR1.self::TEST_DIR2.self::TEST_FILE;
-		$this->assertTrue(\touch($filepath));
-		$this->assertTrue(\is_file($filepath));
-		// delete test dirs
-		System::rmDir($cwd, self::TEST_DIR1);
-		$this->assertFalse(\is_dir($cwd.self::TEST_DIR1));
-	}
-	/**
-	 * @covers ::mkDir
-	 */
-	public function test_mkDir_Exception() {
-		$cwd = $this->getCWD();
-		try {
-			// fail to create multiple directories
-			System::mkDir($cwd, self::TEST_DIR1.self::TEST_DIR2);
-		} catch (\Exception $e) {
-			$this->assertEquals(
-					\sprintf(
-							'dir argument contains illegal characters! %s != %s',
-							Strings::Trim(self::TEST_DIR1.self::TEST_DIR2, '/'),
-							\str_replace('/', '', self::TEST_DIR1.self::TEST_DIR2)
-					),
-					$e->getMessage()
-			);
-			return;
-		}
-		$this->assertTrue(FALSE, 'Failed to throw expected exception!');
+		$this->assertTrue(\touch(
+				$cwd.self::TEST_DIR1.self::TEST_DIR2.'TestFile.txt'
+		));
+		$this->assertTrue(\is_file(
+				$cwd.self::TEST_DIR1.self::TEST_DIR2.'TestFile.txt'
+		));
+		// recursively delete test directories
+		System::rmDir($cwd.self::TEST_DIR1);
+		// ensure removed
+		$this->assertFalse(
+				\is_dir($cwd.self::TEST_DIR1),
+				\sprintf(
+						'Failed to remove temporary test directory: %s',
+						self::TEST_DIR1
+				)
+		);
 	}
 
 
