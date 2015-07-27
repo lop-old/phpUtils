@@ -23,7 +23,7 @@ final class System {
 	public static function exec($command) {
 		$command = \trim($command);
 		if(empty($command)) return FALSE;
-		$log = self::logShell();
+		$log = self::log();
 		// run the command
 		\exec($command, $output, $return);
 		// command failed
@@ -48,106 +48,83 @@ final class System {
 
 
 
-	public static function mkDir($path=NULL, $dir, $mode=644) {
+	public static function mkDir($dir, $mode=644) {
+		if(empty($dir)) throw new \Exception('dir argument is required');
 		if(!\is_int($mode)) throw new \Exception('mode argument must be an integer!');
-		$path = San::SafePath($path);
-		$dir  = San::SafeDir($dir);
-		$full = Strings::BuildPath($path, $dir);
-		$full = Strings::ForceEndsWith($full, '/');
-		// already exists
-		if(\is_dir($full)) {
-//			self::logShell()
-//			Logger::get('SYSTEM')->info(\sprintf(
-//					'Directory already exists:  %s  %s',
-//					$path,
-//					$dir
-//			));
-			return FALSE;
+		$oct = \octdec($mode);
+		$log = self::log();
+		// prepend cwd
+		if(!Strings::StartsWith($dir, '/'))
+			$dir = Strings::BuildPath(\getcwd(), $dir);
+		// dir already exists
+		if(\is_dir($dir)) {
+			$log->debug(\sprintf('Found existing directory: %s', $dir));
+			return;
 		}
-		// create directory
-		self::exec(\sprintf(
-				'cd "%s" && mkdir -pv %s',
-				$path,
-				$dir
-		));
-		return TRUE;
+		// build paths array
+		$path = '/';
+		$array = \explode('/', $dir);
+		$nodes = [];
+		$index = 0;
+		foreach($array as $part) {
+			if(empty($part)) continue;
+			$path .= San::SafeDir($part);
+			$nodes[$index++] = $path;
+		}
+		unset($path, $array);
+		$count = \count($nodes);
+		// find first not existing
+		for($start = 0; $start < $count; $start++) {
+			if(!\is_dir($nodes[$start])) break;
+		}
+		// all exist
+		if($start == $count) return;
+		// create directories
+		for($index = $start; $index < $count; $index++) {
+			$path = $nodes[$index];
+			$log->debug(\sprintf('Creating: %s', $path));
+			\mkdir($path, $oct);
+		}
+//		\clearstatcache(TRUE, $dir);
+		// ensure created directories exist
+		if(!\is_dir($dir)) throw new \Exception(\sprintf('Failed to create directory: %s', $dir));
 	}
-	public static function rmDir($path=NULL, $dir) {
-		$path = San::SafePath($path);
-		$dir  = San::SafeDir($dir);
-		$full = Strings::BuildPath($path, $dir);
-		$full = Strings::ForceEndsWith($full, '/');
-		// target not found
-		if(!\is_dir($full)) {
-			self::logShell()->debug(
-					\sprintf(
-							'Cannot rm, target directory not found: %s',
-							$full
-					)
-			);
-			return FALSE;
-		}
+	public static function rmDir($dir) {
+		if(empty($dir)) throw new \Exception('dir argument is required');
+		$log = self::log();
+		// ensure exists
+		$temp = \realpath($dir);
+		if(empty($temp)) throw new \Exception(\sprintf('dir not found, cannot delete! %s', $dir));
+		$dir = $temp;
+		unset($temp);
+		\clearstatcache(TRUE, $dir);
+		if(!\is_dir($dir)) throw new \Exception(\sprintf('dir argument is not a directory! %s', $dir));
+		if($dir == '/')    throw new \Exception('cannot delete / directory!');
 		// list contents
-		\clearstatcache(TRUE, $full);
-		$array = \scandir($full);
-		if($array == FALSE) {
-			throw new \Exception(
-					\sprintf(
-							'Failed to list contents of directory: %s',
-							$full
-					)
-			);
-		}
-		// not empty
-		if(!empty($array)) {
-			foreach($array as $entry) {
-				if($entry == '.' || $entry == '..') continue;
-				if(\is_dir($full.$entry)) {
-					self::rmDir($full, $entry);
-				} else {
-					unlink($full.$entry);
-					self::logShell()->info(
-							\sprintf(
-									'Removed file:  %s  %s',
-									$full,
-									$entry
-							)
-					);
-				}
+		$array = \scandir($dir);
+		if($array == FALSE) throw new \Exception(\sprintf('Failed to list contents of directory: %s', $dir));
+		foreach($array as $entry) {
+			if($entry == '.' || $entry == '..')
+				continue;
+			$full = Strings::BuildPath($dir, $entry);
+			if(\is_dir($full)) {
+				self::rmDir($full);
+			} else {
+				$log->debug(\sprintf('Removing file: %s', $entry));
+				\unlink($full);
 			}
+//			\rmdir($full);
+//			$log->debug(\sprintf('Removing directory: %s', $entry));
 		}
-		// rm the dir
-		\rmdir($full);
-		\clearstatcache(TRUE, $full);
-		// ensure delete was successful
-		if(\is_dir($full)) {
-			self::logShell()->critical(
-					\sprintf(
-							'Failed to remove directory: %s',
-							$full
-					)
-			);
-			exit(1);
-		}
-		self::logShell()->info(
-				\sprintf(
-						'Removed dir:  %s  %s',
-						$path,
-						$dir
-				)
-		);
-		return TRUE;
-//		// delete directory
-//		$result = self::exec(\sprintf(
-//				'cd "%s" && rm -Rvf --preserve-root "%s" 2>&1',
-//				$path,
-//				$dir
-//		));
+		\rmdir($dir);
+//		\clearstatcache(TRUE, $dir);
+		if(\is_dir($dir)) throw new \Exception(\sprintf('Failed to remove directory: %s', $dir));
+		$log->debug(\sprintf('Removing directory: %s', $dir));
 	}
 
 
 
-	public static function logShell() {
+	public static function log() {
 		return Logger::get('SHELL');
 	}
 
