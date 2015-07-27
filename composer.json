@@ -5,6 +5,9 @@
 	"type":        "library",
 	"homepage":    "http://poixson.com/",
 	"license":     "GPL-3",
+	"keywords": [
+		"utilities"
+	],
 	"support": {
 		"issues": "https://github.com/PoiXson/phpUtils/issues",
 		"source": "https://github.com/PoiXson/phpUtils",
