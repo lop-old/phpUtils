@@ -1,6 +1,6 @@
 <?php
 /*
- * PoiXson phpUtils - Utilities for PoiXson PHP projects
+ * PoiXson phpUtils - Website Utilities Library
  *
  * @copyright 2004-2015
  * @license GPL-3
@@ -10,6 +10,7 @@
 namespace pxn\phpUtils;
 
 use pxn\phpUtils\Arrays;
+
 
 final class Strings {
 	private final function __construct() {}

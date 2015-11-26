@@ -1,6 +1,6 @@
 <?php
 /*
- * PoiXson phpUtils - Utilities for PoiXson PHP projects
+ * PoiXson phpUtils - Website Utilities Library
  *
  * @copyright 2004-2015
  * @license GPL-3
@@ -12,6 +12,7 @@ namespace pxn\phpUtils;
 if(!\ini_get('date.timezone')) {      // @codeCoverageIgnore
 	\ini_set('date.timezone', 'UTC'); // @codeCoverageIgnore
 }                                     // @codeCoverageIgnore
+
 
 final class General {
 	private final function __construct() {}

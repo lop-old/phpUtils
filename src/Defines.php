@@ -1,6 +1,6 @@
 <?php
 /*
- * PoiXson phpUtils - Utilities for PoiXson PHP projects
+ * PoiXson phpUtils - Website Utilities Library
  *
  * @copyright 2004-2015
  * @license GPL-3
@@ -8,6 +8,7 @@
  * @link http://poixson.com/
  */
 namespace pxn\phpUtils;
+
 
 final class Defines {
 	private final function __construct() {}

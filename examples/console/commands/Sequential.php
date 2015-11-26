@@ -1,6 +1,6 @@
 <?php
 /*
- * PoiXson phpUtils - Utilities for PoiXson PHP projects
+ * PoiXson phpUtils - Website Utilities Library
  *
  * @copyright 2004-2015
  * @license GPL-3
@@ -13,6 +13,7 @@ use pxn\phpUtils\Console\Commands\CommandFactory;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+
 
 class Sequential extends \pxn\phpUtils\Console\Command {
 
