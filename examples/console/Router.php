@@ -7,15 +7,15 @@
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
-namespace pxn\phpUtils\examples\Console;
+namespace pxn\phpUtils\examples\console;
 
-use pxn\phpUtils\Console\Command;
+use pxn\phpUtils\console\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class Router implements \pxn\phpUtils\Console\Router {
+class Router implements \pxn\phpUtils\console\Router {
 
 	protected static $instance = NULL;
 
@@ -28,8 +28,8 @@ class Router implements \pxn\phpUtils\Console\Router {
 	}
 	protected function __construct() {
 		// example commands
-		Commands\Random::get();
-		Commands\Sequential::get();
+		commands\Random::get();
+		commands\Sequential::get();
 		// inline example command
 		$command = Command::RegisterNew(
 				'inline',

@@ -7,14 +7,15 @@
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
-namespace pxn\phpUtils\examples\Console\Commands;
+namespace pxn\phpUtils\examples\console\commands;
 
-use pxn\phpUtils\Console\Commands\CommandFactory;
+use pxn\phpUtils\console\commands\CommandFactory;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class Random extends \pxn\phpUtils\Console\Command {
+
+class Random extends \pxn\phpUtils\console\Command {
 
 	private static $instance = NULL;
 

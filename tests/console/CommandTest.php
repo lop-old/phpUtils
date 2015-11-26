@@ -7,15 +7,15 @@
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
-namespace pxn\phpUtils\tests;
+namespace pxn\phpUtils\tests\console;
 
-use pxn\phpUtils\Console\Commands\CommandFactory;
+use pxn\phpUtils\console\commands\CommandFactory;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 
-class CommandTest extends \pxn\phpUtils\Console\Command {
+class CommandTest extends \pxn\phpUtils\console\Command {
 
 	private static $instance = NULL;
 

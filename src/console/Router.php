@@ -7,7 +7,7 @@
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
-namespace pxn\phpUtils\Console;
+namespace pxn\phpUtils\console;
 
 
 interface Router {

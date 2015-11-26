@@ -7,7 +7,7 @@
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
-namespace pxn\phpUtils\Exceptions;
+namespace pxn\phpUtils\exceptions;
 
 
 class FileNotFoundException extends \Exception {

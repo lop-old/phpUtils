@@ -7,10 +7,10 @@
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
-namespace pxn\phpUtils\tests;
+namespace pxn\phpUtils\tests\console;
 
-use pxn\phpUtils\Console\ConsoleFactory;
-use pxn\phpUtils\Console\Command;
+use pxn\phpUtils\console\ConsoleFactory;
+use pxn\phpUtils\console\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\Console\Input\ArgvInput;
 
 
 /**
- * @coversDefaultClass \pxn\phpUtils\ConsoleApp
+ * @coversDefaultClass \pxn\phpUtils\console\ConsoleApp
  */
 class ConsoleAppTest extends \PHPUnit_Framework_TestCase {
 
@@ -28,7 +28,7 @@ class ConsoleAppTest extends \PHPUnit_Framework_TestCase {
 
 
 	/**
-	 * @covers \pxn\phpUtils\ConsoleAppFactory::get
+	 * @covers \pxn\phpUtils\console\ConsoleAppFactory::get
 	 * @covers ::__construct
 	 */
 	public function testInstances() {

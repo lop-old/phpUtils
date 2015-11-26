@@ -7,11 +7,11 @@
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
-namespace pxn\phpUtils\examples\Console;
+namespace pxn\phpUtils\examples\console;
 
 require_once(__DIR__.'/../../vendor/autoload.php');
 
-use pxn\phpUtils\Console\ConsoleFactory;
+use pxn\phpUtils\console\ConsoleFactory;
 
 
 $console = ConsoleFactory::get();
