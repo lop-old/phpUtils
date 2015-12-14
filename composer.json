@@ -41,6 +41,6 @@
 	},
 	"require-dev": {
 		"symfony/console": "^2.7.2",
-		"phpunit/phpunit": "5.0.*"
+		"phpunit/phpunit": "5.1.*"
 	}
 }
