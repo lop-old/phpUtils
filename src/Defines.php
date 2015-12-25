@@ -11,19 +11,24 @@ namespace pxn\phpUtils;
 
 final class Defines {
 	private final function __construct() {}
-
+	public static function init() {}
 
 
 	const PHP_MIN_VERSION = 50600;
 
+	const DEBUG_COOKIE = '_debug';
+
 	const DIR_SEP      = \DIRECTORY_SEPARATOR;
 	const NEWLINE      = "\n";
-	const CRLF         = "\n";
-	const EOL          = "\n";
+	const CRLF         = self::NEWLINE;
+	const EOL          = self::NEWLINE;
 	const TAB          = "\t";
 	const QUOTE_S      = '\'';
 	const QUOTE_D      = "\"";
+	const S_QUOTE      = self::QUOTE_S;
+	const D_QUOTE      = self::QUOTE_D;
 	const ACCENT       = '`';
+
 	const INT_MAX      = 2147483647;
 	const INT_MIN      =-2147483648;
 	const NET_PORT_MAX = 65535;
@@ -44,6 +49,18 @@ final class Defines {
 	const GB = 1073741824;
 	const TB = 1099511627776;
 
+
+	public static function getDebugCookieName() {
+		$website_name = '';
+		$website = \pxn\phpUtils\portal\Website::peak();
+		if($website != NULL)
+			$website_name = $website->getName();
+		return \str_replace(
+			'%website%',
+			$website_name,
+			self::DEBUG_COOKIE
+		);
+	}
 
 
 }
