@@ -13,6 +13,8 @@ abstract class Website {
 
 	private static $instance = NULL;
 
+	private $render = NULL;
+
 
 
 //	public static function get() {
@@ -24,12 +26,34 @@ abstract class Website {
 		return self::$instance;
 	}
 	public function __construct() {
-		
 	}
 
 
 
-	public abstract function Render();
+	public function getRender() {
+		if($this->render == NULL) {
+			$renderType = \pxn\phpUtils\Config::getRenderType();
+			switch($renderType) {
+			case 'main':
+				$this->render = new RenderMain();
+				break;
+			case 'splash':
+				$this->render = new RenderSplash();
+				break;
+			case 'minimal':
+				$this->render = new RenderMinimal();
+				break;
+			default:
+				\fail('Unknown render type: '.$type);
+				exit(1);
+			}
+		}
+		return $this->render;
+	}
+	public function doRender() {
+		$render = $this->getRender();
+		echo $render->doRender();
+	}
 
 
 
