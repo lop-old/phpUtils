@@ -20,7 +20,10 @@
 	"autoload": {
 		"psr-4": {
 			"pxn\\phpUtils\\": "src/"
-		}
+		},
+		"files": [
+			"src/init.php"
+		]
 	},
 	"autoload-dev": {
 		"psr-4": {
