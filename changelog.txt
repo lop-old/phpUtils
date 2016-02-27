@@ -1,15 +1,14 @@
-phpUtils 0.1.x - Website Utilities Library
+phpUtils 0.1.x - PHP Utilities Library
 
 
-2015-07-17 xBuild 0.1.6
-=======================
+2015-07-17 phpUtils 0.1.6
+=========================
 * improvements to simplify using ConsoleApp
 * bug fixes and improvements to ComposerTools and ConsoleApp classes
 
 
-2015-07-15 xBuild 0.1.5
-=======================
-
+2015-07-15 phpUtils 0.1.5
+=========================
 * added optional ConsoleApp class (must require symfony/console in your project composer.json file)
 * added optional Logger class (must require monolog/monolog in your project composer.json file)
 * added Arrays class
