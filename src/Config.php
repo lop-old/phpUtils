@@ -14,11 +14,24 @@ use \pxn\phpUtils\Paths;
 final class Config {
 	private function __construct() {}
 
-	protected static $config = array();
+	protected static $config = array(
+		'is shell'    => NULL,
+		'render type' => '',
+	);
 
 
 
 	public static function init() {
+		// detect shell
+		self::$config['is shell'] = (
+			isset($_SERVER['SHELL']) && ! empty($_SERVER['SHELL'])
+		);
+	}
+
+
+
+	public static function isShell() {
+		return self::$config['is shell'];
 	}
 
 
