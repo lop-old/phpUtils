@@ -14,6 +14,16 @@ final class System {
 
 
 
+	public static function RequireLinux() {
+		$os = \PHP_OS;
+		if($os != 'Linux') {
+			throw new \Exception('Sorry, only Linux is currently supported. Contact '.
+					'the developer if you\'d like to help add support for another OS.');
+		}
+	}
+
+
+
 	###########
 	## Shell ##
 	###########
