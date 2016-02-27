@@ -36,10 +36,4 @@ final class Config {
 
 
 
-	public static function getTwigTempDir() {
-		return Paths::base().'/tmp/';
-	}
-
-
-
 }

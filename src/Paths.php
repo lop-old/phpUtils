@@ -65,4 +65,10 @@ final class Paths {
 
 
 
+	public static function getTwigTempDir() {
+		return self::base().'/tmp';
+	}
+
+
+
 }
