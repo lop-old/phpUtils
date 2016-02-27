@@ -39,11 +39,11 @@
 	},
 	"require": {
 		"php":             "5.6.*",
-		"twig/twig":       "v1.23.*",
+		"twig/twig":       "v1.24.*",
 		"monolog/monolog": "1.17.*"
 	},
 	"require-dev": {
 		"symfony/console": "v3.0.*",
-		"phpunit/phpunit": "5.1.*"
+		"phpunit/phpunit": "5.2.*"
 	}
 }
