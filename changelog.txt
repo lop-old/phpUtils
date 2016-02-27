@@ -1,6 +1,18 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-02-27 phpUtils 0.1.7
+=========================
+* added init.php startup file (auto loaded by composer)
+* added Paths, Website, Config, and System classes
+* added General::castType() General::toBoolean() and General::getVar() functions
+* added San::SafePath() and San::SafeDir() functions
+* added FileNotFoundException
+* added example console commands
+* renamed ConsoleFactory class
+* updated dependencies
+
+
 2015-07-17 phpUtils 0.1.6
 =========================
 * improvements to simplify using ConsoleApp
