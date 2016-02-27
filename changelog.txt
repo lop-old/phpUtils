@@ -1,6 +1,15 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-02-27 phpUtils 0.1.8
+=========================
+* added isShell() function to Config class
+* moved getTwigTempDir() function from Config class to Paths class
+* added RequireLinux() function to System class
+* changed twig dependency to optional
+* merged init files into one
+
+
 2016-02-27 phpUtils 0.1.7
 =========================
 * added init.php startup file (auto loaded by composer)
