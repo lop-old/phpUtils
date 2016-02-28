@@ -195,10 +195,10 @@ final class General {
 	/**
 	 * @return double - Returns current timestamp in seconds.
 	 */
-	public static function getTimestamp() {
+	public static function getTimestamp($places=3) {
 		$time = \explode(' ', \microtime(), 2);
 		$timestamp = ((double) $time[0]) + ((double) $time[1]);
-		return Numbers::Round($timestamp, 3);
+		return Numbers::Round($timestamp, $places);
 	}
 	/**
 	 * Sleep execution for x milliseconds.
