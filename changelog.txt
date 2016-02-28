@@ -1,6 +1,11 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-02-28 phpUtils 0.1.9
+=========================
+* added CoolDown class
+
+
 2016-02-27 phpUtils 0.1.8
 =========================
 * added isShell() function to Config class
