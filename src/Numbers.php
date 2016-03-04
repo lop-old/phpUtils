@@ -24,9 +24,9 @@ final class Numbers {
 	public static function isNumber($value) {
 		if($value == NULL) return FALSE;
 		$value = \trim( (string)$value );
-		if($value == '') return FALSE;
+		if($value === '') return FALSE;
 		$value = Strings::TrimFront($value, '0');
-		if($value == '') return TRUE;
+		if($value === '') return TRUE;
 		$i = ((string) ((int)$value) );
 		return ($value === $i);
 	}
