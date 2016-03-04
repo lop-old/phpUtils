@@ -1,7 +1,7 @@
 {
 	"name":        "pxn/phputils",
 	"description": "Website Utilities Library",
-	"version":     "0.1.9",
+	"version":     "0.1.10",
 	"type":        "library",
 	"homepage":    "http://poixson.com/",
 	"license":     "GPL-3",
