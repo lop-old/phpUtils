@@ -14,6 +14,7 @@ final class Paths {
 
 	// local paths
 	protected static $local_pwd = '';
+	protected static $local_utils = '';
 	protected static $local_base  = '';
 	protected static $local_site  = '';
 
@@ -27,7 +28,14 @@ final class Paths {
 		// local paths
 //		$paths['local']['entry'] = $_SERVER['DOCUMENT_ROOT'];
 		self::$local_pwd   = \getcwd();
-		self::$local_base  = __DIR__;
+		self::$local_utils = __DIR__;
+		self::$local_base  = @$_SERVER['DOCUMENT_ROOT'];
+		// get base path from backtrace (shell mode)
+		if (empty(self::$local_base)) {
+			$trace = \debug_backtrace();
+			$last  = \end($trace);
+			self::$local_base = \dirname($last['file']);
+		}
 		// web paths
 		self::$web_images = '/static';
 	}
@@ -36,6 +44,9 @@ final class Paths {
 
 	public static function pwd() {
 		return self::$local_pwd;
+	}
+	public static function utils() {
+		return self::$local_utils;
 	}
 	public static function base() {
 		return self::$local_base;
