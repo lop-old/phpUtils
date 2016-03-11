@@ -11,6 +11,7 @@
 # init 3 - functions
 # init 4 - debug
 # init 5 - configs
+# init 6 - globals
 namespace pxn\phpUtils;
 
 use \pxn\phpUtils\Defines;
@@ -435,3 +436,15 @@ function (\Exception $e) {
 
 
 \pxn\phpUtils\Config::init();
+
+
+
+########################
+##                    ##
+##  init 6 - globals  ##
+##                    ##
+########################
+
+
+
+require ('Globals.php');
