@@ -144,25 +144,19 @@ try {
 
 
 // dump()
-if(!\function_exists('dump')) {
-	function dump($var) {
-		d($var);
-	}
+function dump($var) {
+	d($var);
 }
 // d()
-if(!\function_exists('d')) {
-	function d($var) {
-		echo '<pre style="color: black; background-color: #dfc0c0; padding: 10px;">';
-		\var_dump($var);
-		echo '</pre>'.\CRLF;
-	}
+function d($var) {
+	echo '<pre style="color: black; background-color: #dfc0c0; padding: 10px;">';
+	\var_dump($var);
+	echo '</pre>'.Defines::CRLF;
 }
 // dd()
-if(!\function_exists('dd')) {
-	function dd($var) {
-		d($var);
-		die();
-	}
+function dd($var) {
+	d($var);
+	exit(1);
 }
 
 
