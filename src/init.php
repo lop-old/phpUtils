@@ -168,7 +168,7 @@ if(!\function_exists('dd')) {
 
 
 // exit functions
-function ExitNow($code=NULL) {
+function ExitNow($code=1) {
 	$website = \pxn\phpUtils\portal\Website::peak();
 	// set rendered
 	if($website !== NULL)
@@ -176,16 +176,18 @@ function ExitNow($code=NULL) {
 	// exit code
 	if($code !== NULL && Numbers::isNumeric($code))
 		exit( ((int)$code) );
-	exit(1);
+	exit(0);
 }
-function fail($msg) {
+function fail($msg, $code=1) {
 	if(!\is_string($msg))
 		$msg = \print_r($msg, TRUE);
 	echo '<pre style="color: black; background-color: #ffaaaa; '.
 		'padding: 10px;"><font size="+2">FATAL: '.$msg.'</font></pre>'.\CRLF;
 	if(\psm\debug())
 		backtrace();
-	ExitNow(1);
+	if ($code !== NULL) {
+		ExitNow($code);
+	}
 }
 function backtrace() {
 	$trace = debug_backtrace();
