@@ -1,6 +1,12 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-03-10 phpUtils 0.1.12
+==========================
+* added Globals.php file to alias common functions to \ namespace
+* ExitNow() function accepts NULL argument for no exit
+
+
 2016-03-04 phpUtils 0.1.11
 ==========================
 * fixed bug in Numbers::isNumber() function
