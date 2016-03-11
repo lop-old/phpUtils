@@ -14,10 +14,10 @@ use \pxn\phpUtils\Paths;
 final class Config {
 	private function __construct() {}
 
-	protected static $config = array(
+	protected static $config = [
 		'is shell'    => NULL,
 		'render type' => '',
-	);
+	];
 
 
 

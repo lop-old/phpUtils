@@ -21,8 +21,9 @@ class Router implements \pxn\phpUtils\console\Router {
 
 
 	public static function get() {
-		if(self::$instance == NULL)
+		if (self::$instance == NULL) {
 			self::$instance = new static();
+		}
 		return self::$instance;
 	}
 	protected function __construct() {
@@ -31,27 +32,27 @@ class Router implements \pxn\phpUtils\console\Router {
 		commands\Sequential::get();
 		// inline example command
 		$command = Command::RegisterNew(
-				'inline',
-				function(InputInterface $input, OutputInterface $output) {
-					echo "\n\n";
-					echo 'Running Command: INLINE'."\n";
-					echo "\n\n";
-				}
+			'inline',
+			function(InputInterface $input, OutputInterface $output) {
+				echo "\n\n";
+				echo 'Running Command: INLINE'."\n";
+				echo "\n\n";
+			}
 		);
 		$command->setInfo(
-				'Example command calls inline callable',
-				'HELP!',
-				'USAGE?'
+			'Example command calls inline callable',
+			'HELP!',
+			'USAGE?'
 		);
 		// method command
 		$command = Command::RegisterNew(
-				'method',
-				[ $this, 'runCommand' ]
+			'method',
+			[ $this, 'runCommand' ]
 		);
 		$command->setInfo(
-				'Example command runs a method',
-				'HELP!',
-				'USAGE?'
+			'Example command runs a method',
+			'HELP!',
+			'USAGE?'
 		);
 	}
 

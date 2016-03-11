@@ -16,9 +16,11 @@ final class System {
 
 	public static function RequireLinux() {
 		$os = \PHP_OS;
-		if($os != 'Linux') {
-			throw new \Exception('Sorry, only Linux is currently supported. Contact '.
-					'the developer if you\'d like to help add support for another OS.');
+		if ($os != 'Linux') {
+			throw new \Exception(
+				'Sorry, only Linux is currently supported. Contact '.
+				'the developer if you\'d like to help add support for another OS.'
+			);
 		}
 	}
 
@@ -32,18 +34,19 @@ final class System {
 
 	public static function exec($command) {
 		$command = \trim($command);
-		if(empty($command)) return FALSE;
+		if (empty($command))
+			return FALSE;
 		$log = self::log();
 		// run the command
 		\exec($command, $output, $return);
 		// command failed
-		if($return !== 0) {
-			$log->warning(\sprintf('Command failed: %s', $command));
+		if ($return !== 0) {
+			$log->warning("Command failed: {$command}");
 		}
 		// log output
-		if(!empty($output) && \is_array($output)) {
-			foreach($output as $line) {
-				if(empty($line)) continue;
+		if (!empty($output) && \is_array($output)) {
+			foreach ($output as $line) {
+				if (empty($line)) continue;
 				$log->info($line);
 			}
 		}
@@ -59,77 +62,80 @@ final class System {
 
 
 	public static function mkDir($dir, $mode=644) {
-		if(empty($dir)) throw new \Exception('dir argument is required');
-		if(!\is_int($mode)) throw new \Exception('mode argument must be an integer!');
+		if (empty($dir))     throw new \Exception('dir argument is required');
+		if (!\is_int($mode)) throw new \Exception('mode argument must be an integer!');
 		$oct = \octdec($mode);
 		$log = self::log();
 		// prepend cwd
-		if(!Strings::StartsWith($dir, '/'))
+		if (!Strings::StartsWith($dir, '/')) {
 			$dir = Strings::BuildPath(\getcwd(), $dir);
+		}
 		// dir already exists
-		if(\is_dir($dir)) {
-			$log->debug(\sprintf('Found existing directory: %s', $dir));
+		if (\is_dir($dir)) {
+			$log->debug("Found existing directory: {$dir}");
 			return;
 		}
 		// build paths array
-		$path = '/';
+		$path  = '/';
 		$array = \explode('/', $dir);
 		$nodes = [];
 		$index = 0;
-		foreach($array as $part) {
-			if(empty($part)) continue;
+		foreach ($array as $part) {
+			if (empty($part)) continue;
 			$path .= San::SafeDir($part);
 			$nodes[$index++] = $path;
 		}
 		unset($path, $array);
 		$count = \count($nodes);
 		// find first not existing
-		for($start = 0; $start < $count; $start++) {
-			if(!\is_dir($nodes[$start])) break;
+		for ($start = 0; $start < $count; $start++) {
+			if (!\is_dir($nodes[$start]))
+				break;
 		}
 		// all exist
-		if($start == $count) return;
+		if ($start == $count)
+			return;
 		// create directories
-		for($index = $start; $index < $count; $index++) {
+		for ($index = $start; $index < $count; $index++) {
 			$path = $nodes[$index];
-			$log->debug(\sprintf('Creating: %s', $path));
+			$log->debug("Creating: {$path}");
 			\mkdir($path, $oct);
 		}
 //		\clearstatcache(TRUE, $dir);
 		// ensure created directories exist
-		if(!\is_dir($dir)) throw new \Exception(\sprintf('Failed to create directory: %s', $dir));
+		if (!\is_dir($dir)) throw new \Exception("Failed to create directory: {$dir}");
 	}
 	public static function rmDir($dir) {
-		if(empty($dir)) throw new \Exception('dir argument is required');
+		if (empty($dir)) throw new \Exception('dir argument is required');
 		$log = self::log();
 		// ensure exists
 		$temp = \realpath($dir);
-		if(empty($temp)) throw new \Exception(\sprintf('dir not found, cannot delete! %s', $dir));
+		if (empty($temp)) throw new \Exception("dir not found, cannot delete! {$dir}");
 		$dir = $temp;
 		unset($temp);
 		\clearstatcache(TRUE, $dir);
-		if(!\is_dir($dir)) throw new \Exception(\sprintf('dir argument is not a directory! %s', $dir));
-		if($dir == '/')    throw new \Exception('cannot delete / directory!');
+		if (!\is_dir($dir)) throw new \Exception("dir argument is not a directory! {$dir}");
+		if ($dir == '/')    throw new \Exception('cannot delete / directory!');
 		// list contents
 		$array = \scandir($dir);
-		if($array == FALSE) throw new \Exception(\sprintf('Failed to list contents of directory: %s', $dir));
-		foreach($array as $entry) {
-			if($entry == '.' || $entry == '..')
+		if ($array == FALSE) throw new \Exception("Failed to list contents of directory: {$dir}");
+		foreach ($array as $entry) {
+			if ($entry == '.' || $entry == '..')
 				continue;
 			$full = Strings::BuildPath($dir, $entry);
-			if(\is_dir($full)) {
+			if (\is_dir($full)) {
 				self::rmDir($full);
 			} else {
-				$log->debug(\sprintf('Removing file: %s', $entry));
+				$log->debug("Removing file: {$entry}");
 				\unlink($full);
 			}
 //			\rmdir($full);
-//			$log->debug(\sprintf('Removing directory: %s', $entry));
+//			$log->debug("Removing directory: {$entry}");
 		}
 		\rmdir($dir);
 //		\clearstatcache(TRUE, $dir);
-		if(\is_dir($dir)) throw new \Exception(\sprintf('Failed to remove directory: %s', $dir));
-		$log->debug(\sprintf('Removing directory: %s', $dir));
+		if (\is_dir($dir)) throw new \Exception("Failed to remove directory: {$dir}");
+		$log->debug("Removing directory: {$dir}");
 	}
 
 

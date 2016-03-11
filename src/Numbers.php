@@ -22,11 +22,14 @@ final class Numbers {
 	 *         being trimmed.
 	 */
 	public static function isNumber($value) {
-		if($value === NULL) return FALSE;
+		if ($value === NULL)
+			return FALSE;
 		$value = \trim( (string)$value );
-		if($value === '') return FALSE;
+		if ($value === '')
+			return FALSE;
 		$value = Strings::TrimFront($value, '0');
-		if($value == '') return TRUE;
+		if ($value == '')
+			return TRUE;
 		$i = ((string) ((int)$value) );
 		return ($value === $i);
 	}
@@ -47,10 +50,12 @@ final class Numbers {
 	 * @return int value
 	 */
 	public static function MinMax($value, $min=FALSE, $max=FALSE) {
-		if($min !== FALSE && $max !== FALSE && $min > $max)
+		if ($min !== FALSE && $max !== FALSE && $min > $max)
 			throw new \Exception('Min must be less than Max!');
-		if($min !== FALSE && $value < $min) return $min;
-		if($max !== FALSE && $value > $max) return $max;
+		if ($min !== FALSE && $value < $min)
+			return $min;
+		if ($max !== FALSE && $value > $max)
+			return $max;
 		return $value;
 	}
 
@@ -63,37 +68,41 @@ final class Numbers {
 
 
 	public static function Round($value, $places=0) {
-		if($places == 0) return \round($value);
+		if ($places == 0)
+			return \round($value);
 		$pow = \pow(10, $places);
 		return self::PadZeros(
-				\round($value * $pow) / $pow,
-				$places
+			\round($value * $pow) / $pow,
+			$places
 		);
 	}
 	public static function Floor($value, $places=0) {
-		if($places == 0) return \floor($value);
+		if ($places == 0)
+			return \floor($value);
 		$pow = \pow(10, $places);
 		return self::PadZeros(
-				\floor($value * $pow) / $pow,
-				$places
+			\floor($value * $pow) / $pow,
+			$places
 		);
 	}
 	public static function Ceil($value, $places=0) {
-		if($places == 0) return \ceil($value);
+		if ($places == 0)
+			return \ceil($value);
 		$pow = \pow(10, $places);
 		return self::PadZeros(
-				\ceil($value * $pow) / $pow,
-				$places
+			\ceil($value * $pow) / $pow,
+			$places
 		);
 	}
 	public static function PadZeros($value, $places) {
 		$str = (string) (double) $value;
-		if($places <= 0) return $str;
+		if ($places <= 0)
+			return $str;
 		$pos = \strrpos($str, '.');
-		if($pos === FALSE)
+		if ($pos === FALSE)
 			return $str.'.'.\str_repeat('0', $places);
 		$pos = \strlen($str) - ($pos + 1);
-		if($pos < $places)
+		if ($pos < $places)
 			return $str.\str_repeat('0', $places - $pos);
 		return $str;
 	}
@@ -106,11 +115,13 @@ final class Numbers {
 	 * @return string - Formatted size.
 	 */
 	public static function FormatBytes($size) {
-		if(empty($size)) return NULL;
+		if (empty($size))
+			return NULL;
 		$size = \trim((string) $size);
-		if(\strtolower(\substr($size, -1, 1)) == 'b')
+		if (\strtolower(\substr($size, -1, 1)) == 'b') {
 			$size = \trim(\substr($size, 0, -1));
-		switch( \strtolower(\substr($size, -1, 1)) ) {
+		}
+		switch ( \strtolower(\substr($size, -1, 1)) ) {
 			case 'k':
 				$size = ((double) $size) * Defines::KB;
 				break;
@@ -127,14 +138,15 @@ final class Numbers {
 				$size = (double) $size;
 				break;
 		}
-		if($size < 0) return NULL;
-		if($size < Defines::KB)
+		if ($size < 0)
+			return NULL;
+		if ($size < Defines::KB)
 			return \round($size, 0).'B';
-		if($size < Defines::MB)
+		if ($size < Defines::MB)
 			return \round($size / Defines::KB, 2).'KB';
-		if($size < Defines::GB)
+		if ($size < Defines::GB)
 			return \round($size / Defines::MB, 2).'MB';
-		if($size < Defines::TB)
+		if ($size < Defines::TB)
 			return \round($size / Defines::GB, 2).'GB';
 		return \round($size / Defines::TB, 2).'TB';
 	}
@@ -149,25 +161,26 @@ final class Numbers {
 	 */
 	public static function FormatRoman($value, $max=FALSE) {
 		$value = (int) $value;
-		if( ($max !== FALSE && $value > $max) || $value < 0)
+		if ( ($max !== FALSE && $value > $max) || $value < 0) {
 			return ((string) $value);
+		}
 		$result = '';
 		$lookup = array(
-				'M' => 1000,
-				'CM'=> 900,
-				'D' => 500,
-				'CD'=> 400,
-				'C' => 100,
-				'XC'=> 90,
-				'L' => 50,
-				'XL'=> 40,
-				'X' => 10,
-				'IX'=> 9,
-				'V' => 5,
-				'IV'=> 4,
-				'I' => 1
+			'M' => 1000,
+			'CM'=> 900,
+			'D' => 500,
+			'CD'=> 400,
+			'C' => 100,
+			'XC'=> 90,
+			'L' => 50,
+			'XL'=> 40,
+			'X' => 10,
+			'IX'=> 9,
+			'V' => 5,
+			'IV'=> 4,
+			'I' => 1
 		);
-		foreach($lookup as $roman => $num) {
+		foreach ($lookup as $roman => $num) {
 			$matches = \intval($value / $num);
 			$result .= \str_repeat($roman, $matches);
 			$value = $value % $num;
@@ -191,23 +204,23 @@ final class Numbers {
 	public static function StringToSeconds($text) {
 		$str = '';
 		$value = 0;
-		for($i = 0; $i < \strlen($text); $i++) {
+		for ($i = 0; $i < \strlen($text); $i++) {
 			$s = \substr($text, $i, 1);
-			if(self::isNumber($s)) {
+			if (self::isNumber($s)) {
 				$str .= $s;
 				continue;
 			}
-			if($s === ' ') continue;
+			if ($s === ' ') continue;
 			$val = (int) $str;
 			$str = '';
-			if($val == 0) continue;
-			switch(\strtolower($s)) {
+			if ($val == 0) continue;
+			switch (\strtolower($s)) {
 				case 'n':
 					$value += ($val * Defines::S_MS);
 					break;
 				case 's';
-				$value += ($val * Defines::S_SECOND);
-				break;
+					$value += ($val * Defines::S_SECOND);
+					break;
 				case 'm':
 					$value += ($val * Defines::S_MINUTE);
 					break;
@@ -240,57 +253,57 @@ final class Numbers {
 	public static function SecondsToString($seconds, $shorthand=TRUE) {
 		$result = array();
 		// years
-		if($seconds >= Defines::S_YEAR) {
+		if ($seconds >= Defines::S_YEAR) {
 			$v = \floor($seconds / Defines::S_YEAR);
 			$seconds = $seconds % Defines::S_YEAR;
 			$result[] = $v.(
-					$shorthand
-					? 'y'
-					: ' Year'.($v > 1 ? 's' : '')
+				$shorthand
+				? 'y'
+				: ' Year'.($v > 1 ? 's' : '')
 			);
 		}
 		// days
-		if($seconds >= Defines::S_DAY) {
+		if ($seconds >= Defines::S_DAY) {
 			$v = \floor($seconds / Defines::S_DAY);
 			$seconds = $seconds % Defines::S_DAY;
 			$result[] = $v.(
-					$shorthand
-					? 'd'
-					: ' Day'.($v > 1 ? 's' : '')
+				$shorthand
+				? 'd'
+				: ' Day'.($v > 1 ? 's' : '')
 			);
 		}
 		// hours
-		if($seconds >= Defines::S_HOUR) {
+		if ($seconds >= Defines::S_HOUR) {
 			$v = \floor($seconds / Defines::S_HOUR);
 			$seconds = $seconds % Defines::S_HOUR;
 			$result[] = $v.(
-					$shorthand
-					? 'h'
-					: ' Hour'.($v > 1 ? 's' : '')
+				$shorthand
+				? 'h'
+				: ' Hour'.($v > 1 ? 's' : '')
 			);
 		}
 		// minutes
-		if($seconds >= Defines::S_MINUTE) {
+		if ($seconds >= Defines::S_MINUTE) {
 			$v = \floor($seconds / Defines::S_MINUTE);
 			$seconds = $seconds % Defines::S_MINUTE;
 			$result[] = $v.(
-					$shorthand
-					? 'm'
-					: ' Minute'.($v > 1 ? 's' : '')
+				$shorthand
+				? 'm'
+				: ' Minute'.($v > 1 ? 's' : '')
 			);
 		}
 		// seconds
-		if($seconds > 0) {
+		if ($seconds > 0) {
 			$result[] = $seconds.(
-					$shorthand
-					? 's'
-					: ' Second'.
-					($seconds > 1 ? 's' : '')
+				$shorthand
+				? 's'
+				: ' Second'.
+				($seconds > 1 ? 's' : '')
 			);
 		}
-		if(\count($result) == 0)
+		if (\count($result) == 0)
 			return '--';
-		if($shorthand)
+		if ($shorthand)
 			return \implode(' ', $result);
 		return \implode('  ', $result);
 	}

@@ -26,39 +26,37 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 
 	const TRIM_TEST_DATA = "\t--   == test ==   --\t";
 
-
-
 	/**
 	 * @covers ::Trim
 	 */
 	public function testTrim() {
 		$this->assertEquals(
-				'--   == test ==   --',
-				Strings::Trim(self::TRIM_TEST_DATA)
+			'--   == test ==   --',
+			Strings::Trim(self::TRIM_TEST_DATA)
 		);
 		$this->assertEquals(
-				'test',
-				Strings::Trim(self::TRIM_TEST_DATA, ' ', '-', '=', "\t")
+			'test',
+			Strings::Trim(self::TRIM_TEST_DATA, ' ', '-', '=', "\t")
 		);
 		$this->assertEquals(
-				'test',
-				Strings::Trim(self::TRIM_TEST_DATA, ' ', '--', '==', "\t")
+			'test',
+			Strings::Trim(self::TRIM_TEST_DATA, ' ', '--', '==', "\t")
 		);
 		$this->assertEquals(
-				'--   == test ==   --',
-				Strings::Trim(self::TRIM_TEST_DATA, ' ', '=', "\t")
+			'--   == test ==   --',
+			Strings::Trim(self::TRIM_TEST_DATA, ' ', '=', "\t")
 		);
 		$this->assertEquals(
-				'test',
-				Strings::Trim(self::TRIM_TEST_DATA, ' ', ['--', '=='], "\t")
+			'test',
+			Strings::Trim(self::TRIM_TEST_DATA, ' ', ['--', '=='], "\t")
 		);
 		$this->assertEquals(
-				'123',
-				Strings::Trim('01230', '0')
+			'123',
+			Strings::Trim('01230', '0')
 		);
 		$this->assertEquals(
-				'',
-				Strings::Trim('01230', '0', '1', '2', '3')
+			'',
+			Strings::Trim('01230', '0', '1', '2', '3')
 		);
 	}
 	/**
@@ -66,32 +64,32 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testTrimFront() {
 		$this->assertEquals(
-				"--   == test ==   --\t",
-				Strings::TrimFront(self::TRIM_TEST_DATA)
+			"--   == test ==   --\t",
+			Strings::TrimFront(self::TRIM_TEST_DATA)
 		);
 		$this->assertEquals(
-				"test ==   --\t",
-				Strings::TrimFront(self::TRIM_TEST_DATA, ' ', '-', '=', "\t")
+			"test ==   --\t",
+			Strings::TrimFront(self::TRIM_TEST_DATA, ' ', '-', '=', "\t")
 		);
 		$this->assertEquals(
-				"test ==   --\t",
-				Strings::TrimFront(self::TRIM_TEST_DATA, ' ', '--', '==', "\t")
+			"test ==   --\t",
+			Strings::TrimFront(self::TRIM_TEST_DATA, ' ', '--', '==', "\t")
 		);
 		$this->assertEquals(
-				"--   == test ==   --\t",
-				Strings::TrimFront(self::TRIM_TEST_DATA, ' ', '=', "\t")
+			"--   == test ==   --\t",
+			Strings::TrimFront(self::TRIM_TEST_DATA, ' ', '=', "\t")
 		);
 		$this->assertEquals(
-				"test ==   --\t",
-				Strings::TrimFront(self::TRIM_TEST_DATA, ' ', ['--', '=='], "\t")
+			"test ==   --\t",
+			Strings::TrimFront(self::TRIM_TEST_DATA, ' ', ['--', '=='], "\t")
 		);
 		$this->assertEquals(
-				'1230',
-				Strings::TrimFront('01230', '0')
+			'1230',
+			Strings::TrimFront('01230', '0')
 		);
 		$this->assertEquals(
-				'',
-				Strings::TrimFront('01230', '0', '1', '2', '3')
+			'',
+			Strings::TrimFront('01230', '0', '1', '2', '3')
 		);
 	}
 	/**
@@ -99,32 +97,32 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testTrimEnd() {
 		$this->assertEquals(
-				"\t--   == test ==   --",
-				Strings::TrimEnd(self::TRIM_TEST_DATA)
+			"\t--   == test ==   --",
+			Strings::TrimEnd(self::TRIM_TEST_DATA)
 		);
 		$this->assertEquals(
-				"\t--   == test",
-				Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', '-', '=', "\t")
+			"\t--   == test",
+			Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', '-', '=', "\t")
 		);
 		$this->assertEquals(
-				"\t--   == test",
-				Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', '--', '==', "\t")
+			"\t--   == test",
+			Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', '--', '==', "\t")
 		);
 		$this->assertEquals(
-				"\t--   == test ==   --",
-				Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', '=', "\t")
+			"\t--   == test ==   --",
+			Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', '=', "\t")
 		);
 		$this->assertEquals(
-				"\t--   == test",
-				Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', ['--', '=='], "\t")
+			"\t--   == test",
+			Strings::TrimEnd(self::TRIM_TEST_DATA, ' ', ['--', '=='], "\t")
 		);
 		$this->assertEquals(
-				'0123',
-				Strings::TrimEnd('01230', '0')
+			'0123',
+			Strings::TrimEnd('01230', '0')
 		);
 		$this->assertEquals(
-				'',
-				Strings::TrimEnd('01230', '0', '1', '2', '3')
+			'',
+			Strings::TrimEnd('01230', '0', '1', '2', '3')
 		);
 	}
 
@@ -205,25 +203,23 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 	const FORCE_DATA   = 'test';
 	const FORCE_APPEND = '123';
 
-
-
 	/**
 	 * @covers ::ForceStartsWith
 	 */
 	public function testForceStartsWith() {
 		$this->assertEquals(
-				self::FORCE_APPEND.self::FORCE_DATA,
-				Strings::ForceStartsWith(
-						self::FORCE_DATA,
-						self::FORCE_APPEND
-				)
+			self::FORCE_APPEND.self::FORCE_DATA,
+			Strings::ForceStartsWith(
+				self::FORCE_DATA,
+				self::FORCE_APPEND
+			)
 		);
 		$this->assertEquals(
+			self::FORCE_APPEND.self::FORCE_DATA,
+			Strings::ForceStartsWith(
 				self::FORCE_APPEND.self::FORCE_DATA,
-				Strings::ForceStartsWith(
-						self::FORCE_APPEND.self::FORCE_DATA,
-						self::FORCE_APPEND
-				)
+				self::FORCE_APPEND
+			)
 		);
 	}
 	/**
@@ -231,18 +227,18 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testForceEndsWith() {
 		$this->assertEquals(
-				self::FORCE_DATA.self::FORCE_APPEND,
-				Strings::ForceEndsWith(
-						self::FORCE_DATA,
-						self::FORCE_APPEND
-				)
+			self::FORCE_DATA.self::FORCE_APPEND,
+			Strings::ForceEndsWith(
+				self::FORCE_DATA,
+				self::FORCE_APPEND
+			)
 		);
 		$this->assertEquals(
+			self::FORCE_DATA.self::FORCE_APPEND,
+			Strings::ForceEndsWith(
 				self::FORCE_DATA.self::FORCE_APPEND,
-				Strings::ForceEndsWith(
-						self::FORCE_DATA.self::FORCE_APPEND,
-						self::FORCE_APPEND
-				)
+				self::FORCE_APPEND
+			)
 		);
 	}
 
@@ -272,8 +268,6 @@ class StringsTest extends \PHPUnit_Framework_TestCase {
 
 
 	const PART_TEST_DATA  = "aaa bbb  ccc\tddd";
-
-
 
 	/**
 	 * @covers ::findPart

@@ -8,7 +8,7 @@
  */
 namespace pxn\phpUtils;
 
-if(!\ini_get('date.timezone')) {      // @codeCoverageIgnore
+if (!\ini_get('date.timezone')) {      // @codeCoverageIgnore
 	\ini_set('date.timezone', 'UTC'); // @codeCoverageIgnore
 }                                     // @codeCoverageIgnore
 
@@ -27,7 +27,7 @@ final class General {
 
 	// cast variable type
 	public static function castType($data, $type) {
-		switch(strtolower(substr( (string) $type, 0, 1))) {
+		switch (strtolower(substr( (string) $type, 0, 1))) {
 			// string
 			case 's':
 				return ((string) $data);
@@ -50,12 +50,12 @@ final class General {
 	}
 	// convert to boolean
 	public static function toBoolean($value) {
-		if(gettype($value) === 'boolean')
+		if (gettype($value) === 'boolean')
 			return $value;
 		$val = strtolower(trim( (string) $value ));
-		if($val == 'on')  return TRUE;
-		if($val == 'off') return FALSE;
-		switch(substr($val, 0, 1)) {
+		if ($val == 'on')  return TRUE;
+		if ($val == 'off') return FALSE;
+		switch (substr($val, 0, 1)) {
 			case 't': // true
 			case 'y': // yes
 			case 'a': // allow
@@ -88,14 +88,14 @@ final class General {
 	 * @return object - Returns the requested value, cast to requested type.
 	 */
 	public static function getVar($name, $type='str', $source=array('get','post')) {
-		if(!is_array($source))
+		if (!is_array($source))
 			$source = @explode(',', (string) $source);
-		if(!is_array($source))
+		if (!is_array($source))
 			return NULL;
 		$value = NULL;
-		foreach($source as $src) {
+		foreach ($source as $src) {
 			$v = NULL;
-			switch(\strtolower(\substr(\trim( (string) $src ), 0, 1))) {
+			switch (\strtolower(\substr(\trim( (string) $src ), 0, 1))) {
 				// get
 				case 'g':
 					$v = self::get($name, $type);
@@ -116,8 +116,9 @@ final class General {
 					fail('Unknown value source: '.$src);
 			}
 			// value found
-			if($v !== NULL)
+			if ($v !== NULL) {
 				$value = $v;
+			}
 		}
 		return $value;
 	}
@@ -126,25 +127,25 @@ final class General {
 
 	// get var
 	public static function get($name, $type) {
-		if(isset($_GET[$name]))
+		if (isset($_GET[$name]))
 			return self::castType($_GET[$name], $type);
 		return NULL;
 	}
 	// post var
 	public static function post($name, $type) {
-		if(isset($_POST[$name]))
+		if (isset($_POST[$name]))
 			return self::castType($_POST[$name], $type);
 		return NULL;
 	}
 	// cookie var
 	public static function cookie($name, $type) {
-		if(isset($_COOKIE[$name]))
+		if (isset($_COOKIE[$name]))
 			return self::castType($_COOKIE[$name], $type);
 		return NULL;
 	}
 	// php session var
 	public static function session($name, $type) {
-		if(isset($_SESSION[$name]))
+		if (isset($_SESSION[$name]))
 			return self::castType($_SESSION[$name], $type);
 		return NULL;
 	}
@@ -163,12 +164,12 @@ final class General {
 	 */
 	public static function ParseModRewrite() {
 		// parse mod_rewrite uri
-		if(isset($_SERVER['REDIRECT_STATUS'])) {
+		if (isset($_SERVER['REDIRECT_STATUS'])) {
 			$data = $_SERVER['REQUEST_URI'];
 			// parse ? query string
-			if(strpos($data, '?') !== FALSE) {
+			if (strpos($data, '?') !== FALSE) {
 				list($data, $query) = explode('?', $data, 2);
-				if(!empty($query)) {
+				if (!empty($query)) {
 					//$arr = explode('&', $query);
 					//echo 'query: ?'.$query.'<br />';
 				}
@@ -176,11 +177,12 @@ final class General {
 			// parse url path
 			$data = array_values(\psm\utils::array_remove_empty(explode('/', $data)));
 			// needs to be even
-			if((count($data) % 2) != 0)
+			if ((count($data) % 2) != 0)
 				$data[] = '';
 			// merge values into GET
-			for($i=0; $i<count($data); $i++)
+			for ($i=0; $i<count($data); $i++) {
 				$_GET[$data[$i]] = $data[++$i];
+			}
 		}
 	}
 
@@ -222,9 +224,9 @@ final class General {
 	 * @codeCoverageIgnore
 	 */
 	public static function NoPageCache() {
-		if(self::$INITED_NoPageCache)
+		if (self::$INITED_NoPageCache)
 			return TRUE;
-		if(\headers_sent())
+		if (\headers_sent())
 			return FALSE;
 		@\header('Expires: Mon, 26 Jul 1990 05:00:00 GMT');
 		@\header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
@@ -245,7 +247,7 @@ final class General {
 	 * @codeCoverageIgnore
 	 */
 	public static function ForwardTo($url, $delay=0) {
-		if(\headers_sent() || $delay > 0) {
+		if (\headers_sent() || $delay > 0) {
 			echo '<header><meta http-equiv="refresh" content="'.((int) $delay).';url='.$url.'"></header>';
 			echo '<p><a href="'.$url.'"><font size="+1">Continue..</font></a></p>';
 		} else {
@@ -263,7 +265,7 @@ final class General {
 	 * @codeCoverageIgnore
 	 */
 	public static function ScrollToBottom($id='') {
-		if(empty($id)) $id = 'document';
+		if (empty($id)) $id = 'document';
 		echo Defines::EOL.'<!-- ScrollToBottom() -->'.Defines::EOL.
 				'<script type="text/javascript"><!--//'.Defines::EOL.
 				$id.'.scrollTop='.$id.'.scrollHeight; '.
@@ -290,15 +292,15 @@ final class General {
 	 * @return boolean - TRUE if object matches class name.
 	 */
 	public static function InstanceOfClass($className, $object) {
-		if(empty($className)) return FALSE;
-		if($object == NULL)   return FALSE;
+		if (empty($className)) return FALSE;
+		if ($object == NULL)   return FALSE;
 		//echo '<p>$className - '.$className.'</p>';
 		//echo '<p>get_class($clss) - '.get_class($clss).'</p>';
 		//echo '<p>get_parent_class($clss) - '.get_parent_class($clss).'</p>';
 		return
-		\get_class($object) == $className ||
-		//			get_parent_class($clss) == $className ||
-		\is_subclass_of($object, $className);
+			\get_class($object) == $className ||
+//			get_parent_class($clss) == $className ||
+			\is_subclass_of($object, $className);
 	}
 	/**
 	 * Validates an object by class name, throwing an exception if invalid.
@@ -306,11 +308,11 @@ final class General {
 	 * @param object $object - Object to validate.
 	 */
 	public static function ValidateClass($className, $object) {
-		if(empty($className))
+		if (empty($className))
 			throw new \InvalidArgumentException('classname not defined');
-		if($object == NULL)
+		if ($object == NULL)
 			throw new \InvalidArgumentException('object not defined');
-		if(!self::InstanceOfClass($className, $object))
+		if (!self::InstanceOfClass($className, $object))
 			throw new \InvalidArgumentException('Class object isn\'t of type '.$className);
 	}
 

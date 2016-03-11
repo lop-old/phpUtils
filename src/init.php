@@ -35,22 +35,22 @@ use \pxn\phpUtils\Numbers;
 	\ini_set('display_errors', 'On');
 	\ini_set('html_errors',    $isShell ? 'Off' : 'On');
 	\ini_set('log_errors',     'On');
-	if( ! $isShell ) {
+	if ( ! $isShell ) {
 		\ini_set('error_log',      'error_log');
 	}
 }
 
 // php version 5.6 required
-if(\PHP_VERSION_ID < 50600) {
+if (\PHP_VERSION_ID < 50600) {
 	echo '<p>PHP 5.6 or newer is required!</p>'; exit(1);
 }
 
 // atomic defines
-if(\defined('pxn\\phpUtils\\INDEX_DEFINE')) {
+if (\defined('pxn\\phpUtils\\INDEX_DEFINE')) {
 	echo '<h2>Unknown state! init.php already loaded?</h2>';
 	exit(1);
 }
-if(\defined('pxn\\phpUtils\\PORTAL_LOADED')) {
+if (\defined('pxn\\phpUtils\\PORTAL_LOADED')) {
 	echo '<h2>Unknown state! Portal already loaded?</h2>';
 	exit(1);
 }
@@ -60,7 +60,7 @@ if(\defined('pxn\\phpUtils\\PORTAL_LOADED')) {
 //TODO: will make a config entry for this
 try {
 	$zone = @date_default_timezone_get();
-	if($zone == 'UTC') {
+	if ($zone == 'UTC') {
 		@date_default_timezone_set(
 			'America/New_York'
 		);
@@ -70,7 +70,7 @@ try {
 		);
 	}
 	unset($zone);
-} catch(\Exception $ignore) {}
+} catch (\Exception $ignore) {}
 
 
 
@@ -99,10 +99,10 @@ try {
 
 
 //$phpUtils_logger = NULL;
-//if(!\function_exists('log')) {
+//if (!\function_exists('log')) {
 //	function log() {
 //		global $phpUtils_logger;
-//		if($phpUtils_logger == NULL)
+//		if ($phpUtils_logger == NULL)
 //TODO:
 //			$phpUtils_logger = new logger();
 //		return $phpUtils_logger;
@@ -115,8 +115,8 @@ try {
 
 
 //// php session
-//if(function_exists('session_status'))
-//	if(session_status() == PHP_SESSION_DISABLED){
+//if (function_exists('session_status'))
+//	if (session_status() == PHP_SESSION_DISABLED){
 //	echo '<p>PHP Sessions are disabled. This is a requirement, please enable this.</p>';
 //	exit;
 //}
@@ -127,7 +127,7 @@ try {
 //// init php sessions
 //private static $session_init_had_run = FALSE;
 //public static function session_init() {
-//	if(self::$session_init_had_run) return;
+//	if (self::$session_init_had_run) return;
 //	\session_start();
 //	self::$session_init_had_run = TRUE;
 //}
@@ -135,7 +135,7 @@ try {
 
 
 //function addlog($text){global $config,$pathroot;
-//if(substr($config['log file'],-4)!='.txt'){die('error in log file var');}
+//if (substr($config['log file'],-4)!='.txt'){die('error in log file var');}
 //$fp=@fopen($pathroot.$config['log file'],'a') or die('failed to write log');
 //fwrite($fp,date('Y-m-d H:i:s').' - '.trim($text)."\r\n");
 //fclose($fp);
@@ -165,19 +165,22 @@ function dd($var) {
 function ExitNow($code=1) {
 	$website = \pxn\phpUtils\portal\Website::peak();
 	// set rendered
-	if($website !== NULL)
+	if ($website !== NULL) {
 		$website->hasRendered(TRUE);
+	}
 	// exit code
-	if($code !== NULL && Numbers::isNumeric($code))
-		exit( ((int)$code) );
+	if ($code !== NULL && Numbers::isNumeric($code)) {
+		exit( ((int) $code) );
+	}
 	exit(0);
 }
 function fail($msg, $code=1) {
-	if(!\is_string($msg))
+	if (!\is_string($msg)) {
 		$msg = \print_r($msg, TRUE);
+	}
 	echo '<pre style="color: black; background-color: #ffaaaa; '.
 		'padding: 10px;"><font size="+2">FATAL: '.$msg.'</font></pre>'.\CRLF;
-	if(\psm\debug())
+	if (\psm\debug())
 		backtrace();
 	if ($code !== NULL) {
 		ExitNow($code);
@@ -185,21 +188,21 @@ function fail($msg, $code=1) {
 }
 function backtrace() {
 	$trace = debug_backtrace();
-	$ignore = array(
-		'inc.php' => array(
+	$ignore = [
+		'inc.php' => [
 			'fail',
 			'backtrace',
 			'autoload',
 			'__autoload',
-		),
-	);
+		],
+	];
 //	$ignore = array();
-	foreach($trace as $index => $tr) {
-		if(!isset($tr['file'])) continue;
+	foreach ($trace as $index => $tr) {
+		if (!isset($tr['file'])) continue;
 		$file = \basename($tr['file']);
-		if(isset($ignore[$file])) {
+		if (isset($ignore[$file])) {
 			$func = $tr['function'];
-			if(\in_array($func, $ignore[$file]))
+			if (\in_array($func, $ignore[$file]))
 				unset($trace[$index]);
 		}
 	}
@@ -207,9 +210,10 @@ function backtrace() {
 		'border-width: 1px; border-style: solid; border-color: #aaaaaa;">'.\CRLF;
 	$first = TRUE;
 	$evenodd = FALSE;
-	foreach($trace as $num => $tr) {
-		if(!$first)
+	foreach ($trace as $num => $tr) {
+		if (!$first) {
 			echo '<tr><td height="20">&nbsp;</td></tr>';
+		}
 		$evenodd = ! $evenodd;
 		$bgcolor = ($evenodd ? '#ffe0d0' : '#fff8e8');
 		$first = FALSE;
@@ -220,14 +224,15 @@ function backtrace() {
 		echo '<tr style="background-color: '.$bgcolor.';">'.\CRLF;
 		echo \TAB.'<td></td>'.\CRLF;
 		$args = '';
-		foreach($tr['args'] as $arg) {
-			if(!empty($args))
+		foreach ($tr['args'] as $arg) {
+			if (!empty($args))
 				$args .= ', ';
-			if(\is_string($arg)) {
-				if(\strpos($arg, \CRLF))
+			if (\is_string($arg)) {
+				if (\strpos($arg, \CRLF)) {
 					$args .= '<pre>'.$arg.'</pre>';
-				else
+				} else {
 					$args .= $arg;
+				}
 			} else {
 				$args .= \print_r($arg, TRUE);
 			}
@@ -260,13 +265,13 @@ global $pxnUtils_DEBUG;
 $pxnUtils_DEBUG = NULL;
 function debug($debug=NULL) {
 	global $pxnUtils_DEBUG;
-	if($debug !== NULL) {
+	if ($debug !== NULL) {
 		$last = $pxnUtils_DEBUG;
 		$pxnUtils_DEBUG = General::toBoolean($debug);
 		// update debug mode
-		if($pxnUtils_DEBUG != $last) {
+		if ($pxnUtils_DEBUG != $last) {
 			// enabled
-			if($pxnUtils_DEBUG) {
+			if ($pxnUtils_DEBUG) {
 				\error_reporting(\E_ALL | \E_STRICT);
 				\ini_set('display_errors', 'On');
 				\ini_set('html_errors',    'On');
@@ -278,18 +283,18 @@ function debug($debug=NULL) {
 		}
 	}
 	// default to false
-	if($pxnUtils_DEBUG === NULL)
+	if ($pxnUtils_DEBUG === NULL)
 		debug(FALSE);
 	return $pxnUtils_DEBUG;
 }
 // by define
-if(\defined('\DEBUG'))
+if (\defined('\DEBUG'))
 	debug(\DEBUG);
-if(\defined('pxn\\phpUtils\\DEBUG'))
+if (\defined('pxn\\phpUtils\\DEBUG'))
 	debug(\pxn\phpUtils\DEBUG);
 // by url
 $val = General::getVar('debug', 'bool');
-if($val !== NULL) {
+if ($val !== NULL) {
 	// set cookie
 	\setcookie(
 		Defines::getDebugCookieName(),
@@ -304,7 +309,7 @@ if($val !== NULL) {
 		'bool',
 		'cookie'
 	);
-	if($val === TRUE)
+	if ($val === TRUE)
 		debug($val);
 }
 unset($val);
@@ -313,24 +318,24 @@ debug();
 
 /*
 // Kint backtracer
-if(file_exists(paths::getLocal('portal').DIR_SEP.'kint.php')) {
+if (file_exists(paths::getLocal('portal').DIR_SEP.'kint.php')) {
 	include(paths::getLocal('portal').DIR_SEP.'kint.php');
 }
 // php_error
-if(file_exists(paths::getLocal('portal').DIR_SEP.'php_error.php')) {
+if (file_exists(paths::getLocal('portal').DIR_SEP.'php_error.php')) {
 	include(paths::getLocal('portal').DIR_SEP.'php_error.php');
 }
 // Kint backtracer
 $kintPath = paths::getLocal('portal').DIR_SEP.'debug'.DIR_SEP.'kint'.DIR_SEP.'Kint.class.php';
-if(file_exists($kintPath)) {
+if (file_exists($kintPath)) {
 	//global $GLOBALS;
-	//if(!@is_array(@$GLOBALS)) $GLOBALS = array();
+	//if (!@is_array(@$GLOBALS)) $GLOBALS = array();
 	//$_kintSettings = &$GLOBALS['_kint_settings'];
 	//$_kintSettings['traceCleanupCallback'] = function($traceStep) {
 	//echo '<pre>';print_r($traceStep);exit();
-	//	if(isset($traceStep['class']) && $traceStep['class'] === 'Kint')
+	//	if (isset($traceStep['class']) && $traceStep['class'] === 'Kint')
 	//		return NULL;
-	//	if(isset($traceStep['function']) && \strtolower($traceStep['function']) === '__tostring')
+	//	if (isset($traceStep['function']) && \strtolower($traceStep['function']) === '__tostring')
 	//		$traceStep['function'] = '[object converted to string]';
 	//	return $traceStep;
 	//};
@@ -339,28 +344,28 @@ if(file_exists($kintPath)) {
 	}
 	// php_error
 	$phpErrorPath = paths::getLocal('portal').DIR_SEP.'debug'.DIR_SEP.'php_error.php';
-	if(file_exists($phpErrorPath))
+	if (file_exists($phpErrorPath))
 		include($phpErrorPath);
-		if(function_exists('php_error\\reportErrors')) {
+		if (function_exists('php_error\\reportErrors')) {
 			$reportErrors = '\\php_error\\reportErrors';
-			$reportErrors(array(
+			$reportErrors([
 					'catch_ajax_errors'      => TRUE,
 					'catch_supressed_errors' => FALSE,
 					'catch_class_not_found'  => FALSE,
 					'snippet_num_lines'      => 11,
 					'application_root'       => __DIR__,
 					'background_text'        => 'PSM',
-			));
+			]);
 		}
 	}
 }
 // error page
 public static function Error($msg) {
 	echo '<div style="background-color: #ffbbbb;">'.CRLF;
-	if(!empty($msg))
+	if (!empty($msg))
 		echo '<h4>Error: '.$msg.'</h4>'.CRLF;
 	echo '<h3>Backtrace:</h3>'.CRLF;
-//	if(\method_exists('Kint', 'trace'))
+//	if (\method_exists('Kint', 'trace'))
 //		\Kint::trace();
 //	else
 		echo '<pre>'.print_r(\debug_backtrace(), TRUE).'</pre>';
@@ -373,7 +378,7 @@ public static function Error($msg) {
 /*
 \set_error_handler(
 function ($severity, $msg, $filename, $line, array $err_context) {
-	if(0 === error_reporting())
+	if (0 === error_reporting())
 		return FALSE;
 	switch($severity) {
 	case E_ERROR:             throw new ErrorException            ($msg, 0, $severity, $filename, $line);
@@ -415,7 +420,7 @@ function (\Exception $e) {
 	echo '<h1>Uncaught Exception</h1>'.CRLF;
 	echo '<h2>'.$e->getMessage().'</h2>'.CRLF;
 	echo '<h3>Line '.$e->getLine().' of '.$e->getFile().'</h3>'.CRLF;
-	foreach($e->getTrace() as $t)
+	foreach ($e->getTrace() as $t)
 		\var_dump($t);
 	exit(1);
 });

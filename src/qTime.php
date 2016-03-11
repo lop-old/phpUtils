@@ -19,7 +19,7 @@ class qTime {
 
 
 	public static function getGlobal() {
-		if(self::$global == NULL)
+		if (self::$global == NULL)
 			self::$global = new static(TRUE);
 		return self::$global;
 	}
@@ -42,7 +42,7 @@ class qTime {
 
 
 	public function Start() {
-		if($this->start == Defines::INT_MIN)
+		if ($this->start == Defines::INT_MIN)
 			$this->start = self::getTimestamp();
 	}
 	public function Reset() {
@@ -54,9 +54,9 @@ class qTime {
 	public function getTimeSinceStart() {
 		$now   = self::getTimestamp();
 		$start = $this->start;
-		if($start == Defines::INT_MIN)
+		if ($start == Defines::INT_MIN)
 			return FALSE;
-		if($start > $now)
+		if ($start > $now)
 			return 0.0;
 		return $now - $start;
 	}
@@ -64,12 +64,12 @@ class qTime {
 		$now   = self::getTimestamp();
 		$start = $this->start;
 		$last  = $this->last;
-		if($last == Defines::INT_MIN) {
-			if($start == Defines::INT_MIN)
+		if ($last == Defines::INT_MIN) {
+			if ($start == Defines::INT_MIN)
 				return FALSE;
 			$last = $start;
 		}
-		if($last > $now)
+		if ($last > $now)
 			return 0.0;
 		$since = $now - $last;
 		$this->last = $now;

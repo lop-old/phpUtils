@@ -15,7 +15,7 @@ final class Arrays {
 
 
 	public static function TrimFlat(&$data) {
-		if($data === NULL) return;
+		if ($data === NULL) return;
 		$data = self::Flatten($data);
 		self::Trim($data);
 	}
@@ -23,15 +23,15 @@ final class Arrays {
 
 
 	public static function Flatten($data) {
-		if($data === NULL) return NULL;
-		if(!\is_array($data))
+		if ($data === NULL) return NULL;
+		if (!\is_array($data))
 			return [ (string) $data ];
 		$result = [];
 		\array_walk_recursive(
-				$data, // @codeCoverageIgnore
-				function($arr) use (&$result) {
-					$result[] = $arr;
-				}
+			$data, // @codeCoverageIgnore
+			function($arr) use (&$result) {
+				$result[] = $arr;
+			}
 		);
 		return $result;
 	}
@@ -39,15 +39,16 @@ final class Arrays {
 
 
 	public static function Trim(&$data) {
-		if($data === NULL) return;
-		if(!\is_array($data)) {
+		if ($data === NULL) return;
+		if (!\is_array($data)) {
 			$data = [ $data ];
 			return;
 		}
 		$temp = $data;
-		foreach($temp as $k => $v) {
-			if($v === NULL || $v === '')
+		foreach ($temp as $k => $v) {
+			if ($v === NULL || $v === '') {
 				unset($data[$k]);
+			}
 		}
 	}
 

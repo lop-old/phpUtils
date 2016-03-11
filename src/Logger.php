@@ -34,7 +34,7 @@ class Logger extends \Monolog\Logger {
 	public static function get($name='') {
 //		$name = self::ValidateName($name);
 		// new logger
-		if(!isset(self::$loggers[$name])) {
+		if (!isset(self::$loggers[$name])) {
 			$log = new self($name);
 			self::$loggers[$name] = $log;
 			$handler = new StreamHandler('php://stderr', Logger::DEBUG);
@@ -63,15 +63,20 @@ class Logger extends \Monolog\Logger {
 
 //	public static function ValidateName($name) {
 //		// default to class name
-//		if(empty($name)) {
+//		if (empty($name)) {
 //			$trace = \debug_backtrace(FALSE, 3);
 //			$str = $trace[2]['class'];
-//			if($str == 'ReflectionMethod')
+//			if ($str == 'ReflectionMethod') {
 //				$str = $trace[1]['class'];
+//			}
 //			$pos = \strrpos($str, '\\');
-//			$name = ($pos === FALSE ? $str : \substr($str, $pos+1));
+//			$name = (
+//				$pos === FALSE
+//				? $str
+//				: \substr($str, $pos+1)
+//			);
 //		}
-//		if(empty($name)) $name = '';
+//		if (empty($name)) $name = '';
 //		return $name;
 //	}
 

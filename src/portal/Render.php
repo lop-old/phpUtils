@@ -24,17 +24,17 @@ abstract class Render {
 
 	public function getTwig($path, $file) {
 		$twigLoader = new \Twig_Loader_Filesystem(__DIR__);
-				$twig = new \Twig_Environment(
+		$twig = new \Twig_Environment(
 			$twigLoader,
-			array(
+			[
 				'cache' => \pxn\phpUtils\Config::getTwigTempDir()
-			)
+			]
 		);
 		$tpl = $twig->loadTemplate('test.htm');
 		echo $tpl->render(
-			array(
+			[
 				'tag' => 'TAG'
-			)
+			]
 		);
 	}
 

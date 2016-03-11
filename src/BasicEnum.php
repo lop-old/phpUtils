@@ -12,15 +12,13 @@ namespace pxn\phpUtils;
 abstract class BasicEnum {
 	private function __construct() {}
 
-
-
 	private static $ConstMapArrays  = array();
 
 
 
 	protected static function getConstants() {
 		$classname = \get_called_class();
-		if(!isset(self::$ConstMapArrays[$classname])) {
+		if (!isset(self::$ConstMapArrays[$classname])) {
 			$reflect = new \ReflectionClass($classname);
 			self::$ConstMapArrays[$classname] = $reflect->getConstants();
 			unset($reflect);
@@ -32,18 +30,18 @@ abstract class BasicEnum {
 
 	public static function isValidName($name, $ignoreCase=TRUE) {
 		$constants = self::getConstants();
-		if(\array_key_exists($name, $constants))
+		if (\array_key_exists($name, $constants))
 			return TRUE;
-		if(!$ignoreCase)
+		if (!$ignoreCase)
 			return FALSE;
 		$keys = \array_map('\\strtolower', \array_keys($constants));
 		return \in_array(\strtolower($name), $keys);
 	}
 	public static function isValidValue($value, $ignoreCase=TRUE) {
 		$values = \array_values(self::getConstants());
-		if(\in_array($value, $values))
+		if (\in_array($value, $values))
 			return TRUE;
-		if(!$ignoreCase)
+		if (!$ignoreCase)
 			return FALSE;
 		$vals = \array_map('\\strtolower', \array_values($values));
 		return \in_array(\strtolower($value), $vals);
@@ -53,12 +51,12 @@ abstract class BasicEnum {
 
 	public static function getByName($name, $ignoreCase=TRUE) {
 		$constants = self::getConstants();
-		if(\array_key_exists($name, $constants))
+		if (\array_key_exists($name, $constants))
 			return $constants[$name];
-		if(!$ignoreCase)
+		if (!$ignoreCase)
 			return NULL;
 		$n = \strtolower($name);
-		foreach($constants as $k => $v) {
+		foreach ($constants as $k => $v) {
 			if(\strtolower($k) == $n)
 				return $v;
 		}
@@ -67,14 +65,15 @@ abstract class BasicEnum {
 	public static function getByValue($value, $ignoreCase=TRUE) {
 		$constants = self::getConstants();
 		$result = \array_search($value, $constants, TRUE);
-		if($result != FALSE)
+		if ($result != FALSE)
 			return $result;
-		if(!$ignoreCase)
+		if (!$ignoreCase)
 			return NULL;
 		$val = \strtolower($value);
-		foreach($constants as $k => $v) {
-			if(\strtolower($v) == $val)
+		foreach ($constants as $k => $v) {
+			if (\strtolower($v) == $val) {
 				return $k;
+			}
 		}
 		return NULL;
 	}

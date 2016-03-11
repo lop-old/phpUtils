@@ -23,7 +23,7 @@ class CommandTest extends \pxn\phpUtils\console\Command {
 
 
 	public static function get() {
-		if(self::$instance == NULL) {
+		if (self::$instance == NULL) {
 			self::$instance = self::RegisterNew('test-command-class');
 			self::$instance->setAliases(['test-a']);
 			self::$instance->setInfo(

@@ -25,9 +25,9 @@ class Random extends \pxn\phpUtils\console\Command {
 			$command = self::RegisterNew('random');
 			$command->setAliases(['rand']);
 			$command->setInfo(
-					'Example command displays ramdom numbers',
-					'HELP!',
-					'USAGE?'
+				'Example command displays ramdom numbers',
+				'HELP!',
+				'USAGE?'
 			);
 			self::$instance = $command;
 		}
@@ -63,9 +63,10 @@ class Random extends \pxn\phpUtils\console\Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		echo "\n\n";
-		echo 'Running Command: RANDOM'."\n";
-		for($i=1; $i<=5; $i++)
+		echo "Running Command: RANDOM\n";
+		for ($i=1; $i<=5; $i++) {
 			echo '  '.\mt_rand(0, 9);
+		}
 		echo "\n\n";
 
 //		if($this->command == NULL) {
@@ -74,11 +75,11 @@ class Random extends \pxn\phpUtils\console\Command {
 //		}
 //		$helper = new DescriptorHelper();
 //		$helper->describe(
-//				$output,
-//				$this->command,
-//				[
-//						'format'   => $input->getOption('format'),
-//				]
+//			$output,
+//			$this->command,
+//			[
+//				'format'   => $input->getOption('format'),
+//			]
 //		);
 //		$this->command = NULL;
 	}

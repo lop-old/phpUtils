@@ -31,9 +31,9 @@ abstract class Website {
 
 
 	public function getRender() {
-		if($this->render == NULL) {
+		if ($this->render == NULL) {
 			$renderType = \pxn\phpUtils\Config::getRenderType();
-			switch($renderType) {
+			switch ($renderType) {
 			case 'main':
 				$this->render = new RenderMain();
 				break;
@@ -44,7 +44,7 @@ abstract class Website {
 				$this->render = new RenderMinimal();
 				break;
 			default:
-				\fail('Unknown render type: '.$type);
+				\fail ("Unknown render type: {$type}");
 				exit(1);
 			}
 		}

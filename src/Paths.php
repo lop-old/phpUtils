@@ -42,18 +42,18 @@ final class Paths {
 	}
 	public static function site() {
 		// find site path
-		if(empty(self::$local_site)) {
+		if (empty(self::$local_site)) {
 //self::$site = self::entry().DIR_SEP.
 //  \psm\portal::get()->getWebsite()->siteName();
 			$website = \pxn\phpUtils\portal\Website::peak();
 			// website object not loaded yet
-			if($website === NULL) {
+			if ($website === NULL) {
 //TODO:
 				echo '<p>Website object not loaded yet!</p>'.\CRLF;
 				exit(1);
 			}
-				return NULL;
-				
+//TODO:
+return NULL;
 //			$path = 
 			$path = self::entry().\DIR_SEP.
 				$website->getName();

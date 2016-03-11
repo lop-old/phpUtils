@@ -59,8 +59,8 @@ class LoggerTest extends \PHPUnit_Framework_TestCase {
 	public function testSet() {
 		$this->assertFalse(Logger::get('a') === Logger::get('b'));
 		Logger::set(
-				'a',
-				Logger::get('b')
+			'a',
+			Logger::get('b')
 		);
 		$this->assertTrue (Logger::get('a') === Logger::get('b'));
 	}

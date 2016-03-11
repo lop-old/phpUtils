@@ -19,11 +19,11 @@ class ConsoleApp extends \Symfony\Component\Console\Application {
 
 
 	public function __construct($name=NULL, $version=NULL) {
-		if(empty($name)) {
+		if (empty($name)) {
 			$name = $this->getComposer()
 					->getName();
 		}
-		if(empty($version)) {
+		if (empty($version)) {
 			$version = $this->getComposer()
 					->getVersion();
 		}
@@ -33,9 +33,9 @@ class ConsoleApp extends \Symfony\Component\Console\Application {
 
 
 	public function getComposer() {
-		if($this->composer == NULL)
+		if ($this->composer == NULL)
 			$this->composer = ComposerTools::find(2);
-		if($this->composer == NULL)
+		if ($this->composer == NULL)
 			throw new FileNotFoundException('composer.json file not found');
 		return $this->composer;
 	}

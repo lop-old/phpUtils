@@ -31,37 +31,37 @@ class SystemTest extends \PHPUnit_Framework_TestCase {
 		$cwd = $this->getCWD();
 		// ensure clean
 		$this->assertFalse(
-				\is_dir($cwd.self::TEST_DIR1),
-				\sprintf(
-						'Temporary test directory already exists: %s',
-						self::TEST_DIR1
-				)
+			\is_dir($cwd.self::TEST_DIR1),
+			\sprintf(
+				'Temporary test directory already exists: %s',
+				self::TEST_DIR1
+			)
 		);
 		// create test dirs
 		System::mkDir($cwd.self::TEST_DIR1.self::TEST_DIR2, 700);
 		$this->assertTrue(
-				\is_dir($cwd.self::TEST_DIR1.self::TEST_DIR2),
-				\sprintf(
-						'Failed to create temporary test directory: %s',
-						$cwd.self::TEST_DIR1.self::TEST_DIR2
-				)
+			\is_dir($cwd.self::TEST_DIR1.self::TEST_DIR2),
+			\sprintf(
+				'Failed to create temporary test directory: %s',
+				$cwd.self::TEST_DIR1.self::TEST_DIR2
+			)
 		);
 		// create test file
 		$this->assertTrue(\touch(
-				$cwd.self::TEST_DIR1.self::TEST_DIR2.'TestFile.txt'
+			$cwd.self::TEST_DIR1.self::TEST_DIR2.'TestFile.txt'
 		));
 		$this->assertTrue(\is_file(
-				$cwd.self::TEST_DIR1.self::TEST_DIR2.'TestFile.txt'
+			$cwd.self::TEST_DIR1.self::TEST_DIR2.'TestFile.txt'
 		));
 		// recursively delete test directories
 		System::rmDir($cwd.self::TEST_DIR1);
 		// ensure removed
 		$this->assertFalse(
-				\is_dir($cwd.self::TEST_DIR1),
-				\sprintf(
-						'Failed to remove temporary test directory: %s',
-						self::TEST_DIR1
-				)
+			\is_dir($cwd.self::TEST_DIR1),
+			\sprintf(
+				'Failed to remove temporary test directory: %s',
+				self::TEST_DIR1
+			)
 		);
 	}
 

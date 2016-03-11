@@ -23,29 +23,31 @@ final class Strings {
 
 
 	public static function Trim($text, ...$remove) {
-		if(!\is_array($remove))
+		if (!\is_array($remove)) {
 			$remove = [ (string)$remove ];
+		}
 		Arrays::TrimFlat($remove);
-		if(\count($remove) == 0)
+		if (\count($remove) == 0) {
 			$remove = [ ' ', "\t", "\r", "\n" ];
+		}
 		$allshort = TRUE;
-		foreach($remove as $str) {
-			if(\strlen($str) > 1) {
+		foreach ($remove as $str) {
+			if (\strlen($str) > 1) {
 				$allshort = FALSE;
 				break;
 			}
 		}
 		// trim single chars
-		if($allshort) {
+		if ($allshort) {
 			$last = $text;
-			while(\in_array(\substr($text, 0, 1), $remove)) {
+			while (\in_array(\substr($text, 0, 1), $remove)) {
 				$text = \substr($text, 1);
-				if($text === $last) break;
+				if ($text === $last) break;
 				$last = $text;
 			}
-			while(\in_array(\substr($text,-1, 1), $remove)) {
+			while (\in_array(\substr($text,-1, 1), $remove)) {
 				$text = \substr($text, 0, -1);
-				if($text === $last) break;
+				if ($text === $last) break;
 				$last = $text;
 			}
 			unset($last);
@@ -53,48 +55,50 @@ final class Strings {
 		} else {
 			do {
 				$more = FALSE;
-				foreach($remove as $str) {
+				foreach ($remove as $str) {
 					$len = \strlen($str);
-					if($len == 0) continue;
+					if ($len == 0) continue;
 					$last = $text;
-					while(\substr($text, 0, $len) == $str) {
+					while (\substr($text, 0, $len) == $str) {
 						$text = \substr($text, $len);
 						if($text === $last) break;
 						$last = $text;
 						$more = TRUE;
 					}
-					while(\substr($text, 0 - $len, $len) == $str) {
+					while (\substr($text, 0 - $len, $len) == $str) {
 						$text = \substr($text, 0, 0 - $len);
-						if($text === $last) break;
+						if ($text === $last) break;
 						$last = $text;
 						$more = TRUE;
 					}
-					if($more) break;
+					if ($more) break;
 				}
-			} while($more);
+			} while ($more);
 			unset($last);
 		}
 		return $text;
 	}
 	public static function TrimFront($text, ...$remove) {
-		if(!\is_array($remove))
+		if (!\is_array($remove)) {
 			$remove = [ (string)$remove ];
+		}
 		Arrays::TrimFlat($remove);
-		if(\count($remove) == 0)
+		if (\count($remove) == 0) {
 			$remove = [ ' ', "\t", "\r", "\n" ];
+		}
 		$allshort = TRUE;
-		foreach($remove as $str) {
-			if(\strlen($str) > 1) {
+		foreach ($remove as $str) {
+			if (\strlen($str) > 1) {
 				$allshort = FALSE;
 				break;
 			}
 		}
 		// trim single chars
-		if($allshort) {
+		if ($allshort) {
 			$last = $text;
-			while(\in_array(\substr($text, 0, 1), $remove)) {
+			while (\in_array(\substr($text, 0, 1), $remove)) {
 				$text = \substr($text, 1);
-				if($text === $last) break;
+				if ($text === $last) break;
 				$last = $text;
 			}
 			unset($last);
@@ -102,42 +106,44 @@ final class Strings {
 		} else {
 			do {
 				$more = FALSE;
-				foreach($remove as $str) {
+				foreach ($remove as $str) {
 					$len = \strlen($str);
-					if($len == 0) continue;
+					if ($len == 0) continue;
 					$last = $text;
-					while(\substr($text, 0, $len) == $str) {
+					while (\substr($text, 0, $len) == $str) {
 						$text = \substr($text, $len);
-						if($text === $last) break;
+						if ($text === $last) break;
 						$last = $text;
 						$more = TRUE;
 					}
-					if($more) break;
+					if ($more) break;
 				}
-			} while($more);
+			} while ($more);
 			unset($last);
 		}
 		return $text;
 	}
 	public static function TrimEnd($text, ...$remove) {
-		if(!\is_array($remove))
+		if (!\is_array($remove)) {
 			$remove = [ (string)$remove ];
+		}
 		Arrays::TrimFlat($remove);
-		if(\count($remove) == 0)
+		if (\count($remove) == 0) {
 			$remove = [ ' ', "\t", "\r", "\n" ];
+		}
 		$allshort = TRUE;
-		foreach($remove as $str) {
-			if(\strlen($str) > 1) {
+		foreach ($remove as $str) {
+			if (\strlen($str) > 1) {
 				$allshort = FALSE;
 				break;
 			}
 		}
 		// trim single chars
-		if($allshort) {
+		if ($allshort) {
 			$last = $text;
-			while(\in_array(\substr($text, -1, 1), $remove)) {
+			while (\in_array(\substr($text, -1, 1), $remove)) {
 				$text = \substr($text, 0, -1);
-				if($text === $last) break;
+				if ($text === $last) break;
 				$last = $text;
 			}
 			unset($last);
@@ -145,19 +151,19 @@ final class Strings {
 		} else {
 			do {
 				$more = FALSE;
-				foreach($remove as $str) {
+				foreach ($remove as $str) {
 					$len = \strlen($str);
-					if($len == 0) continue;
+					if ($len == 0) continue;
 					$last = $text;
-					while(\substr($text, 0 - $len, $len) == $str) {
+					while (\substr($text, 0 - $len, $len) == $str) {
 						$text = \substr($text, 0, 0 - $len);
-						if($text === $last) break;
+						if ($text === $last) break;
 						$last = $text;
 						$more = TRUE;
 					}
-					if($more) break;
+					if ($more) break;
 				}
-			} while($more);
+			} while ($more);
 			unset($last);
 		}
 		return $text;
@@ -171,18 +177,18 @@ final class Strings {
 	 * @return string - String with ' and " quotes removed.
 	 */
 	public static function TrimQuotes($text) {
-		while(\strlen($text) > 1) {
+		while (\strlen($text) > 1) {
 			$f = \substr($text, 0, 1);
 			$e = \substr($text, -1, 1);
 			// trim ' quotes
-			if($f == Defines::QUOTE_S && $e == Defines::QUOTE_S) {
+			if ($f == Defines::QUOTE_S && $e == Defines::QUOTE_S) {
 				$text = \substr($text, 1, -1);
 			} else
 			// trim " quotes
-			if($f == Defines::QUOTE_D && $e == Defines::QUOTE_D) {
+			if ($f == Defines::QUOTE_D && $e == Defines::QUOTE_D) {
 				$text = \substr($text, 1, -1);
 			} else
-			if($f == Defines::ACCENT && $e == Defines::ACCENT) {
+			if ($f == Defines::ACCENT && $e == Defines::ACCENT) {
 				$text = \substr($text, 1, -1);
 			} else {
 				break;
@@ -200,22 +206,22 @@ final class Strings {
 
 
 	public static function StartsWith($haystack, $needle, $ignoreCase=FALSE) {
-		if(empty($haystack) || empty($needle))
+		if (empty($haystack) || empty($needle))
 			return FALSE;
 		$len = \strlen($needle);
-		if($len > \strlen($haystack))
+		if ($len > \strlen($haystack))
 			return FALSE;
-		if($ignoreCase) {
+		if ($ignoreCase) {
 			$haystack = \strtolower($haystack);
 			$needle   = \strtolower($needle);
 		}
 		return \substr($haystack, 0, $len) == $needle;
 	}
 	public static function EndsWith($haystack, $needle, $ignoreCase=FALSE) {
-		if(empty($haystack) || empty($needle))
+		if (empty($haystack) || empty($needle))
 			return FALSE;
 		$len = \strlen($needle);
-		if($len > \strlen($haystack))
+		if ($len > \strlen($haystack))
 			return FALSE;
 			if($ignoreCase) {
 			$haystack = \strtolower($haystack);
@@ -233,16 +239,16 @@ final class Strings {
 
 
 	public static function ForceStartsWith($haystack, $prepend) {
-		if(empty($haystack) || empty($prepend))
+		if (empty($haystack) || empty($prepend))
 			return $haystack;
-		if(self::StartsWith($haystack, $prepend))
+		if (self::StartsWith($haystack, $prepend))
 			return $haystack;
 		return $prepend.$haystack;
 	}
 	public static function ForceEndsWith($haystack, $append) {
-		if(empty($haystack) || empty($append))
+		if (empty($haystack) || empty($append))
 			return $haystack;
-		if(self::EndsWith($haystack, $append))
+		if (self::EndsWith($haystack, $append))
 			return $haystack;
 		return $haystack.$append;
 	}
@@ -256,9 +262,9 @@ final class Strings {
 
 
 	public static function Contains($haystack, $needle, $ignoreCase=FALSE) {
-		if(empty($haystack) || empty($needle))
+		if (empty($haystack) || empty($needle))
 			return FALSE;
-		if($ignoreCase) {
+		if ($ignoreCase) {
 			$haystack = \strtolower($haystack);
 			$needle   = \strtolower($needle);
 		}
@@ -276,14 +282,14 @@ final class Strings {
 	public static function peakPart(&$data, $patterns=' ') {
 		$result = self::findPart($data, $patterns);
 		// pattern not found
-		if($result == NULL)
+		if ($result == NULL)
 			return $data;
 		return \substr($data, 0, $result['POS']);
 	}
 	public static function grabPart(&$data, $patterns=' ') {
 		$result = self::findPart($data, $patterns);
 		// pattern not found
-		if($result == NULL) {
+		if ($result == NULL) {
 			$part = $data;
 			$data = '';
 			return $part;
@@ -305,32 +311,33 @@ final class Strings {
 		return $part;
 	}
 	public static function findPart(&$data, $patterns) {
-		if(empty($data)) return NULL;
+		if (empty($data))
+			return NULL;
 		$data = (string) $data;
-		if(!\is_array($patterns))
+		if (!\is_array($patterns))
 			$patterns = [$patterns];
 		// find next delim
 		$pos   = \strlen($data);
 		$delim = NULL;
-		foreach($patterns as $pat) {
-			if(empty($pat)) continue;
+		foreach ($patterns as $pat) {
+			if (empty($pat)) continue;
 			$pat = (string) $pat;
 			$p = \strpos($data, $pat);
-			if($p === FALSE) continue;
+			if ($p === FALSE) continue;
 			// found a sooner delim
-			if($p < $pos) {
+			if ($p < $pos) {
 				$pos   = $p;
 				$delim = $pat;
 			}
 			// found delim at start
-			if($p == 0)
+			if ($p == 0)
 				break;
 		}
-		if($delim == NULL)
+		if ($delim == NULL)
 			return NULL;
 		return [
-				'POS' => $pos,
-				'PAT' => $delim
+			'POS' => $pos,
+			'PAT' => $delim
 		];
 	}
 
@@ -343,14 +350,15 @@ final class Strings {
 
 
 	public static function BuildPath(...$parts) {
-		if(empty($parts)) return '';
+		if (empty($parts))
+			return '';
 		$prepend = self::StartsWith(\reset($parts), '/');
 		$append  = self::EndsWith  (\end($parts),   '/');
 		$cleaned = [];
-		foreach($parts as $str) {
-			if(empty($str)) continue;
+		foreach ($parts as $str) {
+			if (empty($str)) continue;
 			$trimmed = self::Trim($str, '/', '\\', ' ');
-			if(empty($trimmed)) continue;
+			if (empty($trimmed)) continue;
 			$cleaned[] = $trimmed;
 		}
 		return

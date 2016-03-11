@@ -53,8 +53,9 @@ final class Defines {
 	public static function getDebugCookieName() {
 		$website_name = '';
 		$website = \pxn\phpUtils\portal\Website::peak();
-		if($website != NULL)
+		if ($website != NULL) {
 			$website_name = $website->getName();
+		}
 		return \str_replace(
 			'%website%',
 			$website_name,

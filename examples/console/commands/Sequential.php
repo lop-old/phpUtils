@@ -21,7 +21,7 @@ class Sequential extends \pxn\phpUtils\console\Command {
 
 
 	public static function get() {
-		if(self::$instance == NULL) {
+		if (self::$instance == NULL) {
 			$command = self::RegisterNew('sequential');
 			$command->setAliases(['seq']);
 			$command->setInfo(
@@ -38,9 +38,10 @@ class Sequential extends \pxn\phpUtils\console\Command {
 
 	protected function execute(InputInterface $input, OutputInterface $output) {
 		echo "\n\n";
-		echo 'Running Command: SEQ'."\n";
-		for($i=1; $i<=5; $i++)
+		echo "Running Command: SEQ\n";
+		for ($i=1; $i<=5; $i++) {
 			echo '  '.$i;
+		}
 		echo "\n\n";
 	}
 

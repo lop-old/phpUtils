@@ -28,8 +28,8 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 
 	public function testClassName() {
 		$this->assertEquals(
-				self::EXPECTED_CLASS_STRING,
-				\get_class($this)
+			self::EXPECTED_CLASS_STRING,
+			\get_class($this)
 		);
 	}
 
@@ -38,9 +38,9 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 	public function testTimestamp() {
 		// all timings are in ms
 		$this->PerformTimestampTest(
-				10, // sleep time
-				8,  // min expected time
-				30  // max expected time
+			10, // sleep time
+			8,  // min expected time
+			30  // max expected time
 		);
 	}
 	/**
@@ -67,8 +67,8 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testGDSupported() {
 		$this->assertEquals(
-				\function_exists('imagepng'),
-				General::GDSupported()
+			\function_exists('imagepng'),
+			General::GDSupported()
 		);
 	}
 
@@ -79,10 +79,10 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testInstanceOfClass() {
 		$this->assertTrue(
-				General::InstanceOfClass(
-						self::EXPECTED_CLASS_STRING,
-						$this
-				)
+			General::InstanceOfClass(
+				self::EXPECTED_CLASS_STRING,
+				$this
+			)
 		);
 	}
 
@@ -93,8 +93,8 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 	 */
 	public function testValidateClass() {
 		General::ValidateClass(
-				self::EXPECTED_CLASS_STRING,
-				$this
+			self::EXPECTED_CLASS_STRING,
+			$this
 		);
 	}
 	/**
@@ -103,13 +103,13 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 	public function testValidateClass_NullString() {
 		try {
 			General::ValidateClass(
-					NULL,
-					$this
+				NULL,
+				$this
 			);
 		} catch (\InvalidArgumentException $e) {
 			$this->assertEquals(
-					'classname not defined',
-					$e->getMessage()
+				'classname not defined',
+				$e->getMessage()
 			);
 			return;
 		}
@@ -121,13 +121,13 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 	public function testValidateClass_BlankString() {
 		try {
 			General::ValidateClass(
-					'',
-					$this
+				'',
+				$this
 			);
 		} catch (\InvalidArgumentException $e) {
 			$this->assertEquals(
-					'classname not defined',
-					$e->getMessage()
+				'classname not defined',
+				$e->getMessage()
 			);
 			return;
 		}
@@ -139,13 +139,13 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 	public function testValidateClass_NullObject() {
 		try {
 			General::ValidateClass(
-					self::EXPECTED_CLASS_STRING,
-					NULL
+				self::EXPECTED_CLASS_STRING,
+				NULL
 			);
 		} catch (\InvalidArgumentException $e) {
 			$this->assertEquals(
-					'object not defined',
-					$e->getMessage()
+				'object not defined',
+				$e->getMessage()
 			);
 			return;
 		}
@@ -157,14 +157,14 @@ class GeneralTest extends \PHPUnit_Framework_TestCase {
 	public function testValidateClass_ClassType() {
 		try {
 			General::ValidateClass(
-					self::EXPECTED_CLASS_STRING.'_invalid',
-					$this
+				self::EXPECTED_CLASS_STRING.'_invalid',
+				$this
 			);
 		} catch (\InvalidArgumentException $e) {
 			$this->assertEquals(
-					'Class object isn\'t of type '.
-						self::EXPECTED_CLASS_STRING.'_invalid',
-					$e->getMessage()
+				'Class object isn\'t of type '.
+					self::EXPECTED_CLASS_STRING.'_invalid',
+				$e->getMessage()
 			);
 			return;
 		}

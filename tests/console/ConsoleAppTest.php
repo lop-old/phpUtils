@@ -50,21 +50,17 @@ class ConsoleAppTest extends \PHPUnit_Framework_TestCase {
 		// default commands
 		$commands = $console->all();
 		$this->assertEquals(
-				\print_r([
-						'help',
-						'list'
-				],
-				TRUE),
-				\print_r(\array_keys($commands), TRUE)
+			\print_r([ 'help', 'list' ], TRUE),
+			\print_r( \array_keys($commands), TRUE)
 		);
 		// class command
 		$commandA = CommandTest::get();
 		// inline command
 		$commandB = Command::RegisterNew(
-				'test-command-inline',
-				function(InputInterface $input, OutputInterface $output) {
-					$this->ranCommandB = TRUE;
-				}
+			'test-command-inline',
+			function(InputInterface $input, OutputInterface $output) {
+				$this->ranCommandB = TRUE;
+			}
 		);
 		$commandB->setAliases(['test-b']);
 		$commandB->setInfo(
@@ -84,15 +80,14 @@ class ConsoleAppTest extends \PHPUnit_Framework_TestCase {
 		// verify commands exist
 		$commands = $console->all();
 		$this->assertEquals(
-				\print_r([
-						'help',
-						'list',
-						'test-command-class',
-						'test-command-inline',
-						'test-command-method'
-				],
-				TRUE),
-				\print_r(\array_keys($commands), TRUE)
+			\print_r([
+				'help',
+				'list',
+				'test-command-class',
+				'test-command-inline',
+				'test-command-method'
+			], TRUE),
+			\print_r(\array_keys($commands), TRUE)
 		);
 		// run test commands
 		$this->assertFalse($commandA->hasRun,  'Invalid state for command A');
