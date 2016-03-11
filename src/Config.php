@@ -8,8 +8,6 @@
  */
 namespace pxn\phpUtils;
 
-use \pxn\phpUtils\Paths;
-
 
 final class Config {
 	private function __construct() {}

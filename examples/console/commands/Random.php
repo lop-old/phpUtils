@@ -8,8 +8,6 @@
  */
 namespace pxn\phpUtils\examples\console\commands;
 
-use pxn\phpUtils\console\commands\CommandFactory;
-
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

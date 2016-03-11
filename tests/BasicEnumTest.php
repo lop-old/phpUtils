@@ -8,7 +8,6 @@
  */
 namespace pxn\phpUtils\tests;
 
-use pxn\phpUtils\Defines;
 use pxn\phpUtils\examples\BasicEnumExample;
 
 
