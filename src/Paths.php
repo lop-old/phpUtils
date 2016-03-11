@@ -38,6 +38,19 @@ final class Paths {
 		}
 		// web paths
 		self::$web_images = '/static';
+		// ensure all is good
+		if (empty(self::$local_pwd)) {
+			fail ('Failed to detect local pwd path!');
+			exit(1);
+		}
+		if (empty(self::$local_utils)) {
+			fail ('Failed to detect local utils path!');
+			exit(1);
+		}
+		if (empty(self::$local_base)) {
+			fail ('Failed to detect local base path!');
+			exit(1);
+		}
 	}
 
 
@@ -77,7 +90,11 @@ return NULL;
 
 
 	public static function getTwigTempDir() {
-		return self::base().'/tmp';
+		$path = self::base().'/tmp';
+		if (!is_dir($path.'/')) {
+			\mkdir($path, 0644);
+		}
+		return $path;
 	}
 
 
