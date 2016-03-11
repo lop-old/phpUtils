@@ -175,15 +175,27 @@ function ExitNow($code=1) {
 	}
 	exit(0);
 }
-function fail($msg, $code=1) {
-	$CRLF = "\n";
+function fail($msg, $code=1, \Exception $e=NULL) {
 	if (!\is_string($msg)) {
 		$msg = \print_r($msg, TRUE);
 	}
-	echo '<pre style="color: black; background-color: #ffaaaa; '.
-		'padding: 10px;"><font size="+2">FATAL: '.$msg.'</font></pre>'.$CRLF;
+	if (System::isShell()) {
+		echo " *** {$msg} *** \n";
+	} else {
+		echo '<pre style="color: black; background-color: #ffaaaa; '.
+				'padding: 10px;"><font size="+2">FATAL: '.$msg."</font></pre>\n";
+	}
 	if (\pxn\phpUtils\debug()) {
-		\pxn\phpUtils\backtrace();
+		if ($e == NULL) {
+			\backtrace();
+		} else {
+			if (System::isShell()) {
+				echo $e->getTraceAsString();
+			} else {
+				echo $e->getTrace();
+			}
+		}
+		echo "\n";
 	}
 	if ($code !== NULL) {
 		ExitNow($code);
