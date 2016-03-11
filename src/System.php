@@ -14,6 +14,13 @@ final class System {
 
 
 
+	public static function isShell() {
+		return isset($_SERVER['SHELL'])
+			&& !empty($_SERVER['SHELL']);
+	}
+
+
+
 	public static function RequireLinux() {
 		$os = \PHP_OS;
 		if ($os != 'Linux') {
