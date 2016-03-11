@@ -8,7 +8,7 @@
  */
 namespace pxn\phpUtils\portal;
 
-use \pxn\phpUtils\Defines;
+use pxn\phpUtils\Defines;
 
 
 class RenderMain extends Render {
