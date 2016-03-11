@@ -13,7 +13,7 @@ final class Paths {
 	private function __construct() {}
 
 	// local paths
-	protected static $local_entry = '';
+	protected static $local_pwd = '';
 	protected static $local_base  = '';
 	protected static $local_site  = '';
 
@@ -26,7 +26,7 @@ final class Paths {
 	public static function init() {
 		// local paths
 //		$paths['local']['entry'] = $_SERVER['DOCUMENT_ROOT'];
-		self::$local_entry = \getcwd();
+		self::$local_pwd   = \getcwd();
 		self::$local_base  = __DIR__;
 		// web paths
 		self::$web_images = '/static';
@@ -34,8 +34,8 @@ final class Paths {
 
 
 
-	public static function entry() {
-		return self::$local_entry;
+	public static function pwd() {
+		return self::$local_pwd;
 	}
 	public static function base() {
 		return self::$local_base;
