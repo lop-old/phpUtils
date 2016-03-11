@@ -149,9 +149,10 @@ function dump($var) {
 }
 // d()
 function d($var) {
+	$CRLF = "\n";
 	echo '<pre style="color: black; background-color: #dfc0c0; padding: 10px;">';
 	\var_dump($var);
-	echo '</pre>'.Defines::CRLF;
+	echo '</pre>'.$CRLF;
 }
 // dd()
 function dd($var) {
@@ -175,11 +176,12 @@ function ExitNow($code=1) {
 	exit(0);
 }
 function fail($msg, $code=1) {
+	$CRLF = "\n";
 	if (!\is_string($msg)) {
 		$msg = \print_r($msg, TRUE);
 	}
 	echo '<pre style="color: black; background-color: #ffaaaa; '.
-		'padding: 10px;"><font size="+2">FATAL: '.$msg.'</font></pre>'.Defines::CRLF;
+		'padding: 10px;"><font size="+2">FATAL: '.$msg.'</font></pre>'.$CRLF;
 	if (\pxn\phpUtils\debug()) {
 		\pxn\phpUtils\backtrace();
 	}
@@ -188,7 +190,7 @@ function fail($msg, $code=1) {
 	}
 }
 function backtrace() {
-	$CRLF = Defines::CRLF;
+	$CRLF = "\n";
 	//TODO: is this right?
 	$trace = \debug_backtrace();
 	$ignore = [
