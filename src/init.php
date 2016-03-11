@@ -16,7 +16,6 @@ namespace pxn\phpUtils;
 
 use pxn\phpUtils\Defines;
 use pxn\phpUtils\General;
-use pxn\phpUtils\Numbers;
 
 
 
@@ -170,7 +169,7 @@ function ExitNow($code=1) {
 		$website->hasRendered(TRUE);
 	}
 	// exit code
-	if ($code !== NULL && Numbers::isNumeric($code)) {
+	if ($code !== NULL) {
 		exit( ((int) $code) );
 	}
 	exit(0);
