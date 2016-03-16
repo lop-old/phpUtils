@@ -5,7 +5,7 @@
 	"homepage":    "http://poixson.com/",
 	"license":     "GPL-3.0",
 	"keywords": [
-		"utilities"
+		"framework", "utilities"
 	],
 	"support": {
 		"issues": "https://github.com/PoiXson/phpUtils/issues",
