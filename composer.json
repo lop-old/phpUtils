@@ -4,7 +4,7 @@
 	"version":     "0.1.12",
 	"type":        "library",
 	"homepage":    "http://poixson.com/",
-	"license":     "GPL-3",
+	"license":     "GPL-3.0",
 	"keywords": [
 		"utilities"
 	],
