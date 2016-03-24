@@ -30,6 +30,33 @@ final class San {
 
 
 
+	public static function Validate_AlphaNum($str) {
+		$newValue = self::AlphaNum(
+				\trim($str)
+		);
+		return ($newValue === $str);
+	}
+	public static function Validate_AlphaNumSafe($str) {
+		$newValue = self::AlphaNumSafe(
+				\trim($str)
+		);
+		return ($newValue === $str);
+	}
+	public static function Validate_AlphaNumSpaces($str) {
+		$newValue = self::AlphaNumSpaces(
+				\trim($str)
+		);
+		return ($newValue === $str);
+	}
+	public static function Validate_AlphaNumFile($str) {
+		$newValue = self::AlphaNumFile(
+				\trim($str)
+		);
+		return ($newValue === $str);
+	}
+
+
+
 	public static function SafePath($path) {
 		$path = Strings::Trim($path, ' ');
 		if (empty($path))
