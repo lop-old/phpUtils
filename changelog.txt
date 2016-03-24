@@ -1,6 +1,18 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-03-24 phpUtils 0.1.14
+==========================
+* added Validate_() functions to San class
+* added System::isShell() function
+* added optional $e argument to fail() function
+* removed Numbers::isNumeric() call from ExitNow() function to avoid error messages
+* added Paths::utils() function
+* renamed Paths::entry() function to Paths::pwd()
+* removed Paths::site() function for now
+* few minor composer fixes
+
+
 2016-03-10 phpUtils 0.1.12
 ==========================
 * added Globals.php file to alias common functions to \ namespace
