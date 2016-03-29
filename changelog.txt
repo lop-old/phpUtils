@@ -1,6 +1,11 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-03-29 phpUtils 0.1.15
+==========================
+* updated dependencies
+
+
 2016-03-24 phpUtils 0.1.14
 ==========================
 * added Validate_() functions to San class
