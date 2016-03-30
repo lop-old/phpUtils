@@ -199,6 +199,23 @@ final class Strings {
 
 
 
+	##############
+	## Pad With ##
+	##############
+
+
+
+	public static function PadCenter($str, $size, $chr=' ') {
+		$len = $size - \strlen($str);
+		if ($len < 0)
+			return $str;
+		$padLeft  = \floor( ((double) $len) / 2.0);
+		$padRight = \ceil(  ((double) $len) / 2.0);
+		return \str_repeat($chr, $padLeft) . $str . \str_repeat($chr, $padRight);
+	}
+
+
+
 	######################
 	## Starts/Ends With ##
 	######################
