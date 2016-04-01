@@ -182,6 +182,12 @@ class xLog extends xLogPrinting {
 
 
 	public function getFormatter() {
+		// get from parent
+		if ($this->parent != NULL) {
+			$parentFormatter = $this->parent->getFormatter();
+			if ($parentFormatter != NULL)
+				return $parentFormatter;
+		}
 		// default formatter
 		if($this->formatter == NULL) {
 			if ($this->DefaultFormatter == NULL)
