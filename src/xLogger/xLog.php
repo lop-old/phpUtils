@@ -137,7 +137,7 @@ class xLog extends xLogPrinting {
 
 
 
-	private function buildNameTree(&$list) {
+	protected function buildNameTree(&$list) {
 		if ($this->parent != NULL) {
 			$this->parent->buildNameTree($list);
 			if (!empty($this->name))
@@ -172,8 +172,11 @@ class xLog extends xLogPrinting {
 //			if (!$msg->isLoggable($this->level))
 //				return;
 			$msg = $this->getFormatter()
-				->getFormatted($msg);
+					->getFormatted($msg);
 		}
+		$this->writeToHandlers($msg);
+	}
+	protected function writeToHandlers($msg) {
 		foreach ($this->handlers as $handler) {
 			$handler->write($msg);
 		}
@@ -182,6 +185,10 @@ class xLog extends xLogPrinting {
 
 
 	public function getFormatter() {
+		// specific formatter
+		if($this->formatter != NULL) {
+			return $this->formatter;
+		}
 		// get from parent
 		if ($this->parent != NULL) {
 			$parentFormatter = $this->parent->getFormatter();
@@ -189,13 +196,9 @@ class xLog extends xLogPrinting {
 				return $parentFormatter;
 		}
 		// default formatter
-		if($this->formatter == NULL) {
-			if ($this->DefaultFormatter == NULL)
-				$this->DefaultFormatter = new BasicFormat();
+		if ($this->DefaultFormatter == NULL)
+			$this->DefaultFormatter = new BasicFormat();
 			return $this->DefaultFormatter;
-		}
-		// specific formatter
-		return $this->formatter;
 	}
 
 
