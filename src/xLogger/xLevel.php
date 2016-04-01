@@ -97,4 +97,14 @@ final class xLevel {
 
 
 
+	public static function isLoggable($configuredLevel, $recordLevel) {
+		if ($configuredLevel == NULL)
+			return TRUE;
+		if ($recordLevel == NULL)
+			return TRUE;
+		return ($configuredLevel < $recordLevel);
+	}
+
+
+
 }
