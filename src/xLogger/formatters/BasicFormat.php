@@ -18,8 +18,12 @@ class BasicFormat implements xLogFormatter {
 	public function getFormatted(xLogRecord $record) {
 		$msg = &$record->msg;
 		$msg = \str_replace("\r", '', $msg);
-		if ($record->msg == NULL)
+		if ($record->msg == NULL) {
 			$record->msg = '<NULL>';
+		}
+		if (empty($record->msg)) {
+			return '';
+		}
 		$msg = "{$record->msg}";
 		return \explode("\n", $msg);
 	}

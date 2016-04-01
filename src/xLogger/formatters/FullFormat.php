@@ -31,8 +31,12 @@ class FullFormat implements xLogFormatter {
 	public function getFormatted(xLogRecord $record) {
 		$msg = &$record->msg;
 		$msg = \str_replace("\r", '', $msg);
-		if ($record->msg == NULL)
+		if ($record->msg == NULL) {
 			$record->msg = '<NULL>';
+		}
+		if (empty($record->msg)) {
+			return '';
+		}
 		$date  = $this->datetime->format(self::DATE_FORMAT);
 		$level = $record->getLevelFormatted();
 		$level = Strings::PadCenter($level, self::LEVEL_PAD);
