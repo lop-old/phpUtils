@@ -16,32 +16,34 @@ final class xLevel {
 	private function __construct() {}
 
 
-	const XLEVEL_OFF     = Defines::INT_MAX;
-	const XLEVEL_STDERR  = 9000;
-	const XLEVEL_STDOUT  = 8000;
-	const XLEVEL_FATAL   = 2000;
-	const XLEVEL_SEVERE  = 1000;
-	const XLEVEL_WARNING = 900;
-	const XLEVEL_INFO    = 800;
-	const XLEVEL_STATS   = 700;
-	const XLEVEL_FINE    = 500;
-	const XLEVEL_FINER   = 400;
-	const XLEVEL_FINEST  = 300;
-	const XLEVEL_ALL     = Defines::INT_MIN;
+	const OFF     = Defines::INT_MAX;
+	const STDERR  = 9000;
+	const STDOUT  = 8000;
+	const FATAL   = 2000;
+	const SEVERE  = 1000;
+	const NOTICE  = 900;
+	const WARNING = 800;
+	const INFO    = 700;
+	const STATS   = 600;
+	const FINE    = 500;
+	const FINER   = 400;
+	const FINEST  = 300;
+	const ALL     = Defines::INT_MIN;
 
 	protected static $knownLevels = [
-		'OFF'     => self::XLEVEL_OFF,
-		'ERR'     => self::XLEVEL_STDERR,
-		'OUT'     => self::XLEVEL_STDOUT,
-		'FATAL'   => self::XLEVEL_FATAL,
-		'SEVERE'  => self::XLEVEL_SEVERE,
-		'WARNING' => self::XLEVEL_WARNING,
-		'INFO'    => self::XLEVEL_INFO,
-		'STATS'   => self::XLEVEL_STATS,
-		'FINE'    => self::XLEVEL_FINE,
-		'FINER'   => self::XLEVEL_FINER,
-		'FINEST'  => self::XLEVEL_FINEST,
-		'ALL'     => self::XLEVEL_ALL,
+		'OFF'     => self::OFF,
+		'ERR'     => self::STDERR,
+		'OUT'     => self::STDOUT,
+		'FATAL'   => self::FATAL,
+		'SEVERE'  => self::SEVERE,
+		'NOTICE'  => self::NOTICE,
+		'WARNING' => self::WARNING,
+		'INFO'    => self::INFO,
+		'STATS'   => self::STATS,
+		'FINE'    => self::FINE,
+		'FINER'   => self::FINER,
+		'FINEST'  => self::FINEST,
+		'ALL'     => self::ALL,
 	];
 
 
@@ -52,15 +54,15 @@ final class xLevel {
 		// number value
 		if (Numbers::isNumber($value)) {
 			$value = (int) $value;
-			if ($value == self::XLEVEL_OFF)
-				return self::XLEVEL_OFF;
-			if ($value == self::XLEVEL_ALL)
-				return self::XLEVEL_ALL;
+			if ($value == self::OFF)
+				return self::OFF;
+			if ($value == self::ALL)
+				return self::ALL;
 			// find nearest value
-			$level  = self::XLEVEL_OFF;
-			$offset = self::XLEVEL_OFF;
+			$level  = self::OFF;
+			$offset = self::OFF;
 			foreach (self::$knownLevels as $key => $val) {
-				if ($val == self::XLEVEL_OFF)
+				if ($val == self::OFF)
 					continue;
 				if ($value < $val)
 					continue;
