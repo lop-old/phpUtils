@@ -1,7 +1,14 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-04-14 phpUtils 0.1.17
+==========================
+* many fixes to xLog classes
+* properly handle parent logger
+
+
 2016-04-01 phpUtils 0.1.16
+==========================
 * added new xLog classes to replace Monolog
 * added Strings::PadCenter() function (more to come)
 
