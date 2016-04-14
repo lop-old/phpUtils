@@ -29,14 +29,34 @@ class xLog extends xLogPrinting {
 
 
 
-	public static function getRoot() {
-		if (self::$root == NULL)
-			return self::get();
+	public static function init() {
+		if (self::$root == NULL) {
+			self::$root = new self(
+					NULL,
+					NULL
+			);
+		}
+	}
+
+
+
+	public static function getRoot($name=NULL) {
+		if (self::$root == NULL) {
+			self::init();
+		}
+		if (!empty($name)) {
+			return self::$root
+					->get($name);
+		}
 		return self::$root;
 	}
-	public static function get($name='') {
-		if (empty($name) && self::$root != NULL)
-			return self::$root;
+	public function get($name='') {
+		if (self::$root == NULL) {
+			self::init();
+		}
+		if (empty($name)) {
+			return $this;
+		}
 		$name = self::ValidateName($name);
 		if (isset(self::$loggers[$name])) {
 			return self::$loggers[$name];
@@ -51,7 +71,10 @@ class xLog extends xLogPrinting {
 //			);
 //			$handler->setFormatter($formatter);
 //			$log->pushHandler($handler);
-		$log = new self($name);
+		$log = new self(
+				$name,
+				$this
+		);
 		self::$loggers[$name] = $log;
 		return $log;
 	}
@@ -107,6 +130,7 @@ class xLog extends xLogPrinting {
 
 	public function __construct($name, $parent=NULL) {
 		$this->name = self::ValidateName($name);
+		$this->parent = $parent;
 	}
 
 
@@ -166,6 +190,11 @@ class xLog extends xLogPrinting {
 
 
 	public function publish($msg='') {
+		if ($this->parent != NULL) {
+			$this->parent->publish($msg);
+			//TODO: maybe not return here
+			return;
+		}
 		if ($msg instanceof xLogRecord) {
 			// not loggable
 //TODO:
