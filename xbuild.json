@@ -1,0 +1,36 @@
+{
+	"Name": "phpUtils",
+	"Version": "0.1.17",
+	"Version Files": [],
+	"Goals": {
+		"workspace": {
+			"Type": "group",
+			"0": "clean",
+			"1": "git-pull",
+			"2": "eclipse-php"
+		},
+		"build": {
+			"Type": "group",
+			"0": "composer-update",
+			"1": "zip"
+		},
+		"release": {
+			"Type": "group",
+			"0": "clean",
+			"1": "git-pull",
+			"2": "composer-install",
+			"3": "zip",
+			"4": "rpm",
+			"5": "deploy"
+		},
+		"rpm": {
+			"Arch": "noarch",
+			"Spec": "xbuild.spec"
+		},
+		"deploy": {
+			"Files": [
+				"target/<PROJECT_NAME>-<PROJECT_VERSION>-1.noarch.rpm"
+			]
+		}
+	}
+}
