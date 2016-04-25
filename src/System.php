@@ -12,12 +12,7 @@ namespace pxn\phpUtils;
 final class System {
 	private function __construct() {}
 
-
-
-	public static function isShell() {
-		return isset($_SERVER['SHELL'])
-			&& !empty($_SERVER['SHELL']);
-	}
+	private static $isShell = NULL;
 
 
 
@@ -36,6 +31,16 @@ final class System {
 	###########
 	## Shell ##
 	###########
+
+
+
+	public static function isShell() {
+		if (self::$isShell == NULL) {
+			self::$isShell = isset($_SERVER['SHELL'])
+					&& ! empty($_SERVER['SHELL']);
+		}
+		return self::$isShell;
+	}
 
 
 

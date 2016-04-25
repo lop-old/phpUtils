@@ -25,16 +25,15 @@ final class Config {
 			return;
 		self::$inited = TRUE;
 		// detect shell
-		self::$config['is shell'] = (
-			isset($_SERVER['SHELL']) && ! empty($_SERVER['SHELL'])
-		);
+		self::$config['is shell'] = System::isShell();
 	}
 
 
 
-	public static function isShell() {
-		return self::$config['is shell'];
-	}
+//TODO: remove this - handled by System.php
+//	public static function isShell() {
+//		return self::$config['is shell'];
+//	}
 
 
 
