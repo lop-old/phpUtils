@@ -12,6 +12,7 @@ namespace pxn\phpUtils;
 final class Config {
 	private function __construct() {}
 
+	protected static $inited = FALSE;
 	protected static $config = [
 		'is shell'    => NULL,
 		'render type' => '',
@@ -20,6 +21,9 @@ final class Config {
 
 
 	public static function init() {
+		if (self::$inited)
+			return;
+		self::$inited = TRUE;
 		// detect shell
 		self::$config['is shell'] = (
 			isset($_SERVER['SHELL']) && ! empty($_SERVER['SHELL'])
