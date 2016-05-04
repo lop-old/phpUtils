@@ -304,34 +304,38 @@ function debug($debug=NULL) {
 		debug(FALSE);
 	return $pxnUtils_DEBUG;
 }
-// by define
-if (\defined('\DEBUG'))
-	debug(\DEBUG);
-if (\defined('pxn\\phpUtils\\DEBUG'))
-	debug(\pxn\phpUtils\DEBUG);
-// by url
-$val = General::getVar('debug', 'bool');
-if ($val !== NULL) {
-	// set cookie
-	\setcookie(
-		Defines::getDebugCookieName(),
-		($val === TRUE ? '1' : '0'),
-		0
-	);
-	debug($val);
-} else {
-	// from cookie
-	$val = General::getVar(
-		Defines::getDebugCookieName(),
-		'bool',
-		'cookie'
-	);
-	if ($val === TRUE)
+{
+	// by define
+	if (\defined('\DEBUG'))
+		debug(\DEBUG);
+	if (\defined('pxn\\phpUtils\\DEBUG'))
+		debug(\pxn\phpUtils\DEBUG);
+	// by url
+	$val = General::getVar('debug', 'bool');
+	if ($val !== NULL) {
+		// set cookie
+		\setcookie(
+			Defines::getDebugCookieName(),
+			($val === TRUE ? '1' : '0'),
+			0
+		);
 		debug($val);
+	} else {
+		// from cookie
+		$val = General::getVar(
+			Defines::getDebugCookieName(),
+			'bool',
+			'cookie'
+		);
+		if ($val === TRUE)
+			debug($val);
+	}
+	unset($val);
+	// ensure inited
+	debug();
 }
-unset($val);
-// ensure inited
-debug();
+
+
 
 /*
 // Kint backtracer
