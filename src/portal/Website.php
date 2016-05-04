@@ -30,6 +30,15 @@ abstract class Website {
 
 
 
+	public function setIcon($iconfile) {
+		$render = $this->getRender();
+		if ($render instanceof \pxn\phpUtils\portal\RenderMain) {
+			$render->setIcon($iconfile);
+		}
+	}
+
+
+
 	public function getRender() {
 		if ($this->render == NULL) {
 			$renderType = \pxn\phpUtils\Config::getRenderType();

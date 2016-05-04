@@ -13,9 +13,17 @@ use pxn\phpUtils\Defines;
 
 class RenderMain extends Render {
 
+	private $icon = NULL;
+
 
 
 	public function __construct() {
+	}
+
+
+
+	public function setIcon($filepath) {
+		$this->icon = $filepath;
 	}
 
 
@@ -32,6 +40,12 @@ class RenderMain extends Render {
 			'<meta http-equiv="X-UA-Compatible" content="IE=edge" />'.$CRLF.
 			'<meta name="viewport" content="width=device-width, initial-scale=1" />'.$CRLF.
 			'<title>{{website title}}</title>'.$CRLF.
+
+			// fav icon
+			(empty($this->icon) ? '' :
+				'<link rel="shortcut icon" href="/static/treeicon.ico" type="image/x-icon" />'.$CRLF.
+				'<link rel="icon" href="/static/treeicon.ico" type="image/x-icon" />'.$CRLF
+			).
 
 			'<link rel="stylesheet" href="static/main.css" />'.$CRLF.
 			'<link rel="stylesheet" href="static/bootstrap/dist/css/bootstrap.min.css" />'.$CRLF.
