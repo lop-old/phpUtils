@@ -17,7 +17,11 @@ final class Defines {
 	const PHP_MIN_VERSION = 50600;
 
 	const DEBUG_COOKIE = '_debug';
-	const FAV_ICON_KEY = 'fav icon';
+
+	// config keys
+	const KEY_SITE_TITLE      = 'site title';
+	const KEY_FAILED_PAGE     = 'failed page';
+	const KEY_FAV_ICON        = 'fav icon';
 	const KEY_TWIG_CACHE_PATH = 'twig cache path';
 	const TEMPLATE_EXTENSION = '.htm';
 
