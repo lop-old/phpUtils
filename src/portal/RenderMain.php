@@ -26,7 +26,7 @@ class RenderMain extends Render {
 		// get page contents
 		$pageContents = self::$website->getPageContents();
 		// get page title
-		$pageTitle = self::$website->getPage();
+		$pageTitle = self::$website->getPageName();
 		if ($pageTitle instanceof \pxn\phpUtils\portal\Page) {
 			$pageTitle = $pageTitle->getTitle();
 		} else {

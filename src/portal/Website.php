@@ -19,7 +19,7 @@ abstract class Website {
 	private $render = NULL;
 	private $hasRendered = FALSE;
 
-	private $page = NULL;
+	private $pageName     = NULL;
 	private $pageDefault = 'home';
 
 
@@ -126,9 +126,9 @@ abstract class Website {
 
 
 
-	public function getPage() {
-		if ($this->page != NULL) {
-			return $this->page;
+	public function getPageName() {
+		if ($this->pageName != NULL) {
+			return $this->pageName;
 		}
 		return $this->pageDefault;
 	}
