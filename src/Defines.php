@@ -18,6 +18,7 @@ final class Defines {
 
 	const DEBUG_COOKIE = '_debug';
 	const FAV_ICON_KEY = 'fav icon';
+	const KEY_TWIG_CACHE_PATH = 'twig cache path';
 
 	const DIR_SEP      = \DIRECTORY_SEPARATOR;
 	const NEWLINE      = "\n";
