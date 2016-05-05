@@ -10,6 +10,7 @@ namespace pxn\phpUtils\portal;
 
 use pxn\phpUtils\Config;
 use pxn\phpUtils\Strings;
+use pxn\phpUtils\Defines;
 
 
 abstract class Website {
@@ -20,7 +21,10 @@ abstract class Website {
 	private $hasRendered = FALSE;
 
 	private $pageName     = NULL;
-	private $pageDefault = 'home';
+	private $pageDefault  = 'home';
+	private $pageObj      = NULL;
+	private $pageContents = NULL;
+	private $args         = [];
 
 
 
@@ -132,28 +136,53 @@ abstract class Website {
 		}
 		return $this->pageDefault;
 	}
-	public function getPageContents($page=NULL) {
-		if ($page != NULL) {
-			$this->page = $page;
+	public function getPageObj() {
+		if ($this->pageObj != NULL) {
+			return $this->pageObj;
 		}
-		$page = $this->getPage();
-		if (empty($page)) {
-			fail('Page value could not be found!');
+		$pageName = $this->getPageName();
+		$this->pageName = $pageName;
+		if (empty($pageName)) {
+			fail('pageName value could not be found!');
 			exit(1);
 		}
 		// website page class
-		$clss = "\\pxn\\gcWebsite\\pages\\page_{$page}";
-		if (\class_exists($clss, TRUE)) {
-			$obj = new $clss();
-			return $obj->getPageContents();
+		{
+			$clss = "\\pxn\\gcWebsite\\pages\\page_{$pageName}";
+			if (\class_exists($clss, TRUE)) {
+				$this->pageObj = new $clss();
+				return $this->pageObj;
+			}
+		}
+		// internal page class
+		{
+			$clss = "\\pxn\\phpUtils\\portal\\pages\\page_{$pageName}";
+			if (\class_exists($clss, TRUE)) {
+				$this->pageObj = new $clss();
+				return $this->pageObj;
+			}
 		}
 		// return 404 page
-		if ($page != '404') {
+		if ($pageName != '404') {
 			\http_response_code(404);
-			return $this->getPageContents('404');
+			$this->args[Defines::KEY_FAILED_PAGE] = $pageName;
+			$this->pageName = '404';
+			$this->pageObj = $this->getPageContents();
+			return $this->pageObj;
 		}
 		// 404 page not found
-		return '<h1>404 - Page Not Found!</h1>';
+		$this->pageObj = NULL;
+		$this->pageContents = "\n<h1>404 - Page Not Found!</h1>\n\n";
+	}
+	public function getPageContents() {
+		if (!empty($this->pageContents)) {
+			return $this->pageContents;
+		}
+		$pageObj = $this->getPageObj();
+		if ($pageObj != NULL && !\is_string($pageObj)) {
+			$this->pageContents = $pageObj->getPageContents();
+		}
+		return $this->pageContents;
 	}
 
 
