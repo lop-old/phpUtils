@@ -17,6 +17,7 @@ final class Defines {
 	const PHP_MIN_VERSION = 50600;
 
 	const DEBUG_COOKIE = '_debug';
+	const FAV_ICON_KEY = 'fav icon';
 
 	const DIR_SEP      = \DIRECTORY_SEPARATOR;
 	const NEWLINE      = "\n";

@@ -8,12 +8,11 @@
  */
 namespace pxn\phpUtils\portal;
 
+use pxn\phpUtils\Config;
 use pxn\phpUtils\Defines;
 
 
 class RenderMain extends Render {
-
-	private $icon = NULL;
 
 
 
@@ -22,15 +21,10 @@ class RenderMain extends Render {
 
 
 
-	public function setIcon($filepath) {
-		$this->icon = $filepath;
-	}
-
-
-
 	public function doRender() {
 		$CRLF = Defines::CRLF;
 		$TAB  = Defines::TAB;
+		$iconfile = Config::get(Defines::FAV_ICON_KEY);
 		$output = '';
 		$output .=
 			'<!DOCTYPE html>'.$CRLF.
@@ -42,9 +36,9 @@ class RenderMain extends Render {
 			'<title>{{website title}}</title>'.$CRLF.
 
 			// fav icon
-			(empty($this->icon) ? '' :
-				'<link rel="shortcut icon" href="/static/treeicon.ico" type="image/x-icon" />'.$CRLF.
-				'<link rel="icon" href="/static/treeicon.ico" type="image/x-icon" />'.$CRLF
+			(empty($iconfile) ? '' :
+				'<link rel="shortcut icon" href="{$iconfile}" type="image/x-icon" />'.$CRLF.
+				'<link rel="icon" href="{$iconfile}" type="image/x-icon" />'.$CRLF
 			).
 
 			'<link rel="stylesheet" href="static/main.css" />'.$CRLF.

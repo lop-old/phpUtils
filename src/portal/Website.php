@@ -8,6 +8,8 @@
  */
 namespace pxn\phpUtils\portal;
 
+use pxn\phpUtils\Config;
+
 
 abstract class Website {
 
@@ -31,10 +33,7 @@ abstract class Website {
 
 
 	public function setIcon($iconfile) {
-		$render = $this->getRender();
-		if ($render instanceof \pxn\phpUtils\portal\RenderMain) {
-			$render->setIcon($iconfile);
-		}
+		Config::set('icon', $iconfile);
 	}
 
 
