@@ -187,4 +187,13 @@ abstract class Website {
 
 
 
+	public function getArg($name, $default=NULL) {
+		if (isset($this->args[$name])) {
+			return $this->args[$name];
+		}
+		return $default;
+	}
+
+
+
 }
