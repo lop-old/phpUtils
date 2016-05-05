@@ -30,6 +30,20 @@ final class Config {
 
 
 
+	public static function set($key, $value) {
+		$key = \strtolower($key);
+		self::$config[$key] = $value;
+	}
+	public static function get($key) {
+		$key = \strtolower($key);
+		if (isset(self::$config[$key])) {
+			return self::$config[$key];
+		}
+		return NULL;
+	}
+
+
+
 //TODO: remove this - handled by System.php
 //	public static function isShell() {
 //		return self::$config['is shell'];
