@@ -1,6 +1,20 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-05-05 phpUtils 0.1.18
+==========================
+* added processing of url arguments
+* mostly finished Website and Render classes
+* added a plain default 404 page
+* renamed Paths::base() to Paths::entry()
+* added new Paths::base() function
+* changed Twig cache path to {base}/.cache/
+* renamed function to Paths::getTwigCachePath()
+* added Config::set() and Config::get() functions
+* added Config entries for: site title, failed page, fav icon, and twig cache path
+* much other cleanup and fixes
+
+
 2016-04-14 phpUtils 0.1.17
 ==========================
 * many fixes to xLog classes
