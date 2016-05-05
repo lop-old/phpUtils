@@ -115,36 +115,31 @@ final class Paths {
 
 
 
+	// local paths
 	public static function pwd() {
 		return self::$local_pwd;
 	}
-	public static function utils() {
-		return self::$local_utils;
+	public static function entry() {
+		return self::$local_entry;
 	}
 	public static function base() {
 		return self::$local_base;
 	}
-	public static function site() {
-fail ('Paths::site() is unfinished!');
-exit(1);
-//		// find site path
-//		if (empty(self::$local_site)) {
-//self::$site = self::pwd().DIR_SEP.
-//  \psm\portal::get()->getWebsite()->siteName();
-//			$website = \pxn\phpUtils\portal\Website::peak();
-//			// website object not loaded yet
-//			if ($website === NULL) {
-//TODO:
-//				echo '<p>Website object not loaded yet!</p>'.\CRLF;
-//				exit(1);
-//			}
-//TODO:
-//return NULL;
-//			$path = self::pwd().\DIR_SEP.
-//				$website->getName();
-//			unset($path);
-//		}
-//		return self::$local_site;
+	public static function src() {
+		return self::$local_src;
+	}
+	public static function utils() {
+		return self::$local_utils;
+	}
+
+
+
+	// web paths
+	public static function web_base() {
+		return self::$web_base;
+	}
+	public static function web_images() {
+		return self::$web_images;
 	}
 
 
