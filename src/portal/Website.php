@@ -15,16 +15,16 @@ use pxn\phpUtils\Defines;
 
 abstract class Website {
 
-	private static $instance = NULL;
+	protected static $instance = NULL;
 
-	private $render = NULL;
-	private $hasRendered = FALSE;
+	protected $render = NULL;
+	protected $hasRendered = FALSE;
 
-	private $pageName     = NULL;
-	private $pageDefault  = 'home';
-	private $pageObj      = NULL;
-	private $pageContents = NULL;
-	private $args         = [];
+	protected $pageName     = NULL;
+	protected $pageDefault  = 'home';
+	protected $pageObj      = NULL;
+	protected $pageContents = NULL;
+	protected $args         = [];
 
 
 
