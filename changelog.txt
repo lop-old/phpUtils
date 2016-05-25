@@ -1,6 +1,10 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-05-25 phpUtils 0.1.19
+* added pxnloader.php to auto-find composer autoload.php
+
+
 2016-05-05 phpUtils 0.1.18
 ==========================
 * added processing of url arguments
