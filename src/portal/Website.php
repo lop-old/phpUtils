@@ -10,6 +10,7 @@ namespace pxn\phpUtils\portal;
 
 use pxn\phpUtils\Config;
 use pxn\phpUtils\Strings;
+use pxn\phpUtils\San;
 use pxn\phpUtils\Defines;
 
 
@@ -132,9 +133,9 @@ abstract class Website {
 
 	public function getPageName() {
 		if ($this->pageName != NULL) {
-			return $this->pageName;
+			return San::AlphaNum($this->pageName);
 		}
-		return $this->pageDefault;
+		return San::AlphaNum($this->pageDefault);
 	}
 	public function getPageObj() {
 		if ($this->pageObj != NULL) {
