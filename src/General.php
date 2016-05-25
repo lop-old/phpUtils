@@ -114,6 +114,7 @@ final class General {
 					break;
 				default:
 					fail('Unknown value source: '.$src);
+					exit(1);
 			}
 			// value found
 			if ($v !== NULL) {

@@ -84,7 +84,7 @@ final class Paths {
 			}
 			if (!$found) {
 				fail('Failed to find common base path!');
-				exit();
+				exit(1);
 			}
 		}
 		// web paths

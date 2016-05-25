@@ -31,7 +31,8 @@
 	if (!$found) {
 		echo "\nFailed to find composer autoload.php !\n".
 			"Use 'composer install' to download the required dependencies,\n".
-			"or see https://getcomposer.org/download/ for instructions on installing Composer.\n\n";
+			"or see https://getcomposer.org/download/ ".
+			"for instructions on installing Composer.\n\n";
 		exit(1);
 	}
 }
