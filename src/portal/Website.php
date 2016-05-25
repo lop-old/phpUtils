@@ -11,6 +11,7 @@ namespace pxn\phpUtils\portal;
 use pxn\phpUtils\Config;
 use pxn\phpUtils\Strings;
 use pxn\phpUtils\San;
+use pxn\phpUtils\General;
 use pxn\phpUtils\Defines;
 
 
@@ -43,21 +44,28 @@ abstract class Website {
 			exit(1);
 		}
 		self::$instance = $this;
-		// get arguments from url
-		if (isset($_SERVER['REQUEST_URI'])) {
-			$str = $_SERVER['REQUEST_URI'];
-			$str = Strings::Trim($str, '/');
-			$args = \explode('/', $str);
-			if (isset($args[0])) {
-				$this->page = (
-						empty($args[0])
-						? NULL
-						: $args[0]
-				);
-				unset($args[0]);
+		// get page name from get/post values
+		if (isset($_GET['page']) || isset($_POST['page'])) {
+			$pageName = General::getVar(
+					'page',
+					'str',
+					['get', 'post']
+			);
+			if (!empty($pageName)) {
+				$this->setPageName($pageName);
 			}
-			// extra args
-			$this->args = $args;
+		}
+		// get page name from url path
+		if ($this->pageName === NULL && isset($_SERVER['REQUEST_URI'])) {
+			$urlPath = Strings::Trim($_SERVER['REQUEST_URI'], ' ', '/');
+			if (!empty($urlPath)) {
+				$args = \explode('/', $urlPath, 2);
+				if (count($args) >= 1 && !empty($args[0])) {
+					$this->pageName = $args[0];
+					unset($args[0]);
+					$this->args = $args;
+				}
+			}
 		}
 		// init render handler
 		$this->getRender();
