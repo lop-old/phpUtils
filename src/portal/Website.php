@@ -188,6 +188,15 @@ abstract class Website {
 
 
 
+	public function setDefaultPage($pageName) {
+		$this->pageDefault = $pageName;
+	}
+	public function setPageName($pageName) {
+		$this->pageName = $pageName;
+	}
+
+
+
 	public function getArg($name, $default=NULL) {
 		if (isset($this->args[$name])) {
 			return $this->args[$name];
