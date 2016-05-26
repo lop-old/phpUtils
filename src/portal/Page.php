@@ -9,8 +9,15 @@
 namespace pxn\phpUtils\portal;
 
 
-interface Page {
+abstract class Page {
 
+	protected $website = NULL;
+
+
+
+	public function __construct() {
+		$this->website = \pxn\phpUtils\portal\Website::get();
+	}
 
 	public function getPageContents();
 
