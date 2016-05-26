@@ -14,6 +14,7 @@ abstract class dbPrepared {
 
 
 	public abstract function getConn();
+	public abstract function getTablePrefix();
 
 
 

@@ -78,11 +78,23 @@ fail(__FILE__.' '.__LINE__.' clone() function unfinished!');
 	public function getConn() {
 		return $this->conn;
 	}
+	public function getTablePrefix() {
+		if (empty($this->prefix)) {
+			return '';
+		}
+		return $this->prefix;
+	}
+
+
+
 //	public function isConnected() {
 //TODO:
 //	}
 	public function inUse() {
 		return $this->used;
+	}
+	public function isLocked() {
+		return $this->inUse();
 	}
 	public function lock() {
 		if ($this->used == TRUE) {
