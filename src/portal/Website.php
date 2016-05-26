@@ -157,7 +157,14 @@ abstract class Website {
 		}
 		// website page class
 		{
-			$clss = "\\pxn\\gcWebsite\\pages\\page_{$pageName}";
+			$reflection = new \ReflectionClass(self::get());
+			$clss = $reflection->getName();
+			$array = \explode('\\', $clss);
+			\array_pop($array);
+			$array[] = 'pages';
+			$array[] = "page_{$pageName}";
+			$clss = implode($array, '\\');
+			$clss = Strings::ForceStartsWith($clss, '\\');
 			if (\class_exists($clss, TRUE)) {
 				$this->pageObj = new $clss();
 				return $this->pageObj;
