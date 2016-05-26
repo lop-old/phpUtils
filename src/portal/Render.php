@@ -17,8 +17,7 @@ abstract class Render {
 
 	protected static $website = NULL;
 
-	protected $tplPath = '';
-	protected $twig = NULL;
+	protected $twigs = array();
 
 
 
@@ -26,7 +25,6 @@ abstract class Render {
 		if (self::$website == NULL) {
 			self::$website = \pxn\phpUtils\portal\Website::get();
 		}
-		$this->tplPath = Paths::src().'/html';
 	}
 
 
@@ -35,22 +33,28 @@ abstract class Render {
 
 
 
-	public function getTwig() {
-		if ($this->twig != NULL) {
-			return $this->twig;
+	public function getTwig($path) {
+		if (!\is_dir($path)) {
+			fail("Template path doesn't exist: {$path}");
+			exit(1);
 		}
-		$cachePath = Paths::getTwigCachePath();
+		// existing twig instance
+		if (isset($this->twigs[$path]) && $this->twigs[$path] != NULL) {
+			return $this->twigs[$path];
+		}
+		// new twig instance
 		$twigLoader = new \Twig_Loader_Filesystem(
-			$this->tplPath
+			$path
 		);
-		$this->twig = new \Twig_Environment(
+		$twig = new \Twig_Environment(
 			$twigLoader,
 			[
 				'debug' => \pxn\phpUtils\debug(),
-				'cache' => $cachePath
+				'cache' => Paths::getTwigCachePath()
 			]
 		);
-		return $this->twig;
+		$this->twigs[$path] = $twig;
+		return $twig;
 	}
 	public function getTpl($filename) {
 		$tplFile = Strings::ForceEndsWith(
