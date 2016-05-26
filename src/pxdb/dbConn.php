@@ -32,6 +32,7 @@ class dbConn extends dbPrepared {
 		$database,
 		$prefix
 	) {
+		parent::__construct();
 		if (empty($dbName)) {
 			fail('Database name is required!');
 			exit(1);
