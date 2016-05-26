@@ -202,7 +202,8 @@ function fail($msg, $code=1, \Exception $e=NULL) {
 	}
 }
 function backtrace() {
-	$CRLF = "\n";
+	$CRLF = Defines::CRLF;
+	$TAB  = Defines::TAB;
 	//TODO: is this right?
 	$trace = \debug_backtrace();
 	$ignore = [
@@ -235,11 +236,11 @@ function backtrace() {
 		$bgcolor = ($evenodd ? '#ffe0d0' : '#fff8e8');
 		$first = FALSE;
 		echo '<tr style="background-color: '.$bgcolor.';">'.$CRLF;
-		echo \TAB.'<td><font size="-2">#'.((int) $num).'</font></td>'.$CRLF;
-		echo \TAB.'<td>'.@$tr['file'].'</td>'.$CRLF;
+		echo $TAB.'<td><font size="-2">#'.((int) $num).'</font></td>'.$CRLF;
+		echo $TAB.'<td>'.@$tr['file'].'</td>'.$CRLF;
 		echo '</tr>'.$CRLF;
 		echo '<tr style="background-color: '.$bgcolor.';">'.$CRLF;
-		echo \TAB.'<td></td>'.$CRLF;
+		echo $TAB.'<td></td>'.$CRLF;
 		$args = '';
 		foreach ($tr['args'] as $arg) {
 			if (!empty($args))
@@ -254,7 +255,7 @@ function backtrace() {
 				$args .= \print_r($arg, TRUE);
 			}
 		}
-		echo TAB.'<td>'.
+		echo $TAB.'<td>'.
 				(isset($tr['file']) ? '<i>'.\basename($tr['file']).'</i> ' : '' ).
 				'<font size="-1">--&gt;</font> '.
 				'<b>'.$tr['function'].'</b> '.
