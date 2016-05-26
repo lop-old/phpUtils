@@ -63,6 +63,9 @@ abstract class dbPrepared {
 		$this->clear();
 		return NULL;
 	}
+//	public function prep($sql) {
+//		return $this->Prepare($sql);
+//	}
 
 
 
@@ -101,6 +104,9 @@ abstract class dbPrepared {
 		$this->clear();
 		return NULL;
 	}
+//	public function exec($sql=NULL) {
+//		return $this->Execute($sql);
+//	}
 
 
 

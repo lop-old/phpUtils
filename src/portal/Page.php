@@ -23,14 +23,10 @@ abstract class Page {
 
 	public abstract function getPageContents();
 
-	public abstract function getTplFileName();
 
 
-
-	public function getTpl() {
-		return $this->website->getTpl(
-			$this->getTplFileName()
-		);
+	public function getTpl($filename) {
+		return $this->website->getTpl($filename);
 	}
 
 

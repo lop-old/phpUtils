@@ -128,6 +128,9 @@ class dbConn extends dbPrepared {
 		$this->clean();
 		$this->used = FALSE;
 	}
+//	public function free() {
+//		$this->release();
+//	}
 
 
 
