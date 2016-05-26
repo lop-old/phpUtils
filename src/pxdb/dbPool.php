@@ -33,7 +33,7 @@ class dbPool {
 		$database,
 		$prefix
 	) {
-		$conn = new dbConn(
+		$conn = dbConn::Factory(
 			(string) $dbName,
 			(string) $driver,
 			(string) $host,

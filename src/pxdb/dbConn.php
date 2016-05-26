@@ -22,7 +22,7 @@ class dbConn extends dbPrepared {
 
 
 
-	public function __construct(
+	public static function Factory(
 		$dbName,
 		$driver,
 		$host,
@@ -32,23 +32,41 @@ class dbConn extends dbPrepared {
 		$database,
 		$prefix
 	) {
+		// build data source name
+		$dsn = self::BuildDSN(
+			$driver,
+			$database,
+			$host,
+			$port
+		);
+		if (empty($dsn)) {
+			fail("Failed to generate DSN for database: $dbName");
+			exit(1);
+		}
+		$conn = new self(
+			$dbName,
+			$dsn,
+			$u,
+			$p,
+			$prefix
+		);
+		return $conn;
+	}
+	// new connection
+	public function __construct(
+		$dbName,
+		$dsn,
+		$u,
+		$p,
+		$prefix
+	) {
 		parent::__construct();
 		if (empty($dbName)) {
 			fail('Database name is required!');
 			exit(1);
 		}
 		$this->dbName = $dbName;
-		// build data source name
-		$this->dsn = self::BuildDSN(
-			$driver,
-			$database,
-			$host,
-			$port
-		);
-		if (empty($this->dsn)) {
-			fail("Failed to generate DSN for database: $dbName");
-			exit(1);
-		}
+		$this->dsn    = $dsn;
 		$this->u      = (empty($u) ? 'ro'.'ot' : $u);
 		$this->p      = $p;
 		$this->prefix = $prefix;
@@ -56,22 +74,24 @@ class dbConn extends dbPrepared {
 		try {
 			$this->conn = new \PDO(
 				$this->dsn,
-				$u,
-				\base64_decode($p),
+				$this->u,
+				\base64_decode($this->p),
 				[ \PDO::ATTR_PERSISTENT => TRUE ]
 			);
-//			if (!$this->isConnected()) {
-//				throw new \PDOException();
-//			}
 		} catch (\PDOException $e) {
-			fail("Failed to connect to database: {$dbName} - {$this->dsn}", 1, $e);
+			fail("Failed to connect to database: {$this->dbName} - {$this->dsn}", 1, $e);
 			exit(1);
 		}
 	}
-	public function clon() {
-//TODO:
-fail(__FILE__.' '.__LINE__.' clone() function unfinished!');
-		return NULL;
+	public function cloneConn() {
+		$conn = new self(
+			$this->dbName,
+			$this->dsn,
+			$this->u,
+			$this->p,
+			$this->prefix
+		);
+		return $conn;
 	}
 
 
@@ -105,8 +125,8 @@ fail(__FILE__.' '.__LINE__.' clone() function unfinished!');
 		$this->used = TRUE;
 	}
 	public function release() {
-		$this->used = FALSE;
 		$this->clean();
+		$this->used = FALSE;
 	}
 
 
