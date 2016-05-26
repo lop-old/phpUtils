@@ -14,11 +14,12 @@ class dbPool {
 	const dbNameDefault = 'main';
 	const MaxConnections = 5;  // max connections per pool
 
-	// pool[name][index]
-	protected static $pool = array();
+	// pools[name]
+	protected static $pools = array();
 
 	protected $dbName = NULL;
-	protected $conn   = NULL;
+	// conns[index]
+	protected $conns   = array();
 
 
 
@@ -47,58 +48,58 @@ class dbPool {
 			$dbName,
 			$conn
 		);
-		self::$pool[$dbName] = $db;
+		self::$pools[$dbName] = $db;
 	}
 	public function __construct($dbName, $conn) {
 		$this->dbName = $dbName;
-		$this->conn   = $conn;
+		$this->conns[] = $conn;
 	}
 
 
 
-	public static function getDB($dbName=NULL) {
+	public static function get($dbName=NULL) {
+		$pool = self::getPool($dbName);
+		if ($pool == NULL) {
+			return NULL;
+		}
+		return $pool->getDB();
+	}
+	public static function getPool($dbName=NULL) {
 		// default db
-		if (empty($dbName))
+		if (empty($dbName)) {
 			$dbName = self::dbNameDefault;
-		// db doesn't exist
+		}
+		// db pool doesn't exist
 		if (!self::dbExists($dbName)) {
-			fail("Database isn't loaded: $dbName");
+			fail("Database isn't configured: $dbName");
 			exit(1);
 		}
+		return self::$pools[$dbName];
+	}
+	public function getDB() {
 		// get db connection
 		$found = NULL;
-		$hasDisconnected = FALSE;
 		// find unused
-		foreach (self::$pool[$dbName] as $db) {
-			if (!$db->isConnected()) {
-				$hasDisconnected = TRUE;
+		foreach ($this->conns as $conn) {
+			// connection in use
+			if ($conn->inUse())
 				continue;
-			}
-			if ($db->inUse()) {
-				continue;
-			}
-			$found = $db;
+			// available connection
+			$found = $conn;
+			break;
 		}
 		// clone if in use
 		if ($found === NULL) {
-			if (count(self::$pool[$dbName]) >= self::MaxConnections) {
+			if (count($this->conns) >= self::MaxConnections) {
 				fail("Max connections reached for database: {$dbName}");
 				exit(1);
 			}
-			$found = \reset(self::$pool[$dbName])->clone();
+			// get first connection
+			$conn = \reset($this->conns);
+			// clone the connection
+			$found = $conn->cloneConn();
 		}
-		// remove disconnected
-		if ($hasDisconnected) {
-			$disCount = 0;
-			foreach (self::$pool[$dbName] as $k => $db) {
-				if (!$db->isConnected()) {
-					unset(self::$pool[$dbName][$k]);
-					$disCount++;
-				}
-			}
-			//log(Removed $disCount disconnected db conns from pool: $dbName)
-		}
-		$found->setUsed();
+		$found->lock();
 		$found->clean();
 		return $found;
 	}
@@ -106,11 +107,17 @@ class dbPool {
 
 
 	public static function dbExists($dbName=NULL) {
-		if (empty($dbName))
+		if (empty($dbName)) {
 			$dbName = self::$dbNameDefault;
-		if (!isset(self::$pool[$dbName]))
-			return FALSE;
-		return (\count(self::$pool) > 0);
+		}
+		return isset(self::$pools[$dbName])
+			&& self::$pools[$dbName] != NULL;
+	}
+
+
+
+	public function getConnCount() {
+		return \count($this->conns);
 	}
 
 
