@@ -1,7 +1,18 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-05-26 phpUtils 0.1.20
+==========================
+* added pxdb classes for mysql pdo
+* added auto-loading .htdb config files
+* added support for multiple twig template paths
+* added argument to Render->getTwig($path) function
+* finished handling of page url values
+* changed Page interface to abstract class
+
+
 2016-05-25 phpUtils 0.1.19
+==========================
 * added pxnloader.php to auto-find composer autoload.php
 
 
