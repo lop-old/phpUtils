@@ -9,6 +9,7 @@
 namespace pxn\phpUtils\portal;
 
 use pxn\phpUtils\Config;
+use pxn\phpUtils\Paths;
 use pxn\phpUtils\Strings;
 use pxn\phpUtils\San;
 use pxn\phpUtils\General;
@@ -44,6 +45,19 @@ abstract class Website {
 			exit(1);
 		}
 		self::$instance = $this;
+		// load db configs
+		{
+			$path = Paths::base();
+			// search for .htdb files
+			$array = \scandir($path);
+			foreach ($array as $f) {
+				if ($f == '.' || $f == '..')
+					continue;
+				if (!Strings::StartsWith($f, '.htdb'))
+					continue;
+				include(Strings::BuildPath($path, $f));
+			}
+		}
 		// get page name from get/post values
 		if (isset($_GET['page']) || isset($_POST['page'])) {
 			$pageName = General::getVar(
