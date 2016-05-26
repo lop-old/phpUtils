@@ -19,7 +19,20 @@ abstract class Page {
 		$this->website = \pxn\phpUtils\portal\Website::get();
 	}
 
-	public function getPageContents();
+
+
+	public abstract function getPageContents();
+
+	public abstract function getTplFileName();
+
+
+
+	public function getTpl() {
+		return $this->website->getTpl(
+			$this->getTplFileName()
+		);
+	}
+
 
 
 }
