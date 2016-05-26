@@ -57,13 +57,43 @@ abstract class Render {
 		return $twig;
 	}
 	public function getTpl($filename) {
-		$tplFile = Strings::ForceEndsWith(
+		$filename = Strings::ForceEndsWith(
 			$filename,
 			Defines::TEMPLATE_EXTENSION
 		);
-		$twig = $this->getTwig();
-		$tpl = $twig->loadTemplate($tplFile);
-		return $tpl;
+		// exact path
+		if (\file_exists($filename)) {
+			$fileinfo = \pathinfo($filename);
+			$twig = $this->getTwig($fileinfo['dirname']);
+			$tpl = $twig->loadTemplate($fileinfo['basename']);
+			return $tpl;
+		}
+		// website src/html
+		{
+			$path = Strings::BuildPath(
+				Paths::src(),
+				'html'
+			);
+			if (\file_exists(Strings::BuildPath($path, $filename))) {
+				$twig = $this->getTwig($path);
+				$tpl = $twig->loadTemplate($filename);
+				return $tpl;
+			}
+		}
+		// phpUtils src/html
+		{
+			$path = Strings::BuildPath(
+				Paths::utils(),
+				'html'
+			);
+			if (\file_exists(Strings::BuildPath($path, $filename))) {
+				$twig = $this->getTwig($path);
+				$tpl = $twig->loadTemplate($filename);
+				return $tpl;
+			}
+		}
+		fail("Template file not found: {$filename}");
+		return NULL;
 	}
 
 
