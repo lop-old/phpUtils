@@ -34,6 +34,10 @@ final class General {
 			// integer
 			case 'i':
 				return ((integer) $data);
+//TODO: php 7 may have support for this?
+			// long
+			case 'l':
+				return ((integer) $data);
 			// float
 			case 'f':
 				return ((float) $data);
