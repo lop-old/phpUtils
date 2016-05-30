@@ -1,6 +1,11 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-05-30 phpUtils 0.1.21
+==========================
+* moved portal classes to new pxn/phpPortal package
+
+
 2016-05-26 phpUtils 0.1.20
 ==========================
 * added pxdb classes for mysql pdo
