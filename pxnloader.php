@@ -17,18 +17,18 @@
 			$pwd.'/..',
 			$pwd.'/../..'
 	];
-	$found = FALSE;
+	$loader = NULL;
 	foreach ($search_paths as $path) {
 		if (empty($path)) continue;
 		$filepath = \realpath("{$path}/vendor/autoload.php");
-		if (empty($filepath)) continue;
-		if (!\is_file("{$path}/autoload.php")) {
-			$found = TRUE;
-			require($filepath);
-			break;
+		if (!empty($filepath) && \is_file($filepath)) {
+			$loader = require($filepath);
+			if ($loader != NULL) {
+				break;
+			}
 		}
 	}
-	if (!$found) {
+	if ($loader == NULL) {
 		echo "\nFailed to find composer autoload.php !\n".
 			"Use 'composer install' to download the required dependencies,\n".
 			"or see https://getcomposer.org/download/ ".
