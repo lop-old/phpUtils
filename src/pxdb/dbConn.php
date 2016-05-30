@@ -1,6 +1,6 @@
 <?php
 /*
- * PoiXson phpUtils - Website Utilities Library
+ * PoiXson phpUtils - PHP Utilities Library
  * @copyright 2004-2016
  * @license GPL-3
  * @author lorenzo at poixson.com
