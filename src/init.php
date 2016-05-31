@@ -316,7 +316,7 @@ function debug($debug=NULL) {
 	if ($val !== NULL) {
 		// set cookie
 		\setcookie(
-			Defines::getDebugCookieName(),
+			Defines::DEBUG_COOKIE,
 			($val === TRUE ? '1' : '0'),
 			0
 		);
@@ -324,7 +324,7 @@ function debug($debug=NULL) {
 	} else {
 		// from cookie
 		$val = General::getVar(
-			Defines::getDebugCookieName(),
+			Defines::DEBUG_COOKIE,
 			'bool',
 			'cookie'
 		);

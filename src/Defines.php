@@ -16,7 +16,7 @@ final class Defines {
 
 	const PHP_MIN_VERSION = 50600;
 
-	const DEBUG_COOKIE = '_debug';
+	const DEBUG_COOKIE = 'pxn_debug';
 
 	// config keys
 	const KEY_SITE_TITLE      = 'site title';
