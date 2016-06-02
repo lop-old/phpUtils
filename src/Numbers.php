@@ -246,61 +246,81 @@ final class Numbers {
 		return $value;
 	}
 	/**
-	 * Seconds to string.
+	 * Seconds to formatted string.
 	 * @param int $seconds - Integer to convert.
 	 * @return string
 	 */
-	public static function SecondsToString($seconds, $shorthand=TRUE) {
+	public static function SecondsToString($seconds, $shorthand=TRUE, $maxParts=FALSE, $deviance=1.0) {
+		$maxParts =
+			($maxParts == FALSE)
+			? FALSE
+			: (int) $maxParts;
 		$result = array();
 		// years
-		if ($seconds >= Defines::S_YEAR) {
-			$v = \floor($seconds / Defines::S_YEAR);
-			$seconds = $seconds % Defines::S_YEAR;
+		if ($seconds >= (Defines::S_YEAR * $deviance)) {
+			$v = \ceil(\floor($seconds / Defines::S_YEAR / $deviance) * $deviance);
+			$seconds -= $v * Defines::S_YEAR;
 			$result[] = $v.(
 				$shorthand
-				? 'y'
+				? 'yr'
 				: ' Year'.($v > 1 ? 's' : '')
 			);
 		}
-		// days
-		if ($seconds >= Defines::S_DAY) {
-			$v = \floor($seconds / Defines::S_DAY);
-			$seconds = $seconds % Defines::S_DAY;
+		// months
+		if ($deviance !== 1.0) {
+		if ($maxParts == FALSE || count($result) < $maxParts) {
+		if ($seconds >= (Defines::S_MONTH * $deviance)) {
+			$v = \ceil(\floor($seconds / Defines::S_MONTH / $deviance) * $deviance);
+			$seconds -= $v * Defines::S_MONTH;
 			$result[] = $v.(
 				$shorthand
-				? 'd'
+				? 'mon'
+				: ' Month'.($v > 1 ? 's' : '')
+			);
+		}}}
+		// days
+		if ($maxParts == FALSE || count($result) < $maxParts) {
+		if ($seconds >= (Defines::S_DAY * $deviance)) {
+			$v = \ceil(\floor($seconds / Defines::S_DAY / $deviance) * $deviance);
+			$seconds -= $v * Defines::S_DAY;
+			$result[] = $v.(
+				$shorthand
+				? 'day'
 				: ' Day'.($v > 1 ? 's' : '')
 			);
-		}
+		}}
 		// hours
-		if ($seconds >= Defines::S_HOUR) {
-			$v = \floor($seconds / Defines::S_HOUR);
-			$seconds = $seconds % Defines::S_HOUR;
+		if ($maxParts == FALSE || count($result) < $maxParts) {
+		if ($seconds >= (Defines::S_HOUR * $deviance)) {
+			$v = \ceil(\floor($seconds / Defines::S_HOUR / $deviance) * $deviance);
+			$seconds -= $v * Defines::S_HOUR;
 			$result[] = $v.(
 				$shorthand
-				? 'h'
+				? 'hr'
 				: ' Hour'.($v > 1 ? 's' : '')
 			);
-		}
+		}}
 		// minutes
-		if ($seconds >= Defines::S_MINUTE) {
-			$v = \floor($seconds / Defines::S_MINUTE);
-			$seconds = $seconds % Defines::S_MINUTE;
+		if ($maxParts == FALSE || count($result) < $maxParts) {
+		if ($seconds >= (Defines::S_MINUTE * $deviance)) {
+			$v = \ceil(\floor($seconds / Defines::S_MINUTE / $deviance) * $deviance);
+			$seconds -= $v * Defines::S_MINUTE;
 			$result[] = $v.(
 				$shorthand
-				? 'm'
+				? 'min'
 				: ' Minute'.($v > 1 ? 's' : '')
 			);
-		}
+		}}
 		// seconds
+		if ($maxParts == FALSE || count($result) < $maxParts) {
 		if ($seconds > 0) {
 			$result[] = $seconds.(
 				$shorthand
-				? 's'
+				? 'sec'
 				: ' Second'.
 				($seconds > 1 ? 's' : '')
 			);
-		}
+		}}
 		if (\count($result) == 0)
 			return '--';
 		if ($shorthand)
