@@ -147,7 +147,7 @@ final class Paths {
 	public static function getTwigCachePath() {
 		$path = Config::get(Defines::KEY_TWIG_CACHE_PATH);
 //		if (empty($path)) {
-			$path = self::base().'/.cache';
+			$path = self::base().'/.twig_cache';
 //		}
 		if (!\is_dir($path)) {
 			\mkdir($path, 0700);
