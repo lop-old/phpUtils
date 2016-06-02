@@ -50,7 +50,7 @@ abstract class dbPrepared {
 		$this->clean();
 		try {
 			$this->sql = \str_replace(
-					'__table__',
+					'__TABLE__',
 					$this->getTablePrefix(),
 					$sql
 			);
@@ -138,7 +138,7 @@ abstract class dbPrepared {
 			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
 			exit(1);
 		}
-		return FALSE;
+		return TRUE;
 	}
 
 
