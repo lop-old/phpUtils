@@ -26,6 +26,7 @@ abstract class dbPrepared {
 	protected $args     = array();
 	protected $rowCount = -1;
 	protected $insertId = -1;
+	protected $hasError = FALSE;
 
 
 
@@ -42,6 +43,7 @@ abstract class dbPrepared {
 
 	public function Prepare($sql) {
 		if (empty($sql)) {
+			$this->setError();
 			fail('sql argument is required!');
 			exit(1);
 		}
@@ -57,6 +59,7 @@ abstract class dbPrepared {
 					->prepare($this->sql);
 			return $this;
 		} catch (\PDOException $e) {
+			$this->setError($e->getMessage());
 			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
 			exit(1);
 		}
@@ -70,12 +73,17 @@ abstract class dbPrepared {
 
 
 	public function Execute($sql=NULL) {
+		if ($this->hasError()) {
+			return NULL;
+		}
 		if (!empty($sql)) {
 			if ($this->Prepare($sql) == NULL) {
+				$this->setError();
 				return NULL;
 			}
 		}
 		if (empty($this->sql) || $this->st == NULL) {
+			$this->setError();
 			return NULL;
 		}
 		try {
@@ -87,6 +95,7 @@ abstract class dbPrepared {
 			);
 			// run query
 			if (!$this->st->execute()) {
+				$this->setError();
 				return NULL;
 			}
 			// get insert id
@@ -98,6 +107,7 @@ abstract class dbPrepared {
 			}
 			return $this;
 		} catch (\PDOException $e) {
+			$this->setError($e->getMessage());
 			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
 			exit(1);
 		}
@@ -111,7 +121,7 @@ abstract class dbPrepared {
 
 
 	public function Next() {
-		if ($this->st == NULL) {
+		if ($this->hasError() || $this->st == NULL) {
 			return FALSE;
 		}
 		try {
@@ -119,10 +129,12 @@ abstract class dbPrepared {
 					->fetch(\PDO::FETCH_ASSOC);
 			// finished
 			if ($this->row === FALSE) {
+				$this->setError();
 				return FALSE;
 			}
 			return $this->row;
 		} catch (\PDOException $e) {
+			$this->setError($e->getMessage());
 			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
 			exit(1);
 		}
@@ -132,13 +144,13 @@ abstract class dbPrepared {
 
 
 	public function getRowCount() {
-		if($this->st == NULL || $this->rowCount < 0) {
+		if ($this->hasError() || $this->st == NULL || $this->rowCount < 0) {
 			return -1;
 		}
 		return $this->rowCount;
 	}
 	public function getInsertId() {
-		if ($this->st == NULL || $this->insertId < 0) {
+		if ($this->hasError() || $this->st == NULL || $this->insertId < 0) {
 			return -1;
 		}
 		return $this->insertId;
@@ -155,6 +167,27 @@ abstract class dbPrepared {
 
 
 
+	protected function setError($msg=NULL) {
+		$this->hasError =
+			empty($msg)
+			? TRUE
+			: $this->hasError = $msg;
+	}
+	public function getError() {
+		if ($this->hasError === FALSE) {
+			return NULL;
+		}
+		if ($this->hasError === TRUE) {
+			return 'Unknown error';
+		}
+		return $this->hasError;
+	}
+	public function hasError() {
+		return ($this->hasError != FALSE);
+	}
+
+
+
 	public function clean() {
 		$this->st       = NULL;
 		$this->rs       = NULL;
@@ -164,6 +197,7 @@ abstract class dbPrepared {
 		$this->args     = array();
 		$this->rowCount = -1;
 		$this->insertId = -1;
+		$this->hasError = FALSE;
 	}
 
 
@@ -174,7 +208,7 @@ abstract class dbPrepared {
 
 
 	public function setString($index, $value) {
-		if ($this->st == NULL) {
+		if ($this->hasError() || $this->st == NULL) {
 			return NULL;
 		}
 		try {
@@ -188,7 +222,7 @@ abstract class dbPrepared {
 		return NULL;
 	}
 	public function setInt($index, $value) {
-		if ($this->st == NULL) {
+		if ($this->hasError() || $this->st == NULL) {
 			return NULL;
 		}
 		try {
@@ -202,7 +236,7 @@ abstract class dbPrepared {
 		return NULL;
 	}
 	public function setDouble($index, $value) {
-		if ($this->st == NULL) {
+		if ($this->hasError() || $this->st == NULL) {
 			return NULL;
 		}
 		try {
@@ -216,7 +250,7 @@ abstract class dbPrepared {
 		return NULL;
 	}
 	public function setLong($index, $value) {
-		if ($this->st == NULL) {
+		if ($this->hasError() || $this->st == NULL) {
 			return NULL;
 		}
 		try {
@@ -230,7 +264,7 @@ abstract class dbPrepared {
 		return NULL;
 	}
 	public function setBool($index, $value) {
-		if ($this->st == NULL) {
+		if ($this->hasError() || $this->st == NULL) {
 			return NULL;
 		}
 		try {
@@ -244,7 +278,7 @@ abstract class dbPrepared {
 		return NULL;
 	}
 //	public function setDate($index, $value) {
-//		if ($this->st == NULL) {
+//		if ($this->hasError() || $this->st == NULL) {
 //			return NULL;
 //		}
 //		try {
@@ -266,37 +300,37 @@ abstract class dbPrepared {
 
 
 	public function getString($index) {
-		if ($this->row == NULL || !isset($this->row[$index])) {
+		if ($this->hasError() || $this->row == NULL || !isset($this->row[$index])) {
 			return FALSE;
 		}
 		return General::castType($this->row[$index], 'str');
 	}
 	public function getInt($index) {
-		if ($this->row == NULL || !isset($this->row[$index])) {
+		if ($this->hasError() || $this->row == NULL || !isset($this->row[$index])) {
 			return FALSE;
 		}
 		return General::castType($this->row[$index], 'int');
 	}
 	public function getDouble($index) {
-		if ($this->row == NULL || !isset($this->row[$index])) {
+		if ($this->hasError() || $this->row == NULL || !isset($this->row[$index])) {
 			return FALSE;
 		}
 		return General::castType($this->row[$index], 'dbl');
 	}
 	public function getLong($index) {
-		if ($this->row == NULL || !isset($this->row[$index])) {
+		if ($this->hasError() || $this->row == NULL || !isset($this->row[$index])) {
 			return FALSE;
 		}
 		return General::castType($this->row[$index], 'lng');
 	}
 	public function getBool($index) {
-		if ($this->row == NULL || !isset($this->row[$index])) {
+		if ($this->hasError() || $this->row == NULL || !isset($this->row[$index])) {
 			return FALSE;
 		}
 		return General::castType($this->row[$index], 'bool');
 	}
 	public function getDate($index, $format=NULL) {
-		if ($this->row == NULL || !isset($this->row[$index])) {
+		if ($this->hasError() || $this->row == NULL || !isset($this->row[$index])) {
 			return FALSE;
 		}
 		$value = General::castType($this->row[$index], 'int');
