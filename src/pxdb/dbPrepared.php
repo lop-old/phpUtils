@@ -132,7 +132,6 @@ abstract class dbPrepared {
 				$this->setError();
 				return FALSE;
 			}
-			return $this->row;
 		} catch (\PDOException $e) {
 			$this->setError($e->getMessage());
 			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
