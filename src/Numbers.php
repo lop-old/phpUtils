@@ -328,6 +328,25 @@ final class Numbers {
 		return \implode('  ', $result);
 	}
 	public static function SecondsToText($seconds, $shorthand=TRUE, $maxParts=FALSE, $deviance=1.0) {
+		// future
+		if ( $seconds < 0 ) {
+			$seconds = 0 - $seconds;
+			if ( ($seconds * $deviance) < Defines::S_HOUR ) {
+				return 'Soon';
+			}
+			if ( ($seconds * $deviance) < Defines::S_DAY ) {
+				return 'Soon Today';
+			}
+			if ( ($seconds * $deviance) < (Defines::S_DAY * 2) ) {
+				return 'Tomorrow';
+			}
+			return self::SecondsToString($seconds, $shorthand, $maxParts, $deviance).' from now';
+		}
+		// now
+		if ( $seconds * $deviance < Defines::S_HOUR ) {
+			return 'Now';
+		}
+		// past
 		if ( ($seconds * $deviance) < Defines::S_DAY ) {
 			return 'Today';
 		}
