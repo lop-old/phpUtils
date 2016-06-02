@@ -327,6 +327,15 @@ final class Numbers {
 			return \implode(' ', $result);
 		return \implode('  ', $result);
 	}
+	public static function SecondsToText($seconds, $shorthand=TRUE, $maxParts=FALSE, $deviance=1.0) {
+		if ( ($seconds * $deviance) < Defines::S_DAY ) {
+			return 'Today';
+		}
+		if ( ($seconds * $deviance) < (Defines::S_DAY * 2) ) {
+			return 'Yesterday';
+		}
+		return self::SecondsToString($seconds, $shorthand, $maxParts, $deviance).' ago';
+	}
 
 
 
