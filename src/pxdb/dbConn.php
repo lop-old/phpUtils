@@ -72,12 +72,14 @@ class dbConn extends dbPrepared {
 		$this->prefix = $prefix;
 		// connect to database
 		try {
-			$this->conn = new \PDO(
+			$conn = new \PDO(
 				$this->dsn,
 				$this->u,
 				\base64_decode($this->p),
 				[ \PDO::ATTR_PERSISTENT => TRUE ]
 			);
+			$conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+			$this->conn = $conn;
 		} catch (\PDOException $e) {
 			fail("Failed to connect to database: {$this->dbName} - {$this->dsn}", 1, $e);
 			exit(1);
@@ -145,6 +147,7 @@ class dbConn extends dbPrepared {
 		if ($port != NULL && $port > 0 && $port != 3306) {
 			$dsn .= ";port={$port}";
 		}
+		$dsn .= ';charset=utf8mb4';
 		return $dsn;
 	}
 
