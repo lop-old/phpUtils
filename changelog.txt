@@ -1,6 +1,16 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-06-02 phpUtils 0.1.22
+==========================
+* added $maxParts and $deviance arguments to SecondsToString() function
+* added SecondsToText() function to override SecondsToString() with Today, Yesterday, Tomorrow, Soon Today, Soon or Now
+* removed getDebugCookieName() function and replaced with a const in Defines class
+* added hasError() getError() functions to dbPrepared class
+* set charset to utf8mb4 in pxdb
+* a few bug fixes to pxdb classes
+
+
 2016-05-30 phpUtils 0.1.21
 ==========================
 * moved portal classes to new pxn/phpPortal package
