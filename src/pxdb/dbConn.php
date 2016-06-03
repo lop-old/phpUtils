@@ -11,6 +11,9 @@ namespace pxn\phpUtils\pxdb;
 
 class dbConn extends dbPrepared {
 
+	const ERROR_MODE_EXCEPTION = FALSE;
+	const ERROR_MODE_PASSIVE   = TRUE;
+
 	protected $dbName = NULL;
 	protected $u      = NULL;
 	protected $p      = NULL;

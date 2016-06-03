@@ -27,6 +27,7 @@ abstract class dbPrepared {
 	protected $rowCount = -1;
 	protected $insertId = -1;
 	protected $hasError = FALSE;
+	protected $errorMode = dbConn::ERROR_MODE_EXCEPTION;
 
 
 
@@ -183,6 +184,18 @@ abstract class dbPrepared {
 	}
 	public function hasError() {
 		return ($this->hasError != FALSE);
+	}
+
+
+
+	public function setErrorMode($errorMode) {
+		if ($errorMode === NULL) {
+			$errorMode = dbConn::ERROR_MODE_EXCEPTION;
+		}
+		$this->errorMode = ($errorMode != FALSE);
+	}
+	public function getErrorMode() {
+		return $this->errorMode;
 	}
 
 

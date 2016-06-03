@@ -57,12 +57,14 @@ class dbPool {
 
 
 
-	public static function get($dbName=NULL) {
+	public static function get($dbName=NULL, $errorMode=dbConn::ERROR_MODE_EXCEPTION) {
 		$pool = self::getPool($dbName);
 		if ($pool == NULL) {
 			return NULL;
 		}
-		return $pool->getDB();
+		$db = $pool->getDB();
+		$db->setErrorMode($errorMode);
+		return $db;
 	}
 	public static function getPool($dbName=NULL) {
 		// default db
