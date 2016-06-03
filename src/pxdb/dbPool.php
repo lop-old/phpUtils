@@ -67,6 +67,10 @@ class dbPool {
 		return $db;
 	}
 	public static function getPool($dbName=NULL) {
+		// already pool instance
+		if ($dbName != NULL && $dbName instanceof dbPool) {
+			return $dbName;
+		}
 		// default db
 		if (empty($dbName)) {
 			$dbName = self::dbNameDefault;
