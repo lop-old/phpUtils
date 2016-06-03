@@ -23,9 +23,10 @@ abstract class dbPrepared {
 	protected $desc = NULL;
 
 	protected $row      = NULL;
-	protected $args     = array();
+	protected $args     = [];
 	protected $rowCount = -1;
 	protected $insertId = -1;
+
 	protected $hasError = FALSE;
 	protected $errorMode = dbConn::ERROR_MODE_EXCEPTION;
 
@@ -43,12 +44,11 @@ abstract class dbPrepared {
 
 
 	public function Prepare($sql) {
-		if (empty($sql)) {
-			$this->setError();
-			fail('sql argument is required!');
-			exit(1);
-		}
 		$this->clean();
+		if (empty($sql)) {
+			$this->setError('sql argument is required!');
+			return NULL;
+		}
 		try {
 			$this->sql = \str_replace(
 					'__TABLE__',
@@ -58,14 +58,11 @@ abstract class dbPrepared {
 			// prepared statement
 			$this->st = $this->getConn()
 					->prepare($this->sql);
-			return $this;
 		} catch (\PDOException $e) {
-			$this->setError($e->getMessage());
-			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
-			exit(1);
+			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			return NULL;
 		}
-		$this->clear();
-		return NULL;
+		return $this;
 	}
 //	public function prep($sql) {
 //		return $this->Prepare($sql);
@@ -78,12 +75,9 @@ abstract class dbPrepared {
 			return NULL;
 		}
 		if (!empty($sql)) {
-			if ($this->Prepare($sql) == NULL) {
-				$this->setError();
-				return NULL;
-			}
+			$this->Prepare($sql);
 		}
-		if (empty($this->sql) || $this->st == NULL) {
+		if ($this->hasError() || empty($this->sql) || $this->st == NULL) {
 			$this->setError();
 			return NULL;
 		}
@@ -106,14 +100,11 @@ abstract class dbPrepared {
 			} else {
 				$this->rowCount = $this->st->rowCount();
 			}
-			return $this;
 		} catch (\PDOException $e) {
-			$this->setError($e->getMessage());
-			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
-			exit(1);
+			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			return NULL;
 		}
-		$this->clear();
-		return NULL;
+		return $this;
 	}
 //	public function exec($sql=NULL) {
 //		return $this->Execute($sql);
@@ -121,22 +112,23 @@ abstract class dbPrepared {
 
 
 
-	public function Next() {
+	public function hasNext() {
 		if ($this->hasError() || $this->st == NULL) {
 			return FALSE;
 		}
 		try {
 			$this->row = $this->st
-					->fetch(\PDO::FETCH_ASSOC);
+				->fetch(
+					\PDO::FETCH_ASSOC,
+					\PDO::FETCH_ORI_NEXT
+				);
 			// finished
 			if ($this->row === FALSE) {
-				$this->setError();
 				return FALSE;
 			}
 		} catch (\PDOException $e) {
-			$this->setError($e->getMessage());
-			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
-			exit(1);
+			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			return FALSE;
 		}
 		return TRUE;
 	}
@@ -167,20 +159,41 @@ abstract class dbPrepared {
 
 
 
-	protected function setError($msg=NULL) {
-		$this->hasError =
-			empty($msg)
-			? TRUE
-			: $this->hasError = $msg;
+	public function setError($msg=NULL, $e=NULL) {
+		if (empty($msg)) {
+			$msg = '';
+		}
+		if ($e != NULL) {
+			if (!empty($msg)) {
+				$msg .= ' - ';
+			}
+			$msg .= $e->getMessage();
+		}
+		if (empty($this->hasError)) {
+			$this->hasError =
+				empty($msg)
+				? TRUE
+				: $msg;
+		} else
+		if (!empty($msg)) {
+			$this->hasError = $msg;
+		}
+		// exception mode
+		if ($this->errorMode == dbConn::ERROR_MODE_EXCEPTION) {
+			throw new \PDOException(
+				$msg.' - args: '.\implode(', ', $this->args)
+			);
+		}
 	}
 	public function getError() {
 		if ($this->hasError === FALSE) {
 			return NULL;
 		}
-		if ($this->hasError === TRUE) {
-			return 'Unknown error';
-		}
-		return $this->hasError;
+		return (
+			($this->hasError === TRUE)
+			? 'Unknown error'
+			: $this->hasError
+		).' - args: '.\implode(', ', $this->args);
 	}
 	public function hasError() {
 		return ($this->hasError != FALSE);
@@ -206,7 +219,7 @@ abstract class dbPrepared {
 		$this->sql      = NULL;
 		$this->desc     = NULL;
 		$this->row      = NULL;
-		$this->args     = array();
+		$this->args     = [];
 		$this->rowCount = -1;
 		$this->insertId = -1;
 		$this->hasError = FALSE;
@@ -226,12 +239,12 @@ abstract class dbPrepared {
 		try {
 			$value = General::castType($value, 'str');
 			$this->st->bindParam($index, $value);
-			$this->args .= " String: {$value}";
-			return $this;
+			$this->args[] = "String: {$value}";
 		} catch (\PDOException $e) {
-			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
+			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			return NULL;
 		}
-		return NULL;
+		return $this;
 	}
 	public function setInt($index, $value) {
 		if ($this->hasError() || $this->st == NULL) {
@@ -240,12 +253,12 @@ abstract class dbPrepared {
 		try {
 			$value = General::castType($value, 'int');
 			$this->st->bindParam($index, $value);
-			$this->args .= " Int: {$value}";
-			return $this;
+			$this->args[] = "Int: {$value}";
 		} catch (\PDOException $e) {
-			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
+			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			return NULL;
 		}
-		return NULL;
+		return $this;
 	}
 	public function setDouble($index, $value) {
 		if ($this->hasError() || $this->st == NULL) {
@@ -254,12 +267,12 @@ abstract class dbPrepared {
 		try {
 			$value = General::castType($value, 'dbl');
 			$this->st->bindParam($index, $value);
-			$this->args .= " Dbl: {$value}";
-			return $this;
+			$this->args[] = "Dbl: {$value}";
 		} catch (\PDOException $e) {
-			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
+			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			return NULL;
 		}
-		return NULL;
+		return $this;
 	}
 	public function setLong($index, $value) {
 		if ($this->hasError() || $this->st == NULL) {
@@ -268,12 +281,12 @@ abstract class dbPrepared {
 		try {
 			$value = General::castType($value, 'lng');
 			$this->st->bindParam($index, $value);
-			$this->args .= " Lng: {$value}";
-			return $this;
+			$this->args[] = "Lng: {$value}";
 		} catch (\PDOException $e) {
-			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
+			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			return NULL;
 		}
-		return NULL;
+		return $this;
 	}
 	public function setBool($index, $value) {
 		if ($this->hasError() || $this->st == NULL) {
@@ -282,12 +295,12 @@ abstract class dbPrepared {
 		try {
 			$value = General::castType($value, 'bool');
 			$this->st->bindParam($index, $value);
-			$this->args .= " Bool: {$value}";
-			return $this;
+			$this->args[] = "Bool: {$value}";
 		} catch (\PDOException $e) {
-			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
+			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			return NULL;
 		}
-		return NULL;
+		return $this;
 	}
 //	public function setDate($index, $value) {
 //		if ($this->hasError() || $this->st == NULL) {
@@ -296,12 +309,12 @@ abstract class dbPrepared {
 //		try {
 //			$value = General::castType($value, 'str');
 //			$this->st->bindParam($index, $value);
-//			$this->args .= " Date: {$value}";
-//			return $this;
+//			$this->args[] = "Date: {$value}";
 //		} catch (\PDOException $e) {
-//			fail("Query failed: {$this->sql} - {$this->desc}", 1, $e);
+//			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+//			return NULL;
 //		}
-//		return NULL;
+//		return $this;
 //	}
 
 

@@ -75,13 +75,17 @@ class dbConn extends dbPrepared {
 		$this->prefix = $prefix;
 		// connect to database
 		try {
+			$options = [
+				\PDO::ATTR_PERSISTENT         => TRUE,
+				\PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+				\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
+			];
 			$conn = new \PDO(
 				$this->dsn,
 				$this->u,
 				\base64_decode($this->p),
-				[ \PDO::ATTR_PERSISTENT => TRUE ]
+				$options
 			);
-			$conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 			$this->conn = $conn;
 		} catch (\PDOException $e) {
 			fail("Failed to connect to database: {$this->dbName} - {$this->dsn}", 1, $e);
