@@ -21,6 +21,7 @@ class dbPool {
 	// conns[index]
 	protected $conns   = array();
 
+	protected $usingTables = [];
 	protected $knownTables = NULL;
 
 
@@ -133,6 +134,15 @@ class dbPool {
 
 	public function getConnCount() {
 		return \count($this->conns);
+	}
+
+
+
+	public function UsingTables(...$tables) {
+		$this->usingTables = \array_merge($this->usingTables, $tables);
+	}
+	public function getUsedTables() {
+		return $this->usingTables;
 	}
 
 
