@@ -75,6 +75,7 @@ class dbPool {
 		if (empty($dbName)) {
 			$dbName = self::dbNameDefault;
 		}
+		$dbName = (string) $dbName;
 		// db pool doesn't exist
 		if (!self::dbExists($dbName)) {
 			fail("Database isn't configured: $dbName");
@@ -118,6 +119,12 @@ class dbPool {
 		}
 		return isset(self::$pools[$dbName])
 			&& self::$pools[$dbName] != NULL;
+	}
+
+
+
+	public function getName() {
+		return $this->dbName;
 	}
 
 
