@@ -21,6 +21,8 @@ class dbPool {
 	// conns[index]
 	protected $conns   = array();
 
+	protected $knownTables = NULL;
+
 
 
 	public static function configure(
@@ -131,6 +133,41 @@ class dbPool {
 
 	public function getConnCount() {
 		return \count($this->conns);
+	}
+
+
+
+	public function getKnownTables() {
+		// cached table list
+		if ($this->knownTables != NULL) {
+			return $this->knownTables;
+		}
+		// get known tables
+		$db = $this->getDB();
+		if ($db == NULL) {
+			fail('Failed to get db for list of tables!');
+			exit(1);
+		}
+		$db->Prepare("SHOW TABLES");
+		$db->Execute();
+		$database = $db->getDatabaseName();
+		$tables = [];
+		while ($db->hasNext()) {
+			$tables[] = $db->getString("Tables_in_{$database}");
+		}
+		self::$knownTables[$poolName] = $tables;
+		$db->release();
+		return self::$knownTables[$poolName];
+	}
+	public function hasTable($table) {
+		$table = (string) $table;
+		if (empty($table)) {
+			return NULL;
+		}
+		return \in_array(
+			$table,
+			$this->getKnownTables()
+		);
 	}
 
 
