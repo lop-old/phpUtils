@@ -324,6 +324,12 @@ abstract class dbPrepared {
 
 
 
+	public function getRow() {
+		if ($this->hasError() || $this->row == NULL) {
+			return FALSE;
+		}
+		return $this->row;
+	}
 	public function getString($index) {
 		if ($this->hasError() || $this->row == NULL || !isset($this->row[$index])) {
 			return FALSE;
