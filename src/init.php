@@ -164,10 +164,12 @@ function dd($var) {
 
 // exit functions
 function ExitNow($code=1) {
-	$website = \pxn\phpUtils\portal\Website::peak();
 	// set rendered
-	if ($website !== NULL) {
-		$website->hasRendered(TRUE);
+	if (\class_exists('pxn\\phpPortal\\Website')) {
+		$website = \pxn\phpPortal\Website::peak();
+		if ($website != NULL) {
+			$website->setRendered();
+		}
 	}
 	// exit code
 	if ($code !== NULL) {
