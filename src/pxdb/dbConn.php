@@ -17,6 +17,7 @@ class dbConn extends dbPrepared {
 	protected $dbName = NULL;
 	protected $u      = NULL;
 	protected $p      = NULL;
+	protected $database = NULL;
 	protected $prefix = NULL;
 	protected $dsn    = NULL;
 
@@ -51,6 +52,7 @@ class dbConn extends dbPrepared {
 			$dsn,
 			$u,
 			$p,
+			$database,
 			$prefix
 		);
 		return $conn;
@@ -61,6 +63,7 @@ class dbConn extends dbPrepared {
 		$dsn,
 		$u,
 		$p,
+		$database,
 		$prefix
 	) {
 		parent::__construct();
@@ -72,6 +75,7 @@ class dbConn extends dbPrepared {
 		$this->dsn    = $dsn;
 		$this->u      = (empty($u) ? 'ro'.'ot' : $u);
 		$this->p      = $p;
+		$this->database = $database;
 		$this->prefix = $prefix;
 		// connect to database
 		try {
@@ -98,6 +102,7 @@ class dbConn extends dbPrepared {
 			$this->dsn,
 			$this->u,
 			$this->p,
+			$this->database,
 			$this->prefix
 		);
 		return $conn;
@@ -107,6 +112,9 @@ class dbConn extends dbPrepared {
 
 	public function getConn() {
 		return $this->conn;
+	}
+	public function getDatabaseName() {
+		return $this->database;
 	}
 	public function getTablePrefix() {
 		if (empty($this->prefix)) {
