@@ -177,7 +177,10 @@ function ExitNow($code=1) {
 	}
 	exit(0);
 }
-function fail($msg, $code=1, \Exception $e=NULL) {
+function fail($msg=NULL, $code=1, \Exception $e=NULL) {
+	if ($msg == NULL) {
+		$msg = '<NULL>';
+	}
 	if (!\is_string($msg)) {
 		$msg = \print_r($msg, TRUE);
 	}
