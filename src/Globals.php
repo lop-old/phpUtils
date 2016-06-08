@@ -38,7 +38,7 @@ if (!\function_exists('dd')) {
 
 # ExitNow()
 if (!\function_exists('ExitNow')) {
-	function ExitNow($code) {
+	function ExitNow($code=1) {
 		return \pxn\phpUtils\ExitNow(
 			$code
 		);
@@ -47,10 +47,11 @@ if (!\function_exists('ExitNow')) {
 
 # fail()
 if (!\function_exists('fail')) {
-	function fail($msg, $code=1) {
+	function fail($msg=NULL, $code=1, \Exception $e=NULL) {
 		return \pxn\phpUtils\fail(
 			$msg,
-			$code
+			$code,
+			$e
 		);
 	}
 }
