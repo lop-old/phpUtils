@@ -126,6 +126,13 @@ class dbPool {
 
 
 
+	public static function getPoolName($pool=NULL) {
+		$p = dbPool::getPool($pool);
+		if ($p == NULL) {
+			return NULL;
+		}
+		return $p->getName();
+	}
 	public function getName() {
 		return $this->dbName;
 	}
