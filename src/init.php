@@ -190,9 +190,9 @@ function fail($msg=NULL, $code=1, \Exception $e=NULL) {
 		echo '<pre style="color: black; background-color: #ffaaaa; '.
 				'padding: 10px;"><font size="+2">FATAL: '.$msg."</font></pre>\n";
 	}
-	if (\pxn\phpUtils\debug()) {
+	if (debug()) {
 		if ($e == NULL) {
-			\backtrace();
+			backtrace();
 		} else {
 			if (System::isShell()) {
 				echo $e->getTraceAsString();
