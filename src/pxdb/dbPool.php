@@ -344,7 +344,39 @@ class dbPool {
 		}
 		// null / not null
 		if (!isset($field['nullable'])) {
-			$field['nullable'] = TRUE;
+			switch (\strtolower($type)) {
+			case 'int':
+			case 'tinyint':
+			case 'smallint':
+			case 'mediumint':
+			case 'bigint':
+			case 'decimal':
+			case 'float':
+			case 'double':
+			case 'bit':
+			case 'boolean':
+				$field['nullable'] = FALSE;
+				break;
+			case 'varchar':
+			case 'char':
+			case 'text':
+			case 'longtext':
+			case 'blob':
+				$field['nullable'] = TRUE;
+				break;
+			case 'date':
+			case 'time':
+			case 'datetime':
+				$field['nullable'] = FALSE;
+				break;
+			case 'enum':
+			case 'set':
+				$field['nullable'] = TRUE;
+				break;
+			default:
+				$field['nullable'] = TRUE;
+				break;
+			}
 		}
 		$sql[] = ($field['nullable'] == FALSE ? 'NOT ' : '').'NULL';
 		// done
