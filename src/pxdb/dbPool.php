@@ -8,6 +8,8 @@
  */
 namespace pxn\phpUtils\pxdb;
 
+use pxn\phpUtils\San;
+
 
 class dbPool {
 
@@ -183,6 +185,160 @@ class dbPool {
 			$table,
 			$this->getKnownTables()
 		);
+	}
+
+
+
+	#####################
+	## Update Schema's ##
+	#####################
+
+
+
+	// update table schemas
+	public function UpdateTables($tables=NULL) {
+		// default to all tables
+		if (empty($tables)) {
+			$tables = $this->getUsedTables();
+		}
+		// array of table names
+		if (\is_array($tables)) {
+			foreach ($tables as $table) {
+				if ($table == NULL || empty($table)) {
+					continue;
+				}
+				if (!$this->doUpdateTable($table)) {
+					return FALSE;
+				}
+			}
+			return TRUE;
+		}
+		// single table name
+		return $this->doUpdateTable($tables);
+	}
+	protected function doUpdateTable($table) {
+		$table = (string) $table;
+		if (empty($table)) {
+			fail('Table argument is required!');
+			exit(1);
+		}
+		// find table schema
+		$namespace = NULL;
+		if (\class_exists('pxn\\phpPortal\\Website')) {
+			$namespace = \pxn\phpPortal\Website::getSiteNamespace();
+		}
+		if (empty($namespace)) {
+			fail('Failed to find project namespace!');
+			exit(1);
+		}
+		$clss = "{$namespace}\\schemas\\table_{$table}";
+		if (!\class_exists($clss)) {
+			fail("db table schema class not found: {$clss}");
+			exit(1);
+		}
+		$schema = new $clss();
+		$fields = $schema->getFields();
+
+		// create new table
+		if (!$this->hasTable($table)) {
+			// get first field
+			\reset($fields);
+			list($fieldName, $field) = \each($fields);
+			$field['name'] = $fieldName;
+			$this->CreateTable(
+				$table,
+				$field
+			);
+		}
+
+		// check fields
+//TODO:
+
+
+
+
+
+		return TRUE;
+	}
+	public function CreateTable($tableName, $firstField) {
+		$tableName = San::AlphaNumUnderscore($tableName);
+		if (empty($tableName)) {
+			fail('table name argument is required!');
+			exit(1);
+		}
+		if ($this->hasTable($tableName)) {
+			fail("Cannot create table, already exists: {$tableName}");
+			exit(1);
+		}
+		if (empty($firstField)) {
+			fail('first field argument is required!');
+			exit(1);
+		}
+		$db = $this->getDB();
+		// create table sql
+		$fieldSQL = self::getFieldSQL($firstField);
+		$engine = 'InnoDB';
+		$sql = "CREATE TABLE `{$tableName}` ( {$fieldSQL} ) ENGINE={$engine} DEFAULT CHARSET=latin1";
+		$db->Execute($sql);
+		if (\strtolower($firstField['type']) == 'increment') {
+			$fieldName = $firstField['name'];
+			if (!self::InitAutoIncrementField($db, $tableName, $fieldName)) {
+				fail("Failed to finish creating auto increment field: {$fieldName}");
+				exit(1);
+			}
+		}
+		$this->knownTables[] = $tableName;
+		$db->release();
+	}
+
+
+
+	protected static function getFieldSQL($field) {
+		if (!isset($field['name']) || empty($field['name'])) {
+			fail('Field name is required!');
+			exit(1);
+		}
+		if (!isset($field['type']) || empty($field['type'])) {
+			fail('Field type is required!');
+			exit(1);
+		}
+		$sql = [];
+		// name
+		$name = San::AlphaNumUnderscore( $field['name'] );
+		$sql[] = "`{$name}`";
+		// type
+		$type = San::AlphaNumUnderscore( $field['type'] );
+		// auto increment
+		if (\strtolower($type) == 'increment') {
+			$sql[] = 'int(11)';
+			$field['nullable'] = FALSE;
+		} else {
+			$sql[] = $type;
+			if (isset($field['size']) && !empty($field['size'])) {
+				$size = San::AlphaNumSpaces($field['size']);
+				$sql[] = "({$size})";
+			}
+		}
+		// null / not null
+		if (!isset($field['nullable'])) {
+			$field['nullable'] = TRUE;
+		}
+		$sql[] = ($field['nullable'] == FALSE ? 'NOT ' : '').'NULL';
+		// done
+		return \implode(' ', $sql);
+	}
+	protected static function InitAutoIncrementField($db, $tableName, $fieldName) {
+		$tableName = San::AlphaNumUnderscore($tableName);
+		$fieldName = San::AlphaNumUnderscore($fieldName);
+		$sql = "ALTER TABLE `{$tableName}` ADD PRIMARY KEY ( `{$fieldName}` )";
+		if (!$db->Execute($sql)) {
+			return FALSE;
+		}
+		$sql = "ALTER TABLE `{$tableName}` MODIFY `{$fieldName}` int(11) NOT NULL AUTO_INCREMENT";
+		if (!$db->Execute($sql)) {
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 
