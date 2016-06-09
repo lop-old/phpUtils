@@ -20,6 +20,9 @@ final class San {
 	public static function AlphaNumSafe($str) {
 		return \preg_replace("/[^a-z0-9-._]+/i", '', $str);
 	}
+	public static function AlphaNumSafeMore($str) {
+		return \preg_replace("/[^a-z0-9-._:]+/i", '', $str);
+	}
 	public static function AlphaNumSpaces($str) {
 		return \preg_replace("/[^\sa-z0-9-_]+/i", '', $str);
 	}
