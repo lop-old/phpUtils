@@ -319,13 +319,13 @@ class dbPool {
 			exit(1);
 		}
 		$schema = new $clss();
-		$fields = $schema->getFields();
+		$schemaFields = $schema->getFields();
 
 		// create new table
 		if (!$this->hasTable($tableName)) {
 			// get first field
-			\reset($fields);
-			list($fieldName, $field) = \each($fields);
+			\reset($schemaFields);
+			list($fieldName, $field) = \each($schemaFields);
 			$field['name'] = $fieldName;
 			$this->CreateTable(
 				$tableName,
@@ -408,16 +408,21 @@ class dbPool {
 		$sql = [];
 		// name
 		$sql[] = "`{$name}`";
-		// type
 		// auto increment
 		if (\strtolower($type) == 'increment') {
 			$sql[] = 'int(11)';
 			$field['nullable'] = FALSE;
+		// type/size
 		} else {
-			$sql[] = $type;
+			$size = '';
 			if (isset($field['size']) && !empty($field['size'])) {
 				$size = San::AlphaNumSpaces($field['size']);
-				$sql[] = "({$size})";
+			}
+			$type = \strtoupper($type);
+			if (empty($size)) {
+				$sql[] = $type;
+			} else {
+				$sql[] = "{$type}({$size})";
 			}
 		}
 		// null / not null
