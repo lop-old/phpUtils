@@ -15,11 +15,11 @@ class dbPool {
 	const MaxConnections = 5;  // max connections per pool
 
 	// pools[name]
-	protected static $pools = array();
+	protected static $pools = [];
 
 	protected $dbName = NULL;
 	// conns[index]
-	protected $conns   = array();
+	protected $conns   = [];
 
 	protected $usingTables = [];
 	protected $knownTables = NULL;
@@ -168,13 +168,11 @@ class dbPool {
 		$db->Prepare("SHOW TABLES");
 		$db->Execute();
 		$database = $db->getDatabaseName();
-		$tables = [];
 		while ($db->hasNext()) {
-			$tables[] = $db->getString("Tables_in_{$database}");
+			$this->knownTables[] = $db->getString("Tables_in_{$database}");
 		}
-		self::$knownTables[$poolName] = $tables;
 		$db->release();
-		return self::$knownTables[$poolName];
+		return $this->knownTables;
 	}
 	public function hasTable($table) {
 		$table = (string) $table;
