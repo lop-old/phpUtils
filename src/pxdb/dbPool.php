@@ -8,6 +8,7 @@
  */
 namespace pxn\phpUtils\pxdb;
 
+use pxn\phpUtils\Strings;
 use pxn\phpUtils\San;
 
 
@@ -167,7 +168,10 @@ class dbPool {
 		$db->Execute("SHOW TABLES");
 		$database = $db->getDatabaseName();
 		while ($db->hasNext()) {
-			$this->knownTables[] = $db->getString("Tables_in_{$database}");
+			$tableName = $db->getString("Tables_in_{$database}");
+			if (Strings::StartsWith($tableName, '_'))
+				continue;
+			$this->knownTables[] = $tableName;
 		}
 		$db->release();
 		return $this->knownTables;
@@ -212,6 +216,8 @@ class dbPool {
 				if ($tableName == NULL || empty($tableName)) {
 					continue;
 				}
+				if (Strings::StartsWith($tableName, '_'))
+					continue;
 				if (!$this->doUpdateTable($tableName)) {
 					return FALSE;
 				}
@@ -225,6 +231,10 @@ class dbPool {
 		$tableName = San::AlphaNumUnderscore($tableName);
 		if (empty($tableName)) {
 			fail('Table argument is required!');
+			exit(1);
+		}
+		if (Strings::StartsWith($tableName, '_')) {
+			fail("Cannot use tables starting with an underscore: {$tableName}");
 			exit(1);
 		}
 		// find table schema
@@ -271,6 +281,10 @@ class dbPool {
 			fail('table name argument is required!');
 			exit(1);
 		}
+		if (Strings::StartsWith($tableName, '_')) {
+			fail("Cannot create tables starting with underscore: {$tableName}");
+			exit(1);
+		}
 		if ($this->hasTable($tableName)) {
 			fail("Cannot create table, already exists: {$tableName}");
 			exit(1);
@@ -303,16 +317,20 @@ class dbPool {
 			fail('Field name is required!');
 			exit(1);
 		}
+		$name = San::AlphaNumUnderscore( $field['name'] );
+		if (Strings::StartsWith($name, '_')) {
+			fail("Field names cannot start with underscore: {$name}");
+			exit(1);
+		}
 		if (!isset($field['type']) || empty($field['type'])) {
 			fail('Field type is required!');
 			exit(1);
 		}
+		$type = San::AlphaNumUnderscore( $field['type'] );
 		$sql = [];
 		// name
-		$name = San::AlphaNumUnderscore( $field['name'] );
 		$sql[] = "`{$name}`";
 		// type
-		$type = San::AlphaNumUnderscore( $field['type'] );
 		// auto increment
 		if (\strtolower($type) == 'increment') {
 			$sql[] = 'int(11)';
