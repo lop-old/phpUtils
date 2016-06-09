@@ -178,9 +178,9 @@ function ExitNow($code=1) {
 	exit(0);
 }
 function fail($msg=NULL, $code=1, \Exception $e=NULL) {
-	if ($msg == NULL) {
-		$msg = '<NULL>';
-	}
+	if (empty($msg)) {
+		$msg = '&lt;NULL&gt;';
+	} else
 	if (!\is_string($msg)) {
 		$msg = \print_r($msg, TRUE);
 	}
