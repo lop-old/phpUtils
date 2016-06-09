@@ -164,8 +164,7 @@ class dbPool {
 			fail('Failed to get db for list of tables!');
 			exit(1);
 		}
-		$db->Prepare("SHOW TABLES");
-		$db->Execute();
+		$db->Execute("SHOW TABLES");
 		$database = $db->getDatabaseName();
 		while ($db->hasNext()) {
 			$this->knownTables[] = $db->getString("Tables_in_{$database}");
@@ -173,13 +172,13 @@ class dbPool {
 		$db->release();
 		return $this->knownTables;
 	}
-	public function hasTable($table) {
-		$table = (string) $table;
-		if (empty($table)) {
+	public function hasTable($tableName) {
+		$tableName = San::AlphaNumUnderscore($tableName);
+		if (empty($tableName)) {
 			return NULL;
 		}
 		return \in_array(
-			$table,
+			$tableName,
 			$this->getKnownTables()
 		);
 	}
@@ -209,11 +208,11 @@ class dbPool {
 		}
 		// array of table names
 		if (\is_array($tables)) {
-			foreach ($tables as $table) {
-				if ($table == NULL || empty($table)) {
+			foreach ($tables as $tableName) {
+				if ($tableName == NULL || empty($tableName)) {
 					continue;
 				}
-				if (!$this->doUpdateTable($table)) {
+				if (!$this->doUpdateTable($tableName)) {
 					return FALSE;
 				}
 			}
@@ -222,9 +221,9 @@ class dbPool {
 		// single table name
 		return $this->doUpdateTable($tables);
 	}
-	protected function doUpdateTable($table) {
-		$table = (string) $table;
-		if (empty($table)) {
+	protected function doUpdateTable($tableName) {
+		$tableName = San::AlphaNumUnderscore($tableName);
+		if (empty($tableName)) {
 			fail('Table argument is required!');
 			exit(1);
 		}
@@ -237,7 +236,7 @@ class dbPool {
 			fail('Failed to find project namespace!');
 			exit(1);
 		}
-		$clss = "{$namespace}\\schemas\\table_{$table}";
+		$clss = "{$namespace}\\schemas\\table_{$tableName}";
 		if (!\class_exists($clss)) {
 			fail("db table schema class not found: {$clss}");
 			exit(1);
@@ -246,13 +245,13 @@ class dbPool {
 		$fields = $schema->getFields();
 
 		// create new table
-		if (!$this->hasTable($table)) {
+		if (!$this->hasTable($tableName)) {
 			// get first field
 			\reset($fields);
 			list($fieldName, $field) = \each($fields);
 			$field['name'] = $fieldName;
 			$this->CreateTable(
-				$table,
+				$tableName,
 				$field
 			);
 		}
