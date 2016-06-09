@@ -1,6 +1,18 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-06-08 phpUtils 0.1.23
+==========================
+* added UpdateTables() function to dbPool class to auto create/update table schemas
+* also added getTables() hasTable() getTableFields() and tableHasField() functions
+* also added UsingTables() functions to track which tables are in use
+* pxdb classes now ignore tables and fields starting with _ underscore
+* added AlphaNumUnderscore() and AlphaNumSafeMore() functions
+* fixed optional arguments for ExitNow() and fail() functions
+* added error mode argument to dbPool::get() function
+* changed default twig cache path from .cache/ to .twig_cache/
+
+
 2016-06-02 phpUtils 0.1.22
 ==========================
 * added $maxParts and $deviance arguments to SecondsToString() function
