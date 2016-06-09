@@ -431,14 +431,27 @@ class dbPool {
 			case 'blob':
 				$field['nullable'] = TRUE;
 				break;
-			case 'date':
-			case 'time':
-			case 'datetime':
-				$field['nullable'] = FALSE;
-				break;
 			case 'enum':
 			case 'set':
 				$field['nullable'] = TRUE;
+				break;
+			case 'date':
+				$field['nullable'] = FALSE;
+				if (!isset($field['default'])) {
+					$field['default'] = '0000-00-00';
+				}
+				break;
+			case 'time':
+				$field['nullable'] = FALSE;
+				if (!isset($field['default'])) {
+					$field['default'] = '00:00:00';
+				}
+				break;
+			case 'datetime':
+				$field['nullable'] = FALSE;
+				if (!isset($field['default'])) {
+					$field['default'] = '0000-00-00 00:00:00';
+				}
 				break;
 			default:
 				$field['nullable'] = TRUE;
@@ -446,6 +459,47 @@ class dbPool {
 			}
 		}
 		$sql[] = ($field['nullable'] == FALSE ? 'NOT ' : '').'NULL';
+		// default
+		if (!isset($field['default']) && $field['nullable'] == TRUE) {
+			$field['default'] = NULL;
+		}
+		if (isset($field['default'])) {
+			if ($field['default'] === NULL) {
+				$sql[] = 'DEFAULT NULL';
+			} else {
+				$default = San::AlphaNumSafeMore($field['default']);
+				switch (\strtolower($type)) {
+				case 'int':
+				case 'tinyint':
+				case 'smallint':
+				case 'mediumint':
+				case 'bigint':
+					$default = (int) $default;
+					$sql[] = "DEFAULT {$default}";
+					break;
+				case 'decimal':
+				case 'double':
+					$default = (double) $default;
+					$sql[] = "DEFAULT {$default}";
+					break;
+				case 'float':
+					$default = (float) $default;
+					$sql[] = "DEFAULT {$default}";
+					break;
+				case 'bit':
+					$default = ($default == 0 ? 0 : 1);
+					$sql[] = "DEFAULT {$default}";
+					break;
+				case 'boolean':
+					$default = ($default == 0 ? 0 : 1);
+					$sql[] = "DEFAULT {$default}";
+					break;
+				default:
+					$sql[] = "DEFAULT '{$default}'";
+					break;
+				}
+			}
+		}
 		// done
 		return \implode(' ', $sql);
 	}
