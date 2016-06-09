@@ -26,6 +26,7 @@ class dbPool {
 
 	protected $usingTables = [];
 	protected $knownTables = NULL;
+	protected $knownTableFields = [];
 
 
 
@@ -185,6 +186,72 @@ class dbPool {
 			$tableName,
 			$this->getKnownTables()
 		);
+	}
+
+
+
+	public function getTableFields($tableName) {
+		$tableName = San::AlphaNumUnderscore($tableName);
+		// cached fields list
+		if (isset($this->knownTableFields[$tableName])) {
+			return $this->knownTableFields[$tableName];
+		}
+		// get known fields
+		$db = $this->getDB();
+		$db->Execute("DESCRIBE `{$tableName}`;");
+		$fields = [];
+		while ($db->hasNext()) {
+			// field name
+			$name = $db->getString('Field');
+			if (Strings::StartsWith($name, '_'))
+				continue;
+			$field = [];
+			// type
+			$field['type'] = $db->getString('Type');
+			// size
+			$pos = \strpos($field['type'], '(');
+			if ($pos !== FALSE) {
+				$field['size'] = Strings::Trim(
+					\substr($field['type'], $pos),
+					'(', ')'
+				);
+				$field['type'] = \substr($field['type'], 0, $pos);
+			}
+			// null / not null
+			$nullable = $db->getString('Null');
+			$field['nullable'] = (\strtoupper($nullable) == 'YES');
+			// default
+			$default = $db->getString('Default');
+			if ($default !== FALSE && \strtoupper($default) != 'NULL') {
+				$field['default'] = $default;
+			}
+			// primary key
+			$primary = $db->getString('Key');
+			if (\strtoupper($primary) == 'PRI') {
+				$field['primary'] = TRUE;
+			}
+			// auto increment
+			$extra = $db->getString('Extra');
+			if (\strpos(\strtolower($extra), 'auto_increment') !== FALSE) {
+				$field['increment'] = TRUE;
+			}
+			$fields[$name] = $field;
+		}
+		$this->knownTableFields[$tableName] = $fields;
+		$db->release();
+		return $this->knownTableFields[$tableName];
+	}
+	public function tableHasField($tableName, $fieldName) {
+		$tableName = San::AlphaNumUnderscore($tableName);
+		$fieldName = San::AlphaNumUnderscore($fieldName);
+		if (empty($tableName) || empty($fieldName)) {
+			return NULL;
+		}
+		$tableFields = $this->getTableFields($tableName);
+		if (!isset($tableFields[$fieldName])) {
+			return FALSE;
+		}
+		return TRUE;
 	}
 
 
