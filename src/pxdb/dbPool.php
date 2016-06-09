@@ -147,12 +147,9 @@ class dbPool {
 
 
 
-	public function UsingTables(...$tables) {
-		$this->usingTables = \array_merge($this->usingTables, $tables);
-	}
-	public function getUsedTables() {
-		return $this->usingTables;
-	}
+	##########################
+	## table / field exists ##
+	##########################
 
 
 
@@ -192,6 +189,15 @@ class dbPool {
 	#####################
 	## Update Schema's ##
 	#####################
+
+
+
+	public function UsingTables(...$tables) {
+		$this->usingTables = \array_merge($this->usingTables, $tables);
+	}
+	public function getUsedTables() {
+		return $this->usingTables;
+	}
 
 
 
