@@ -334,12 +334,23 @@ class dbPool {
 		}
 
 		// check fields
-//TODO:
+		$db = NULL;
+		foreach ($schemaFields as $fieldName => $field) {
+			// add missing field
+			if (!$this->tableHasField($tableName, $fieldName)) {
+				$field['name'] = $fieldName;
+				$fieldSQL = self::getFieldSQL($field);
+				$sql = "ALTER TABLE `{$tableName}` ADD {$fieldSQL}";
+				if ($db == NULL) {
+					$db = $this->getDB();
+				}
+				$db->Execute($sql);
+			}
+		}
 
-
-
-
-
+		if ($db != NULL) {
+			$db->release();
+		}
 		return TRUE;
 	}
 	public function CreateTable($tableName, $firstField) {
