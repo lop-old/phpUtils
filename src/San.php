@@ -23,6 +23,9 @@ final class San {
 	public static function AlphaNumSpaces($str) {
 		return \preg_replace("/[^\sa-z0-9-_]+/i", '', $str);
 	}
+	public static function AlphaNumUnderscore($str) {
+		return \preg_replace("/[^a-z0-9_]+/i", '', $str);
+	}
 	public static function AlphaNumFile($str) {
 		$filter = '[:alnum:]\(\)\_\.\,\'\&\?\+\-\=\!';
 		return \preg_replace('/[^'.$filter.']/', '', $str);
