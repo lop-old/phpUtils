@@ -14,6 +14,17 @@ final class Arrays {
 
 
 
+	public static function TrimFlatMerge($glue, ...$data) {
+		$glue = (string) $glue;
+		self::TrimFlat($data);
+		return \implode(
+			$glue,
+			$data
+		);
+	}
+
+
+
 	public static function TrimFlat(&$data) {
 		if ($data === NULL) return;
 		$data = self::Flatten($data);
