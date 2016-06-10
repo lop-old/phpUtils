@@ -10,6 +10,7 @@ namespace pxn\phpUtils\pxdb;
 
 use pxn\phpUtils\Strings;
 use pxn\phpUtils\San;
+use pxn\phpUtils\System;
 
 
 class dbPool {
@@ -277,17 +278,26 @@ class dbPool {
 		if (empty($tables)) {
 			$tables = $this->getUsedTables();
 		}
+		$isShell = System::isShell();
+		if ($isShell) {
+			echo "\n == Creating/Updating DB Tables..\n";
+		}
 		// array of table names
 		if (\is_array($tables)) {
+			$countTables = 0;
 			foreach ($tables as $tableName) {
 				if ($tableName == NULL || empty($tableName)) {
 					continue;
 				}
 				if (Strings::StartsWith($tableName, '_'))
 					continue;
-				if (!$this->doUpdateTable($tableName)) {
-					return FALSE;
+				$createdTable = $this->doUpdateTable($tableName);
+				if ($createdTable) {
+					$countTables++;
 				}
+			}
+			if ($isShell) {
+				echo "\nCreated [ {$countTables} ] tables.\n";
 			}
 			return TRUE;
 		}
@@ -322,6 +332,7 @@ class dbPool {
 		$schemaFields = $schema->getFields();
 
 		// create new table
+		$createdTable = FALSE;
 		if (!$this->hasTable($tableName)) {
 			// get first field
 			\reset($schemaFields);
@@ -331,10 +342,12 @@ class dbPool {
 				$tableName,
 				$field
 			);
+			$createdTable = TRUE;
 		}
 
 		// check fields
 		$db = NULL;
+		$countFields = 0;
 		foreach ($schemaFields as $fieldName => $field) {
 			// add missing field
 			if (!$this->tableHasField($tableName, $fieldName)) {
@@ -345,13 +358,17 @@ class dbPool {
 					$db = $this->getDB();
 				}
 				$db->Execute($sql);
+				$countFields++;
 			}
+		}
+		if (System::isShell() && $countFields > 0) {
+			echo "\nAdded [ {$countFields} ] fields to table: {$tableName}\n";
 		}
 
 		if ($db != NULL) {
 			$db->release();
 		}
-		return TRUE;
+		return $createdTable;
 	}
 	public function CreateTable($tableName, $firstField) {
 		$tableName = San::AlphaNumUnderscore($tableName);
@@ -376,6 +393,9 @@ class dbPool {
 		$fieldSQL = self::getFieldSQL($firstField);
 		$engine = 'InnoDB';
 		$sql = "CREATE TABLE `{$tableName}` ( {$fieldSQL} ) ENGINE={$engine} DEFAULT CHARSET=latin1";
+		if (System::isShell()) {
+			echo "\nCreating table: {$tableName} ..\n";
+		}
 		$db->Execute($sql);
 		if (\strtolower($firstField['type']) == 'increment') {
 			$fieldName = $firstField['name'];
