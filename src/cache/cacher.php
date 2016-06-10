@@ -16,7 +16,7 @@ abstract class cacher {
 
 
 	public function __construct($expireSeconds=NULL) {
-		if ($expireSeconds != NULL)
+		if ($expireSeconds != NULL) {
 			$expireSeconds = (int) $expireSeconds;
 			if ($expireSeconds > 0) {
 				$this->expireSeconds = $expireSeconds;
