@@ -145,19 +145,25 @@ try {
 
 // dump()
 function dump($var) {
-	d($var);
+	if (System::isShell()) {
+		echo "--DUMP--\n";
+		\var_dump($var);
+		echo "\n--------\n";
+	} else {
+		$CRLF = "\n";
+		echo '<pre style="color: black; background-color: #dfc0c0; padding: 10px;">';
+		\var_dump($var);
+		echo '</pre>'.$CRLF;
+	}
 }
 // d()
 function d($var) {
-	$CRLF = "\n";
-	echo '<pre style="color: black; background-color: #dfc0c0; padding: 10px;">';
-	\var_dump($var);
-	echo '</pre>'.$CRLF;
+	dump($var);
 }
 // dd()
 function dd($var) {
-	d($var);
-	exit(1);
+	dump($var);
+	ExitNow(1);
 }
 
 
@@ -178,17 +184,20 @@ function ExitNow($code=1) {
 	exit(0);
 }
 function fail($msg=NULL, $code=1, \Exception $e=NULL) {
+	$CRLF = "\n";
 	if (empty($msg)) {
-		$msg = '&lt;NULL&gt;';
+		$msg = System::isShell()
+			? '<NULL>'
+			: '&lt;NULL&gt;';
 	} else
 	if (!\is_string($msg)) {
 		$msg = \print_r($msg, TRUE);
 	}
 	if (System::isShell()) {
-		echo "\n *** {$msg} *** \n\n";
+		echo "\n *** FATAL: {$msg} *** \n\n";
 	} else {
 		echo '<pre style="color: black; background-color: #ffaaaa; '.
-				'padding: 10px;"><font size="+2">FATAL: '.$msg."</font></pre>\n";
+				'padding: 10px;"><font size="+2">FATAL: '.$msg.'</font></pre>'.$CRLF;
 	}
 	if (debug()) {
 		if ($e == NULL) {
@@ -207,9 +216,9 @@ function fail($msg=NULL, $code=1, \Exception $e=NULL) {
 	}
 }
 function backtrace() {
-	$CRLF = Defines::CRLF;
-	$TAB  = Defines::TAB;
-	//TODO: is this right?
+	$isShell = System::isShell();
+	$CRLF = "\n";
+	$TAB  = "\t";
 	$trace = \debug_backtrace();
 	$ignore = [
 		'inc.php' => [
@@ -230,48 +239,76 @@ function backtrace() {
 			}
 		}
 	}
-	echo '<table style="background-color: #ffeedd; padding: 10px; '.
-		'border-width: 1px; border-style: solid; border-color: #aaaaaa;">'.$CRLF;
+	if (!$isShell) {
+		echo '<table style="background-color: #ffeedd; padding: 10px; '.
+			'border-width: 1px; border-style: solid; border-color: #aaaaaa;">'.$CRLF;
+	}
 	$first   = TRUE;
 	$evenodd = FALSE;
 	foreach ($trace as $num => $tr) {
 		if (!$first) {
-			echo '<tr><td height="20">&nbsp;</td></tr>';
+			if ($isShell) {
+				echo " ----- \n";
+			} else {
+				echo '<tr><td height="20">&nbsp;</td></tr>'.$CRLF;
+			}
 		}
-		$evenodd = ! $evenodd;
-		$bgcolor = ($evenodd ? '#ffe0d0' : '#fff8e8');
 		$first = FALSE;
-		echo '<tr style="background-color: '.$bgcolor.';">'.$CRLF;
-		echo $TAB.'<td><font size="-2">#'.((int) $num).'</font></td>'.$CRLF;
-		echo $TAB.'<td>'.@$tr['file'].'</td>'.$CRLF;
-		echo '</tr>'.$CRLF;
-		echo '<tr style="background-color: '.$bgcolor.';">'.$CRLF;
-		echo $TAB.'<td></td>'.$CRLF;
-		$args = '';
+		$trArgs = '';
 		foreach ($tr['args'] as $arg) {
-			if (!empty($args)) {
-				$args .= ', ';
+			if (!empty($trArgs)) {
+				$trArgs .= ', ';
 			}
 			if (!\is_string($arg)) {
-				$args .= \print_r($arg, TRUE);
+				$trArgs .= \print_r($arg, TRUE);
 			} else
-			if (\strpos($arg, $CRLF)) {
-				$args .= '<pre>'.$arg.'</pre>';
+			if (!$isShell && \strpos($arg, $CRLF)) {
+				$trArgs .= '<pre>'.$arg.'</pre>';
 			} else {
-				$args .= $arg;
+				$trArgs .= $arg;
 			}
 		}
-		echo $TAB.'<td>'.
-			(isset($tr['file']) ? '<i>'.\basename($tr['file']).'</i> ' : '' ).
-			'<font size="-1">--&gt;</font> '.
-			'<b>'.$tr['function'].'</b> '.
-			'( '.$args.' ) '.
-			( isset($tr['line']) ? '<font size="-1">line: '.$tr['line'].'</font>' : '' ).
-			'</td>'.$CRLF;
-		echo '</tr>'.$CRLF;
+		$num = (int) $num;
+		$trFile = @$tr['file'];
+		$trBaseFile = \basename($trFile);
+		$trFunc = @$tr['function'];
+		$trLine = @$tr['line'];
+		if ($isShell) {
+			echo "{$num} - {$trFile}\n";
+			echo ' ';
+			if (!empty($trBaseFile)) {
+				echo " {$trBaseFile}";
+			}
+			echo " --> {$trFunc} {$trLine}";
+			if (!empty($trLine)) {
+				echo "  Line: {$trLine}";
+			}
+			echo "\n";
+			if (!empty($trArgs)) {
+				echo "ARGS: {$trArgs}\n";
+			}
+		} else {
+			$evenodd = ! $evenodd;
+			$bgcolor = ($evenodd ? '#ffe0d0' : '#fff8e8');
+			echo '<tr style="background-color: '.$bgcolor.';">'.$CRLF;
+			echo $TAB.'<td><font size="-2">#'.((int) $num).'</font></td>'.$CRLF;
+			echo $TAB.'<td>'.$trFile.'</td>'.$CRLF;
+			echo '</tr>'.$CRLF;
+			echo '<tr style="background-color: '.$bgcolor.';">'.$CRLF;
+			echo $TAB.'<td></td>'.$CRLF;
+			echo $TAB.'<td>'.
+				(empty($trBaseFile) ? '' : '<i>'.$trBaseFile.'</i> ' ).
+				'<font size="-1">--&gt;</font> '.
+				'<b>'.$trFunc.'</b> '.
+				'( '.$trArgs.' ) '.
+				(empty($trLine) ? '' : '<font size="-1">line: '.$trLine.'</font>' ).
+				'</td>'.$CRLF;
+			echo '</tr>'.$CRLF;
+		}
 	}
-	echo '</table>'.$CRLF;
-	//dump($trace);
+	if (!$isShell) {
+		echo '</table>'.$CRLF;
+	}
 }
 
 

@@ -232,6 +232,9 @@ final class General {
 	 * @codeCoverageIgnore
 	 */
 	public static function NoPageCache() {
+		if (System::isShell()) {
+			return;
+		}
 		if (self::$INITED_NoPageCache)
 			return TRUE;
 		if (\headers_sent())
@@ -255,14 +258,19 @@ final class General {
 	 * @codeCoverageIgnore
 	 */
 	public static function ForwardTo($url, $delay=0) {
-		if (\headers_sent() || $delay > 0) {
-			echo '<header><meta http-equiv="refresh" content="'.((int) $delay).';url='.$url.'"></header>';
-			echo '<p><a href="'.$url.'"><font size="+1">Continue..</font></a></p>';
+		if (System::isShell()) {
+			echo "--FORWARD: $url\n";
 		} else {
-			\header('HTTP/1.0 302 Found');
-			\header('Location: '.$url);
+			if (\headers_sent() || $delay > 0) {
+				echo '<header><meta http-equiv="refresh" content="'.((int) $delay).';url='.$url.'"></header>';
+				echo '<p><a href="'.$url.'"><font size="+1">Continue..</font></a></p>';
+			} else {
+				\header('HTTP/1.0 302 Found');
+				\header('Location: '.$url);
+			}
 		}
-		exit();
+		ExitNow(0);
+		exit(0);
 	}
 
 
@@ -272,13 +280,19 @@ final class General {
 	 * @param string $id - Optional id of element in which to scroll.
 	 * @codeCoverageIgnore
 	 */
-	public static function ScrollToBottom($id='') {
-		if (empty($id)) $id = 'document';
-		echo Defines::EOL.'<!-- ScrollToBottom() -->'.Defines::EOL.
+	public static function ScrollToBottom($id=NULL) {
+		if (System::isShell()) {
+			echo "--SCROLL--\n";
+		} else {
+			if (empty($id)) {
+				$id = 'document';
+			}
+			echo Defines::EOL.'<!-- ScrollToBottom() -->'.Defines::EOL.
 				'<script type="text/javascript"><!--//'.Defines::EOL.
 				$id.'.scrollTop='.$id.'.scrollHeight; '.
 				'window.scroll(0,document.body.offsetHeight); '.
 				'//--></script>'.Defines::EOL.Defines::EOL;
+		}
 	}
 
 
