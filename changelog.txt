@@ -1,6 +1,14 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-06-09 phpUtils 0.1.24
+==========================
+* added cacher classes for storing simple variables in the filesystem
+* added update.sh script
+* fixed display bugs when in shell mode
+* added TrimFlatMerge() function to Arrays class
+
+
 2016-06-08 phpUtils 0.1.23
 ==========================
 * added UpdateTables() function to dbPool class to auto create/update table schemas
