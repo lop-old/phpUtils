@@ -26,17 +26,15 @@ final class Arrays {
 
 
 	public static function TrimFlat(&$data) {
-		if ($data === NULL) return;
+		if ($data === NULL)
+			return;
 		$data = self::Flatten($data);
 		self::Trim($data);
 	}
 
 
 
-	public static function Flatten($data) {
-		if ($data === NULL) return NULL;
-		if (!\is_array($data))
-			return [ (string) $data ];
+	public static function Flatten(...$data) {
 		$result = [];
 		\array_walk_recursive(
 			$data, // @codeCoverageIgnore
@@ -50,7 +48,8 @@ final class Arrays {
 
 
 	public static function Trim(&$data) {
-		if ($data === NULL) return;
+		if ($data === NULL)
+			return;
 		if (!\is_array($data)) {
 			$data = [ $data ];
 			return;

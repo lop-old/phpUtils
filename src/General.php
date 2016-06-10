@@ -204,6 +204,9 @@ final class General {
 	 */
 	public static function getTimestamp($places=3) {
 		$time = \explode(' ', \microtime(), 2);
+		if ($places <= 0) {
+			return (int) $time[1];
+		}
 		$timestamp = ((double) $time[0]) + ((double) $time[1]);
 		return Numbers::Round($timestamp, $places);
 	}

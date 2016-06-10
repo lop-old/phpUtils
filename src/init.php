@@ -36,7 +36,7 @@ use pxn\phpUtils\System;
 	\ini_set('html_errors',    $isShell ? 'Off' : 'On');
 	\ini_set('log_errors',     'On');
 	if ( ! $isShell ) {
-		\ini_set('error_log',      'error_log');
+		\ini_set('error_log', 'error_log');
 	}
 }
 
@@ -219,19 +219,20 @@ function backtrace() {
 			'__autoload',
 		],
 	];
-//	$ignore = array();
 	foreach ($trace as $index => $tr) {
-		if (!isset($tr['file'])) continue;
+		if (!isset($tr['file']))
+			continue;
 		$file = \basename($tr['file']);
 		if (isset($ignore[$file])) {
 			$func = $tr['function'];
-			if (\in_array($func, $ignore[$file]))
+			if (\in_array($func, $ignore[$file])) {
 				unset($trace[$index]);
+			}
 		}
 	}
 	echo '<table style="background-color: #ffeedd; padding: 10px; '.
 		'border-width: 1px; border-style: solid; border-color: #aaaaaa;">'.$CRLF;
-	$first = TRUE;
+	$first   = TRUE;
 	$evenodd = FALSE;
 	foreach ($trace as $num => $tr) {
 		if (!$first) {
@@ -248,25 +249,25 @@ function backtrace() {
 		echo $TAB.'<td></td>'.$CRLF;
 		$args = '';
 		foreach ($tr['args'] as $arg) {
-			if (!empty($args))
+			if (!empty($args)) {
 				$args .= ', ';
-			if (\is_string($arg)) {
-				if (\strpos($arg, $CRLF)) {
-					$args .= '<pre>'.$arg.'</pre>';
-				} else {
-					$args .= $arg;
-				}
-			} else {
+			}
+			if (!\is_string($arg)) {
 				$args .= \print_r($arg, TRUE);
+			} else
+			if (\strpos($arg, $CRLF)) {
+				$args .= '<pre>'.$arg.'</pre>';
+			} else {
+				$args .= $arg;
 			}
 		}
 		echo $TAB.'<td>'.
-				(isset($tr['file']) ? '<i>'.\basename($tr['file']).'</i> ' : '' ).
-				'<font size="-1">--&gt;</font> '.
-				'<b>'.$tr['function'].'</b> '.
-				'( '.$args.' ) '.
-				(isset($tr['line']) ? '<font size="-1">line: '.$tr['line'].'</font>' : '' ).
-				'</td>'.$CRLF;
+			(isset($tr['file']) ? '<i>'.\basename($tr['file']).'</i> ' : '' ).
+			'<font size="-1">--&gt;</font> '.
+			'<b>'.$tr['function'].'</b> '.
+			'( '.$args.' ) '.
+			( isset($tr['line']) ? '<font size="-1">line: '.$tr['line'].'</font>' : '' ).
+			'</td>'.$CRLF;
 		echo '</tr>'.$CRLF;
 	}
 	echo '</table>'.$CRLF;
@@ -333,8 +334,9 @@ function debug($debug=NULL) {
 			'bool',
 			'cookie'
 		);
-		if ($val === TRUE)
+		if ($val === TRUE) {
 			debug($val);
+		}
 	}
 	unset($val);
 	// ensure inited
