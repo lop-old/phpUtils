@@ -62,6 +62,9 @@ class cacher_filesystem extends cacher {
 		}
 		// existing entry
 		$filePath = $this->_getFilePath($context);
+		if (empty($filePath)) {
+			return NULL;
+		}
 		if (\file_exists($filePath)) {
 			// read cache file
 			$data = \file_get_contents($filePath);
@@ -83,6 +86,9 @@ class cacher_filesystem extends cacher {
 	protected function _setEntry($value, $context) {
 		$timestamp = General::getTimestamp(0);
 		$filePath = $this->_getFilePath($context);
+		if (empty($filePath)) {
+			return FALSE;
+		}
 		// write cache file
 		$result = \file_put_contents(
 			$filePath,
@@ -142,6 +148,9 @@ class cacher_filesystem extends cacher {
 
 
 	protected function _getFilePath($context) {
+		if (empty($this->cachePath)) {
+			return NULL;
+		}
 		return Strings::BuildPath(
 			$this->cachePath,
 			".cache__{$context}"
