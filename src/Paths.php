@@ -154,6 +154,16 @@ final class Paths {
 		}
 		return $path;
 	}
+	public static function getCacherPath() {
+		$path = Config::get(Defines::KEY_CACHER_PATH);
+		if (empty($path)) {
+			$path = self::base().'/.pxn_cache';
+		}
+		if (!\is_dir($path)) {
+			\mkdir($path, 0700);
+		}
+		return $path;
+	}
 
 
 

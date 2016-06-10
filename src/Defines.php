@@ -23,6 +23,7 @@ final class Defines {
 	const KEY_FAILED_PAGE     = 'failed page';
 	const KEY_FAV_ICON        = 'fav icon';
 	const KEY_TWIG_CACHE_PATH = 'twig cache path';
+	const KEY_CACHER_PATH     = 'cacher path';
 	const TEMPLATE_EXTENSION = '.htm';
 
 	const DIR_SEP      = \DIRECTORY_SEPARATOR;
