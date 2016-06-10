@@ -21,11 +21,13 @@ class cacher_filesystem extends cacher {
 
 	public function __construct($expireSeconds=NULL, $cachePath=NULL) {
 		parent::__construct($expireSeconds);
-		$this->cachePath = (
-			empty($cachePath)
-			? \pxn\phpUtils\Paths::getCacherPath()
-			: (string) $cachePath
-		);
+		if (!debug()) {
+			$this->cachePath = (
+				empty($cachePath)
+				? \pxn\phpUtils\Paths::getCacherPath()
+				: (string) $cachePath
+			);
+		}
 	}
 
 
