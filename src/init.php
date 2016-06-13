@@ -199,6 +199,10 @@ function fail($msg=NULL, $code=1, \Exception $e=NULL) {
 		echo '<pre style="color: black; background-color: #ffaaaa; '.
 				'padding: 10px;"><font size="+2">FATAL: '.$msg.'</font></pre>'.$CRLF;
 	}
+	if ($code instanceof \Exception) {
+		$e = $code;
+		$code = 1;
+	}
 	if (debug()) {
 		if ($e == NULL) {
 			backtrace();
