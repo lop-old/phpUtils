@@ -204,26 +204,21 @@ function fail($msg=NULL, $code=1, \Exception $e=NULL) {
 		$code = 1;
 	}
 	if (debug()) {
-		if ($e == NULL) {
-			backtrace();
-		} else {
-			if (System::isShell()) {
-				echo $e->getTraceAsString();
-			} else {
-				echo $e->getTrace();
-			}
-		}
-		echo "\n";
+		backtrace($e);
 	}
 	if ($code !== NULL) {
 		ExitNow($code);
 	}
 }
-function backtrace() {
+function backtrace($e=NULL) {
 	$isShell = System::isShell();
 	$CRLF = "\n";
 	$TAB  = "\t";
-	$trace = \debug_backtrace();
+	if ($e == NULL) {
+		$trace = \debug_backtrace();
+	} else {
+		$trace = $e->getTrace();
+	}
 	$ignore = [
 		'inc.php' => [
 			'fail',
@@ -311,7 +306,7 @@ function backtrace() {
 		}
 	}
 	if (!$isShell) {
-		echo '</table>'.$CRLF;
+		echo '</table>'.$CRLF.$CRLF;
 	}
 }
 
