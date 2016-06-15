@@ -207,6 +207,8 @@ class dbPool {
 			if (Strings::StartsWith($name, '_'))
 				continue;
 			$field = [];
+			// field name
+			$field['name'] = $name;
 			// type
 			$field['type'] = $db->getString('Type');
 			// size
@@ -242,7 +244,7 @@ class dbPool {
 		$db->release();
 		return $this->knownTableFields[$tableName];
 	}
-	public function tableHasField($tableName, $fieldName) {
+	public function hasTableField($tableName, $fieldName) {
 		$tableName = San::AlphaNumUnderscore($tableName);
 		$fieldName = San::AlphaNumUnderscore($fieldName);
 		if (empty($tableName) || empty($fieldName)) {
