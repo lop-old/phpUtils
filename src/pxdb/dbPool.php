@@ -259,12 +259,6 @@ class dbPool {
 
 
 
-	#####################
-	## Update Schema's ##
-	#####################
-
-
-
 	public function UsingTables(...$tables) {
 		$this->usingTables = \array_merge($this->usingTables, $tables);
 	}
@@ -274,104 +268,6 @@ class dbPool {
 
 
 
-	// update table schemas
-	public function UpdateTables($tables=NULL) {
-		// default to all tables
-		if (empty($tables)) {
-			$tables = $this->getUsedTables();
-		}
-		$isShell = System::isShell();
-		if ($isShell) {
-			echo "\n == Creating/Updating DB Tables..\n";
-		}
-		// array of table names
-		if (\is_array($tables)) {
-			$countTables = 0;
-			foreach ($tables as $tableName) {
-				if ($tableName == NULL || empty($tableName)) {
-					continue;
-				}
-				if (Strings::StartsWith($tableName, '_'))
-					continue;
-				$createdTable = $this->doUpdateTable($tableName);
-				if ($createdTable) {
-					$countTables++;
-				}
-			}
-			if ($isShell) {
-				echo "\nCreated [ {$countTables} ] tables.\n";
-			}
-			return TRUE;
-		}
-		// single table name
-		return $this->doUpdateTable($tables);
-	}
-	protected function doUpdateTable($tableName) {
-		$tableName = San::AlphaNumUnderscore($tableName);
-		if (empty($tableName)) {
-			fail('Table argument is required!');
-			exit(1);
-		}
-		if (Strings::StartsWith($tableName, '_')) {
-			fail("Cannot use tables starting with an underscore: {$tableName}");
-			exit(1);
-		}
-		// find table schema
-		$namespace = NULL;
-		if (\class_exists('pxn\\phpPortal\\Website')) {
-			$namespace = \pxn\phpPortal\Website::getSiteNamespace();
-		}
-		if (empty($namespace)) {
-			fail('Failed to find project namespace!');
-			exit(1);
-		}
-		$clss = "{$namespace}\\schemas\\table_{$tableName}";
-		if (!\class_exists($clss)) {
-			fail("db table schema class not found: {$clss}");
-			exit(1);
-		}
-		$schema = new $clss();
-		$schemaFields = $schema->getFields();
-
-		// create new table
-		$createdTable = FALSE;
-		if (!$this->hasTable($tableName)) {
-			// get first field
-			\reset($schemaFields);
-			list($fieldName, $field) = \each($schemaFields);
-			$field['name'] = $fieldName;
-			$this->CreateTable(
-				$tableName,
-				$field
-			);
-			$createdTable = TRUE;
-		}
-
-		// check fields
-		$db = NULL;
-		$countFields = 0;
-		foreach ($schemaFields as $fieldName => $field) {
-			// add missing field
-			if (!$this->tableHasField($tableName, $fieldName)) {
-				$field['name'] = $fieldName;
-				$fieldSQL = self::getFieldSQL($field);
-				$sql = "ALTER TABLE `{$tableName}` ADD {$fieldSQL}";
-				if ($db == NULL) {
-					$db = $this->getDB();
-				}
-				$db->Execute($sql);
-				$countFields++;
-			}
-		}
-		if (System::isShell() && $countFields > 0) {
-			echo "\nAdded [ {$countFields} ] fields to table: {$tableName}\n";
-		}
-
-		if ($db != NULL) {
-			$db->release();
-		}
-		return $createdTable;
-	}
 	public function CreateTable($tableName, $firstField) {
 		$tableName = San::AlphaNumUnderscore($tableName);
 		if (empty($tableName)) {
@@ -412,6 +308,18 @@ class dbPool {
 
 
 
+	public function addTableField($tableName, array $field) {
+		$tableName = San::AlphaNumUnderscore($tableName);
+		if ($this->hasTableField($tableName, $field['name'])) {
+			return FALSE;
+		}
+		$db = $this->getDB();
+		$sql = self::getFieldSQL($field);
+		$sql = "ALTER TABLE `{$tableName}` ADD {$sql}";
+		$db->Execute($sql);
+		$db->release();
+		return TRUE;
+	}
 	protected static function getFieldSQL($field) {
 		if (!isset($field['name']) || empty($field['name'])) {
 			fail('Field name is required!');
