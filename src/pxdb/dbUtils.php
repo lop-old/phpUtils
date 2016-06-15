@@ -19,7 +19,6 @@ final class dbUtils {
 
 
 
-
 	public static function UpdateTables($pool=NULL, $tables=NULL) {
 		if ($pool == NULL) {
 			fail('pool argument is required!');
@@ -76,6 +75,7 @@ final class dbUtils {
 			// get first fields
 			\reset($fields);
 			list($fieldName, $field) = \each($fields);
+			// ensure has name key
 			if (!isset($field['name']) || empty($field['name'])) {
 				$field = \array_merge(['name' => $fieldName], $field);
 			}
@@ -90,11 +90,12 @@ final class dbUtils {
 		$db = NULL;
 		$countFields = 0;
 		foreach ($fields as $fieldName => $field) {
+			// ensure has name key
+			if (!isset($field['name']) || empty($field['name'])) {
+				$field = \array_merge(['name' => $fieldName], $field);
+			}
 			// add missing field
 			if (!$pool->hasTableField($tableName, $fieldName)) {
-				if (!isset($field['name']) || empty($field['name'])) {
-					$field = \array_merge(['name' => $fieldName], $field);
-				}
 				if ($pool->addTableField($tableName, $field)) {
 					$countFields++;
 				}
