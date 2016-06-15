@@ -67,14 +67,14 @@ final class dbUtils {
 		}
 		// find table schema
 		$schema = self::getTableSchema($tableName);
-		$fields = $schema->getFields();
+		$schemaFields = $schema->getFields();
 
 		// create new table
 		$createdTable = FALSE;
 		if (!$pool->hasTable($tableName)) {
 			// get first fields
-			\reset($fields);
-			list($fieldName, $field) = \each($fields);
+			\reset($schemaFields);
+			list($fieldName, $field) = \each($schemaFields);
 			// ensure has name key
 			if (!isset($field['name']) || empty($field['name'])) {
 				$field = \array_merge(['name' => $fieldName], $field);
@@ -87,7 +87,6 @@ final class dbUtils {
 		}
 
 		// check fields
-		$db = NULL;
 		$countFields = 0;
 		foreach ($fields as $fieldName => $field) {
 			// ensure has name key
@@ -106,9 +105,6 @@ final class dbUtils {
 		}
 
 		// done
-		if ($db != NULL) {
-			$db->release();
-		}
 		return $createdTable;
 	}
 

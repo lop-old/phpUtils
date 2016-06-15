@@ -105,7 +105,7 @@ class dbPool {
 		}
 		// clone if in use
 		if ($found === NULL) {
-			if (count($this->conns) >= self::MaxConnections) {
+			if (\count($this->conns) >= self::MaxConnections) {
 				fail("Max connections reached for database: {$dbName}");
 				exit(1);
 			}
