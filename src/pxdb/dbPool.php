@@ -268,7 +268,7 @@ class dbPool {
 
 
 
-	public function CreateTable($tableName, $firstField) {
+	public function CreateTable($tableName, array $firstField) {
 		$tableName = San::AlphaNumUnderscore($tableName);
 		if (empty($tableName)) {
 			fail('table name argument is required!');
@@ -320,7 +320,16 @@ class dbPool {
 		$db->release();
 		return TRUE;
 	}
-	protected static function getFieldSQL($field) {
+	public function updateTableField($tableName, array $field) {
+		$tableName = San::AlphaNumUnderscore($tableName);
+
+
+
+	}
+
+
+
+	protected static function getFieldSQL(array $field) {
 		if (!isset($field['name']) || empty($field['name'])) {
 			fail('Field name is required!');
 			exit(1);

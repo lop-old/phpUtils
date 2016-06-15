@@ -77,7 +77,15 @@ abstract class dbPrepared {
 		if (!empty($sql)) {
 			$this->Prepare($sql);
 		}
-		if ($this->hasError() || empty($this->sql) || $this->st == NULL) {
+		if (empty($this->sql)) {
+			$this->setError('No sql provided!');
+			return NULL;
+		}
+		if ($this->st == NULL) {
+			$this->setError('Statement not ready!');
+			return NULL;
+		}
+		if ($this->hasError()) {
 			$this->setError();
 			return NULL;
 		}
