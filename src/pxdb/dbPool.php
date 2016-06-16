@@ -350,9 +350,19 @@ class dbPool {
 			exit(1);
 		}
 		$tableName = San::AlphaNumUnderscore($tableName);
-
-
-
+		$fieldName = $field['name'];
+		$db = $this->getDB();
+		$sql = self::getFieldSQL($field);
+		$sql = "ALTER TABLE `__TABLE__{$tableName}` CHANGE `{$fieldName}` {$sql}";
+		echo \str_replace('__TABLE__', $db->getTablePrefix(), $sql)."\n";
+		$result = $db->Execute($sql);
+		if ($result == FALSE) {
+			fail("Failed to update table field: {$tableName}::{$fieldName}");
+			exit(1);
+		}
+		echo "\n";
+		$db->release();
+		return TRUE;
 	}
 
 
