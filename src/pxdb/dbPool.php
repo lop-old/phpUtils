@@ -329,7 +329,7 @@ class dbPool {
 
 
 
-	protected static function getFieldSQL(array $field) {
+	protected static function getFieldSQL(array $field, $insertBeforeNull=NULL) {
 		if (!isset($field['name']) || empty($field['name'])) {
 			fail('Field name is required!');
 			exit(1);
@@ -362,6 +362,17 @@ class dbPool {
 				$sql[] = $type;
 			} else {
 				$sql[] = "{$type}({$size})";
+			}
+		}
+		// insert into sql
+		if (!empty($insertBeforeNull)) {
+			if (\is_array($insertBeforeNull)) {
+				foreach ($insertBeforeNull as $str) {
+					if (empty($str)) continue;
+					$sql[] = (string) $str;
+				}
+			} else {
+				$sql[] = (string) $insertBeforeNull;
 			}
 		}
 		// null / not null
