@@ -385,24 +385,23 @@ class dbPool {
 			fail('Field type is required!');
 			exit(1);
 		}
+		dbUtils::fillFieldKeys($field);
 		$type = San::AlphaNumUnderscore( $field['type'] );
+		$fieldType = \strtolower($type);
+		$type      = \strtoupper($type);
 		$sql = [];
 		// name
 		$sql[] = "`{$name}`";
 		// auto increment
-		if (\strtolower($type) == 'increment') {
-			$sql[] = 'int(11)';
-			$field['nullable'] = FALSE;
+		if ($fieldType == 'increment') {
+			$sql[] = 'INT(11)';
 		// type/size
 		} else {
 			$size = '';
-			if (isset($field['size']) && !empty($field['size'])) {
-				$size = San::AlphaNumSpaces($field['size']);
-			}
-			$type = \strtoupper($type);
-			if (empty($size)) {
+			if (!isset($field['size']) || empty($field['size'])) {
 				$sql[] = $type;
 			} else {
+				$size = San::AlphaNumSpaces($field['size']);
 				$sql[] = "{$type}({$size})";
 			}
 		}
@@ -414,94 +413,41 @@ class dbPool {
 			$sql[] = "CHARACTER SET latin1 COLLATE latin1_swedish_ci";
 		}
 		// null / not null
-		if (!isset($field['nullable'])) {
-			switch (\strtolower($type)) {
-			case 'int':
-			case 'tinyint':
-			case 'smallint':
-			case 'mediumint':
-			case 'bigint':
-			case 'decimal':
-			case 'float':
-			case 'double':
-			case 'bit':
-			case 'boolean':
-				$field['nullable'] = FALSE;
-				break;
-			case 'varchar':
-			case 'char':
-			case 'text':
-			case 'longtext':
-			case 'blob':
-				$field['nullable'] = TRUE;
-				break;
-			case 'enum':
-			case 'set':
-				$field['nullable'] = TRUE;
-				break;
-			case 'date':
-				$field['nullable'] = FALSE;
-				if (!isset($field['default'])) {
-					$field['default'] = '0000-00-00';
-				}
-				break;
-			case 'time':
-				$field['nullable'] = FALSE;
-				if (!isset($field['default'])) {
-					$field['default'] = '00:00:00';
-				}
-				break;
-			case 'datetime':
-				$field['nullable'] = FALSE;
-				if (!isset($field['default'])) {
-					$field['default'] = '0000-00-00 00:00:00';
-				}
-				break;
-			default:
-				$field['nullable'] = TRUE;
-				break;
-			}
+		if (!isset($field['nullable']) || $field['nullable'] === NULL) {
+			$field['nullable'] = FALSE;
 		}
 		$sql[] = ($field['nullable'] == FALSE ? 'NOT ' : '').'NULL';
 		// default
 		if (!isset($field['default']) && $field['nullable'] == TRUE) {
 			$field['default'] = NULL;
 		}
-		if (isset($field['default'])) {
-			if ($field['default'] === NULL) {
+		if ($field['default'] === NULL) {
+			if (isset($field['nullable']) && $field['nullable'] === TRUE) {
 				$sql[] = 'DEFAULT NULL';
-			} else {
-				$default = San::AlphaNumSafeMore($field['default']);
-				switch (\strtolower($type)) {
-				case 'int':
-				case 'tinyint':
-				case 'smallint':
-				case 'mediumint':
-				case 'bigint':
-					$default = (int) $default;
-					$sql[] = "DEFAULT {$default}";
-					break;
-				case 'decimal':
-				case 'double':
-					$default = (double) $default;
-					$sql[] = "DEFAULT {$default}";
-					break;
-				case 'float':
-					$default = (float) $default;
-					$sql[] = "DEFAULT {$default}";
-					break;
-				case 'bit':
-					$default = ($default == 0 ? 0 : 1);
-					$sql[] = "DEFAULT {$default}";
-					break;
-				case 'boolean':
-					$default = ($default == 0 ? 0 : 1);
-					$sql[] = "DEFAULT {$default}";
-					break;
-				default:
-					$sql[] = "DEFAULT '{$default}'";
-					break;
-				}
+			}
+		} else {
+			$default = San::AlphaNumSafeMore($field['default']);
+			switch ($fieldType) {
+			case 'int': case 'tinyint': case 'smallint':
+			case 'mediumint': case 'bigint':
+				$default = (int) $default;
+				$sql[] = "DEFAULT '{$default}'";
+				break;
+			case 'decimal': case 'double':
+				$default = (double) $default;
+				$sql[] = "DEFAULT '{$default}'";
+				break;
+			case 'float':
+				$default = (float) $default;
+				$sql[] = "DEFAULT '{$default}'";
+				break;
+			case 'bit': case 'boolean':
+				$default = ($default == 0 ? 0 : 1);
+				$sql[] = "DEFAULT '{$default}'";
+				break;
+			default:
+				$sql[] = "DEFAULT '{$default}'";
+				break;
 			}
 		}
 		// done
