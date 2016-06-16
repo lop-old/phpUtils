@@ -273,6 +273,14 @@ class dbPool {
 
 
 	public function CreateTable($tableName, array $firstField) {
+		if (empty($tableName)) {
+			fail('tableName argument is required!');
+			exit(1);
+		}
+		if ($firstField == NULL || \count($firstField) == 0) {
+			fail('firstField argument is required!');
+			exit(1);
+		}
 		$tableName = San::AlphaNumUnderscore($tableName);
 		if (empty($tableName)) {
 			fail('table name argument is required!');
@@ -313,6 +321,14 @@ class dbPool {
 
 
 	public function addTableField($tableName, array $field) {
+		if (empty($tableName)) {
+			fail('tableName argument is required!');
+			exit(1);
+		}
+		if ($field == NULL || \count($field) == 0) {
+			fail('field argument is required!');
+			exit(1);
+		}
 		$tableName = San::AlphaNumUnderscore($tableName);
 		if ($this->hasTableField($tableName, $field['name'])) {
 			return FALSE;
@@ -325,6 +341,14 @@ class dbPool {
 		return TRUE;
 	}
 	public function updateTableField($tableName, array $field) {
+		if (empty($tableName)) {
+			fail('tableName argument is required!');
+			exit(1);
+		}
+		if ($field == NULL || \count($field) == 0) {
+			fail('field argument is required!');
+			exit(1);
+		}
 		$tableName = San::AlphaNumUnderscore($tableName);
 
 
@@ -334,6 +358,10 @@ class dbPool {
 
 
 	protected static function getFieldSQL(array $field) {
+		if ($field == NULL || \count($field) == 0) {
+			fail('field argument is required!');
+			exit(1);
+		}
 		if (!isset($field['name']) || empty($field['name'])) {
 			fail('Field name is required!');
 			exit(1);
