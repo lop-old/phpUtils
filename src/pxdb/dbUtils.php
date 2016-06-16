@@ -11,6 +11,7 @@ namespace pxn\phpUtils\pxdb;
 use pxn\phpUtils\San;
 use pxn\phpUtils\Strings;
 use pxn\phpUtils\System;
+
 use pxn\phpPortal\Website;
 
 
@@ -375,11 +376,11 @@ final class dbUtils {
 			exit(1);
 		}
 		$namespaces = [];
-		// if website project, not shell
+		// if website project (not shell)
 		if (\class_exists('pxn\\phpPortal\\Website')) {
 			$namespaces[] = Website::getSiteNamespace().'\\schemas';
+			$namespaces[] = Website::getPortalNamespace().'\\schemas';
 		}
-		$namespaces[] = '\\pxn\\phpPortal\\schemas';
 		$namespaces[] = '\\pxn\\phpUtils\\schemas';
 		// find table class
 		$clss = NULL;
