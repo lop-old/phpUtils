@@ -333,7 +333,7 @@ class dbPool {
 
 
 
-	protected static function getFieldSQL(array $field, $insertBeforeNull=NULL) {
+	protected static function getFieldSQL(array $field) {
 		if (!isset($field['name']) || empty($field['name'])) {
 			fail('Field name is required!');
 			exit(1);
@@ -368,16 +368,12 @@ class dbPool {
 				$sql[] = "{$type}({$size})";
 			}
 		}
-		// insert into sql
-		if (!empty($insertBeforeNull)) {
-			if (\is_array($insertBeforeNull)) {
-				foreach ($insertBeforeNull as $str) {
-					if (empty($str)) continue;
-					$sql[] = (string) $str;
-				}
-			} else {
-				$sql[] = (string) $insertBeforeNull;
-			}
+		// charset
+		switch ($fieldType) {
+		case 'varchar': case 'char':
+		case 'text':    case 'longtext':
+		case 'enum':    case 'set':
+			$sql[] = "CHARACTER SET latin1 COLLATE latin1_swedish_ci";
 		}
 		// null / not null
 		if (!isset($field['nullable'])) {
