@@ -107,7 +107,244 @@ final class dbUtils {
 		// done
 		return $createdTable;
 	}
+	protected static function fieldNeedsChanges(array $schField, array $tabField) {
+		if ($schField == NULL || \count($schField) == 0) {
+			fail('schField argument is required!');
+			exit(1);
+		}
+		if ($tabField == NULL || \count($tabField) == 0) {
+			fail('tabField argument is required!');
+			exit(1);
+		}
+		$fieldType = \strtolower($schField['type']);
+		$changes = [];
 
+		// check field type
+		if ($fieldType == 'increment') {
+			if (\strtolower($tabField['type']) !== 'int'
+			&& \strtolower($tabField['type']) !== 'increment') {
+				$tabType = (string) $tabField['type'];
+				$schType = (string) $schField['type'];
+				return "type({$tabType}|{$schType})";
+			}
+		} else
+		if (\strtolower($tabField['type']) !== $fieldType) {
+				$tabType = (string) $tabField['type'];
+				$schType = (string) $schField['type'];
+				return "type({$tabType}|{$schType})";
+		}
+
+		// check properties based on field type
+		switch ($fieldType) {
+		// auto-increment
+		case 'increment':
+			$tabSize = (string) $tabField['size'];
+			if ($tabSize != '11' ) {
+				$changes[] = "size({$tabSize}|11)";
+			}
+			if ($tabField['default'] != NULL) {
+				$tabDefault = (string) $tabField['default'];
+				$changes[] = "default({$tabDefault}|NULL)";
+			}
+			if ($tabField['increment'] !== TRUE) {
+				$changes[] = 'auto-increment';
+			}
+			if ($tabField['primary'] !== TRUE) {
+				$changes[] = 'primary-key';
+			}
+			if ($tabField['nullable'] === TRUE) {
+				$changes[] = 'nullable(YES|NOT)';
+			}
+			break;
+		// length size
+		case 'int':       case 'tinyint': case 'smallint':
+		case 'mediumint': case 'bigint':
+		case 'decimal':   case 'double':  case 'float':
+		case 'bit':       case 'char':
+		case 'boolean':   case 'bool':
+		case 'varchar':
+		case 'enum': case 'set':
+			$tabSize = (string) $tabField['size'];
+			$schSize = (string) $schField['size'];
+			if ($tabSize != $schSize) {
+				$changes[] = "size({$tabSize}|{$schSize})";
+			}
+		// no size
+		case 'text': case 'longtext': case 'blob':
+		case 'date': case 'time':     case 'datetime':
+			$tabDefault = (string) $tabField['default'];
+			$schDefault = (string) $schField['default'];
+			if ($tabDefault != $schDefault) {
+				$changes[] = "default({$tabDefault}|{$schDefault})";
+			}
+			if ($tabField['nullable'] !== $schField['nullable']) {
+				$n1 = ($tabField['nullable'] ? 'YES' : 'NOT');
+				$n2 = ($schField['nullable'] ? 'YES' : 'NOT');
+				$changes[] = "nullable({$n1}|{$n2})";
+			}
+			break;
+		default:
+			$fieldName = $schField['name'];
+			fail("Unsupported field type: {$fieldType} - {$fieldName}");
+			exit(1);
+		}
+		if (\count($changes) == 0) {
+			return FALSE;
+		}
+		return \implode(', ', $changes);
+	}
+
+
+
+	public static function fillFieldKeys(array &$field, $fieldName=NULL) {
+		if ($field == NULL || \count($field) == 0) {
+			return NULL;
+		}
+		// field name
+		if (!isset($field['name']) || empty($field['name'])) {
+			if (empty($fieldName)) {
+				fail('Unknown field name!');
+				exit(1);
+			}
+			$field['name'] = $fieldName;
+		}
+		$fieldName = $field['name'];
+		// field type
+		if (!isset($field['type']) || empty($field['type'])) {
+			fail("Unknown type for field: {$fieldName}");
+			exit(1);
+		}
+		$fieldType = \strtolower($field['type']);
+
+		// size
+		if (!isset($field['size']) || empty($field['size'])) {
+			switch ($fieldType) {
+			case 'int': case 'increment':
+				$field['size'] = 11;
+				break;
+			case 'tinyint':
+				$field['size'] = 4;
+				break;
+			case 'smallint':
+				$field['size'] = 6;
+				break;
+			case 'mediumint':
+				$field['size'] = 8;
+				break;
+			case 'bigint':
+				$field['size'] = 20;
+				break;
+			case 'decimal': case 'double':
+				$field['size'] = '16,4';
+				break;
+			case 'float':
+				$field['size'] = '10,2';
+				break;
+			case 'bit':     case 'char':
+			case 'boolean': case 'bool':
+				$field['size'] = 1;
+				break;
+			case 'varchar':
+				$field['size'] = 255;
+			case 'enum': case 'set':
+				$field['size'] = "''";
+				break;
+			case 'text': case 'longtext': case 'blob':
+			case 'date': case 'time':     case 'datetime':
+				break;
+			default:
+				fail("Unknown size for field: {$fieldType} - {$fieldName}");
+				exit(1);
+			}
+		}
+
+		// nullable
+		if (isset($field['default']) && $field['default'] === NULL) {
+			if (!isset($field['nullable'])) {
+				$field['nullable'] = TRUE;
+			}
+		} else {
+			switch ($fieldType) {
+			case 'increment':
+			case 'int':       case 'tinyint':  case 'smallint':
+			case 'mediumint': case 'bigint':
+			case 'decimal':   case 'float':    case 'double':
+			case 'bit':       case 'boolean':  case 'bool':
+			case 'text':      case 'longtext': case 'blob':
+			case 'date':      case 'time':     case 'datetime':
+				if (!isset($field['nullable'])) {
+					$field['nullable'] = FALSE;
+				}
+				break;
+			case 'varchar': case 'char':
+			case 'enum':    case 'set':
+				if (!isset($field['nullable'])) {
+					$field['nullable'] = TRUE;
+				}
+				break;
+			default:
+				fail("Unsupported field type: {$fieldName}({$fieldType})");
+				exit(1);
+			}
+		}
+
+		// default value
+		if ($field['nullable'] === TRUE) {
+			if (!isset($field['default'])) {
+				$field['default'] = NULL;
+			}
+		} else {
+			switch ($fieldType) {
+			case 'increment':
+			case 'varchar': case 'char':
+			case 'enum':    case 'set':
+			case 'blob':
+				if (!isset($field['default'])) {
+					$field['default'] = NULL;
+				}
+				break;
+			case 'int':       case 'tinyint': case 'smallint':
+			case 'mediumint': case 'bigint':
+			case 'bit':       case 'boolean': case 'bool':
+				if (!isset($field['default'])) {
+					$field['default'] = (
+						$field['nullable']
+						? NULL
+						: 0
+					);
+				}
+				break;
+			case 'decimal': case 'float': case 'double':
+				if (!isset($field['default'])) {
+					$field['default'] = 0.0;
+				}
+				break;
+			case 'text': case 'longtext':
+				if (!isset($field['default'])) {
+					$field['default'] = '';
+				}
+				break;
+			case 'date':
+				if (!isset($field['default'])) {
+					$field['default'] = '0000-00-00';
+				}
+				break;
+			case 'time':
+				if (!isset($field['default'])) {
+					$field['default'] = '00:00:00';
+				}
+				break;
+			case 'datetime':
+				if (!isset($field['default'])) {
+					$field['default'] = '0000-00-00 00:00:00';
+				}
+				break;
+			default:
+				fail("Unsupported field type: {$fieldName}({$fieldType})");
+				exit(1);
+			}
+		}
+	}
 
 
 
