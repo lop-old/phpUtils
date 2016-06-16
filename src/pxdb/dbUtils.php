@@ -30,7 +30,7 @@ final class dbUtils {
 			$tables = $pool->getUsedTables();
 		}
 				if ($isShell) {
-			echo "\n == Creating/Updating DB Tables..\n";
+			echo "\n\n == Creating/Updating DB Tables..\n";
 		}
 		// multiple tables
 		if (\is_array($tables)) {
@@ -47,7 +47,7 @@ final class dbUtils {
 					$countTables++;
 				}
 			}
-			if ($isShell) {
+			if ($isShell && $countTables > 0) {
 				echo "\nCreated [ {$countTables} ] tables.\n";
 			}
 			return TRUE;
@@ -87,23 +87,43 @@ final class dbUtils {
 		}
 
 		// check fields
-		$countFields = 0;
-		foreach ($fields as $fieldName => $field) {
-			// ensure has name key
-			if (!isset($field['name']) || empty($field['name'])) {
-				$field = \array_merge(['name' => $fieldName], $field);
-			}
-			// add missing field
+		$tableFields = $pool->getTableFields($tableName);
+		$countAdded   = 0;
+		$countAltered = 0;
+		foreach ($schemaFields as $fieldName => $schField) {
+			self::fillFieldKeys($schField, $fieldName);
+			// ensure field exists
 			if (!$pool->hasTableField($tableName, $fieldName)) {
-				if ($pool->addTableField($tableName, $field)) {
-					$countFields++;
+				// add field to table
+				$result = $pool->addTableField($tableName, $schField);
+				if ($result) {
+					$countAdded++;
+					continue;
 				}
 			}
-		}
-		if (System::isShell() && $countFields > 0) {
-			echo "\nAdded [ {$countFields} ] fields to table: {$tableName}\n";
+			// ensure field properties are correct
+			$tabField = $tableFields[$fieldName];
+			self::fillFieldKeys($tabField, $fieldName);
+			$result = self::fieldNeedsChanges($schField, $tabField);
+			if ($result !== FALSE) {
+				$schFieldType = $schField['type'];
+				echo "\nTable/Field [ {$tableName}::{$fieldName}({$schFieldType}) ] needs changes:  {$result}\n";
+				// alter table
+				$pool->updateTableField($tableName, $schField);
+				$countAltered++;
+			}
 		}
 
+		// stats
+		if (System::isShell() && ($countAdded > 0 || $countAltered > 0)) {
+			if ($countAdded > 0) {
+				echo "\nAdded [ {$countAdded} ] fields to table: {$tableName}\n";
+			}
+			if ($countAltered > 0) {
+				echo "\nAltered [ {$countAltered} ] fields in table: {$tableName}\n";
+			}
+			echo "\n";
+		}
 		// done
 		return $createdTable;
 	}
