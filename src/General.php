@@ -27,7 +27,7 @@ final class General {
 
 	// cast variable type
 	public static function castType($data, $type) {
-		switch (strtolower(substr( (string) $type, 0, 1))) {
+		switch (\strtolower(\substr( (string) $type, 0, 1))) {
 			// string
 			case 's':
 				return ((string) $data);
@@ -54,9 +54,9 @@ final class General {
 	}
 	// convert to boolean
 	public static function toBoolean($value) {
-		if (gettype($value) === 'boolean')
+		if (\gettype($value) === 'boolean')
 			return $value;
-		$val = strtolower(trim( (string) $value ));
+		$val = \strtolower(trim( (string) $value ));
 		if ($val == 'on')  return TRUE;
 		if ($val == 'off') return FALSE;
 		switch (substr($val, 0, 1)) {
@@ -91,10 +91,10 @@ final class General {
 	 *     Possible values: get, post, cookie, session
 	 * @return object - Returns the requested value, cast to requested type.
 	 */
-	public static function getVar($name, $type='str', $source=array('get','post')) {
-		if (!is_array($source))
-			$source = @explode(',', (string) $source);
-		if (!is_array($source))
+	public static function getVar($name, $type='str', $source=['get','post']) {
+		if (!\is_array($source))
+			$source = @\explode(',', (string) $source);
+		if (!\is_array($source))
 			return NULL;
 		$value = NULL;
 		foreach ($source as $src) {
@@ -172,20 +172,20 @@ final class General {
 		if (isset($_SERVER['REDIRECT_STATUS'])) {
 			$data = $_SERVER['REQUEST_URI'];
 			// parse ? query string
-			if (strpos($data, '?') !== FALSE) {
-				list($data, $query) = explode('?', $data, 2);
+			if (\strpos($data, '?') !== FALSE) {
+				list($data, $query) = \explode('?', $data, 2);
 				if (!empty($query)) {
 					//$arr = explode('&', $query);
 					//echo 'query: ?'.$query.'<br />';
 				}
 			}
 			// parse url path
-			$data = array_values(\psm\utils::array_remove_empty(explode('/', $data)));
+			$data = \array_values(\psm\utils::array_remove_empty(\explode('/', $data)));
 			// needs to be even
-			if ((count($data) % 2) != 0)
+			if ((\count($data) % 2) != 0)
 				$data[] = '';
 			// merge values into GET
-			for ($i=0; $i<count($data); $i++) {
+			for ($i=0; $i<\count($data); $i++) {
 				$_GET[$data[$i]] = $data[++$i];
 			}
 		}
