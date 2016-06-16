@@ -20,6 +20,7 @@ final class Paths {
 	protected static $local_base  = '';
 	protected static $local_src   = '';
 	protected static $local_utils = '';
+	protected static $local_portal = NULL;
 
 	// web paths
 	protected static $web_base   = '';
@@ -87,6 +88,20 @@ final class Paths {
 				exit(1);
 			}
 		}
+		// find phpPortal
+		if (\class_exists('\\pxn\phpPortal\\Website')) {
+			$reflect = new \ReflectionClass('\pxn\phpPortal\Website');
+			$path = $reflect->getFileName();
+			unset($reflect);
+			if (!empty($path)) {
+				$pos = \strrpos($path, '/');
+				if ($pos !== FALSE) {
+					$path = \substr($path, 0, $pos);
+					$path = Strings::TrimEnd($path, '/', '\\', ' ');
+					self::$local_portal = $path;
+				}
+			}
+		}
 		// web paths
 		self::$web_base   = '/';
 		self::$web_images = '/static';
@@ -99,6 +114,7 @@ final class Paths {
 					'local_base'  => self::$local_base,
 					'local_src'   => self::$local_src,
 					'local_utils' => self::$local_utils,
+					'local_portal' => &self::$local_portal,
 					// web paths
 					'web_base'    => self::$web_base,
 					'web_images'  => self::$web_images
@@ -130,6 +146,9 @@ final class Paths {
 	}
 	public static function utils() {
 		return self::$local_utils;
+	}
+	public static function portal() {
+		return self::$local_portal;
 	}
 
 
