@@ -65,13 +65,12 @@ class dbPool {
 
 
 
-	public static function get($dbName=NULL, $errorMode=dbConn::ERROR_MODE_EXCEPTION) {
+	public static function get($dbName=NULL, $errorMode=NULL) {
 		$pool = self::getPool($dbName);
 		if ($pool == NULL) {
 			return NULL;
 		}
-		$db = $pool->getDB();
-		$db->setErrorMode($errorMode);
+		$db = $pool->getDB($errorMode);
 		return $db;
 	}
 	public static function getPool($dbName=NULL) {
@@ -91,7 +90,10 @@ class dbPool {
 		}
 		return self::$pools[$dbName];
 	}
-	public function getDB() {
+	public function getDB($errorMode=NULL) {
+		if ($errorMode === NULL) {
+			$errorMode = dbConn::ERROR_MODE_EXCEPTION;
+		}
 		// get db connection
 		$found = NULL;
 		// find unused
@@ -101,6 +103,7 @@ class dbPool {
 				continue;
 			// available connection
 			$found = $conn;
+			$found->setErrorMode($errorMode);
 			break;
 		}
 		// clone if in use
@@ -116,6 +119,7 @@ class dbPool {
 		}
 		$found->lock();
 		$found->clean();
+		$found->setErrorMode($errorMode);
 		return $found;
 	}
 
