@@ -418,7 +418,7 @@ class dbPool {
 		}
 		$sql[] = ($field['nullable'] == FALSE ? 'NOT ' : '').'NULL';
 		// default
-		if (!isset($field['default']) && $field['nullable'] == TRUE) {
+		if (!\array_key_exists('default', $field)) {
 			$field['default'] = NULL;
 		}
 		if ($field['default'] === NULL) {
