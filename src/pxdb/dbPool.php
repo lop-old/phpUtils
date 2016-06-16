@@ -202,6 +202,7 @@ class dbPool {
 		$db->Execute("DESCRIBE `__TABLE__{$tableName}`;");
 		$fields = [];
 		while ($db->hasNext()) {
+			$row = $db->getRow();
 			// field name
 			$name = $db->getString('Field');
 			if (Strings::StartsWith($name, '_'))
@@ -223,10 +224,13 @@ class dbPool {
 			// null / not null
 			$nullable = $db->getString('Null');
 			$field['nullable'] = (\strtoupper($nullable) == 'YES');
-			// default
-			$default = $db->getString('Default');
-			if ($default !== FALSE && \strtoupper($default) != 'NULL') {
-				$field['default'] = $default;
+			// default value
+			if (isset($row['default'])) {
+				$default = (
+					$row['default'] === NULL
+					? NULL
+					: $db->getString('Default')
+				);
 			}
 			// primary key
 			$primary = $db->getString('Key');
