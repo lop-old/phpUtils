@@ -199,7 +199,7 @@ class dbPool {
 		}
 		// get known fields
 		$db = $this->getDB();
-		$db->Execute("DESCRIBE `{$tableName}`;");
+		$db->Execute("DESCRIBE `__TABLE__{$tableName}`;");
 		$fields = [];
 		while ($db->hasNext()) {
 			// field name
@@ -290,7 +290,7 @@ class dbPool {
 		// create table sql
 		$fieldSQL = self::getFieldSQL($firstField);
 		$engine = 'InnoDB';
-		$sql = "CREATE TABLE `{$tableName}` ( {$fieldSQL} ) ENGINE={$engine} DEFAULT CHARSET=latin1";
+		$sql = "CREATE TABLE `__TABLE__{$tableName}` ( {$fieldSQL} ) ENGINE={$engine} DEFAULT CHARSET=latin1";
 		if (System::isShell()) {
 			echo "\nCreating table: {$tableName} ..\n";
 		}
@@ -461,11 +461,11 @@ class dbPool {
 	protected static function InitAutoIncrementField($db, $tableName, $fieldName) {
 		$tableName = San::AlphaNumUnderscore($tableName);
 		$fieldName = San::AlphaNumUnderscore($fieldName);
-		$sql = "ALTER TABLE `{$tableName}` ADD PRIMARY KEY ( `{$fieldName}` )";
+		$sql = "ALTER TABLE `__TABLE__{$tableName}` ADD PRIMARY KEY ( `{$fieldName}` )";
 		if (!$db->Execute($sql)) {
 			return FALSE;
 		}
-		$sql = "ALTER TABLE `{$tableName}` MODIFY `{$fieldName}` int(11) NOT NULL AUTO_INCREMENT";
+		$sql = "ALTER TABLE `__TABLE__{$tableName}` MODIFY `{$fieldName}` int(11) NOT NULL AUTO_INCREMENT";
 		if (!$db->Execute($sql)) {
 			return FALSE;
 		}
