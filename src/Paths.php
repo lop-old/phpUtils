@@ -15,16 +15,16 @@ final class Paths {
 	private function __construct() {}
 
 	// local paths
-	protected static $local_pwd   = '';
-	protected static $local_entry = '';
-	protected static $local_base  = '';
-	protected static $local_src   = '';
-	protected static $local_utils = '';
+	protected static $local_pwd    = NULL;
+	protected static $local_entry  = NULL;
+	protected static $local_base   = NULL;
+	protected static $local_src    = NULL;
+	protected static $local_utils  = NULL;
 	protected static $local_portal = NULL;
 
 	// web paths
-	protected static $web_base   = '';
-	protected static $web_images = '';
+	protected static $web_base   = NULL;
+	protected static $web_images = NULL;
 
 
 
@@ -109,15 +109,15 @@ final class Paths {
 		{
 			$paths = [
 					// local paths
-					'local_pwd'   => self::$local_pwd,
-					'local_entry' => self::$local_entry,
-					'local_base'  => self::$local_base,
-					'local_src'   => self::$local_src,
-					'local_utils' => self::$local_utils,
-					'local_portal' => &self::$local_portal,
+					'local_pwd'    => self::$local_pwd,
+					'local_entry'  => self::$local_entry,
+					'local_base'   => self::$local_base,
+					'local_src'    => self::$local_src,
+					'local_utils'  => self::$local_utils,
+					'local_portal' => self::$local_portal,
 					// web paths
-					'web_base'    => self::$web_base,
-					'web_images'  => self::$web_images
+					'web_base'     => self::$web_base,
+					'web_images'   => self::$web_images
 			];
 			foreach ($paths as $name => $path) {
 				if (empty($path)) {
