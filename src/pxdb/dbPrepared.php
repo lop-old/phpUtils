@@ -43,8 +43,11 @@ abstract class dbPrepared {
 
 
 
-	public function Prepare($sql) {
+	public function Prepare($sql, $desc=NULL) {
 		$this->clean();
+		if (!empty($desc)) {
+			$this->desc($desc);
+		}
 		if (empty($sql)) {
 			$this->setError('sql argument is required!');
 			return NULL;
@@ -70,12 +73,12 @@ abstract class dbPrepared {
 
 
 
-	public function Execute($sql=NULL) {
+	public function Execute($sql=NULL, $desc=NULL) {
 		if ($this->hasError()) {
 			return NULL;
 		}
 		if (!empty($sql)) {
-			$this->Prepare($sql);
+			$this->Prepare($sql, $desc);
 		}
 		if (empty($this->sql)) {
 			$this->setError('No sql provided!');
