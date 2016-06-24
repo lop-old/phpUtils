@@ -49,7 +49,7 @@ final class dbUtils {
 				}
 			}
 			if ($isShell && $countTables > 0) {
-				echo "\nCreated [ {$countTables} ] tables.\n";
+				echo "Created [ {$countTables} ] tables.\n";
 			}
 			return TRUE;
 		}

@@ -18,6 +18,7 @@ final class dbBackup {
 	private function __construct() {}
 
 
+/*
 
 	public static function export($pool, $tableName, $path) {
 		if ($pool == NULL) {
@@ -120,6 +121,7 @@ final class dbBackup {
 		
 	}
 
+*/
 
 
 }
