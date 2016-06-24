@@ -93,7 +93,7 @@ abstract class dbPrepared {
 			return NULL;
 		}
 		try {
-			$pos = \strpos(' ', $this->sql);
+			$pos = \strpos($this->sql, ' ');
 			$firstPart = \strtoupper(
 				$pos === FALSE
 				? $this->sql
