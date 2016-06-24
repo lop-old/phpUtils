@@ -114,7 +114,7 @@ final class Paths {
 					'local_base'   => self::$local_base,
 					'local_src'    => self::$local_src,
 					'local_utils'  => self::$local_utils,
-					'local_portal' => self::$local_portal,
+					//'local_portal' => self::$local_portal,
 					// web paths
 					'web_base'     => self::$web_base,
 					'web_images'   => self::$web_images
