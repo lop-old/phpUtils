@@ -36,29 +36,35 @@ final class San {
 
 
 
-	public static function Validate_AlphaNum($str) {
-		$newValue = self::AlphaNum(
-				\trim($str)
-		);
-		return ($newValue === $str);
+	public static function isAlphaNum($str) {
+		$str = (string) $str;
+		$compare = self::AlphaNum($str);
+		return $compare === $str;
 	}
-	public static function Validate_AlphaNumSafe($str) {
-		$newValue = self::AlphaNumSafe(
-				\trim($str)
-		);
-		return ($newValue === $str);
+	public static function isAlphaNumSafe($str) {
+		$str = (string) $str;
+		$compare = AlphaNumSafe($str);
+		return $compare === $str;
 	}
-	public static function Validate_AlphaNumSpaces($str) {
-		$newValue = self::AlphaNumSpaces(
-				\trim($str)
-		);
-		return ($newValue === $str);
+	public static function isAlphaNumSafeMore($str) {
+		$str = (string) $str;
+		$compare = AlphaNumSafeMore($str);
+		return $compare === $str;
 	}
-	public static function Validate_AlphaNumFile($str) {
-		$newValue = self::AlphaNumFile(
-				\trim($str)
-		);
-		return ($newValue === $str);
+	public static function isAlphaNumSpaces($str) {
+		$str = (string) $str;
+		$compare = AlphaNumSpaces($str);
+		return $compare === $str;
+	}
+	public static function isAlphaNumUnderscore($str) {
+		$str = (string) $str;
+		$compare = AlphaNumUnderscore($str);
+		return $compare === $str;
+	}
+	public static function isAlphaNumFile($str) {
+		$str = (string) $str;
+		$compare = self::AlphaNumFile($str);
+		return $compare === $str;
 	}
 
 
