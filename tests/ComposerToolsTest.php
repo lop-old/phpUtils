@@ -74,12 +74,12 @@ class ComposerToolsTest extends \PHPUnit_Framework_TestCase {
 		// version
 		$version = $composer->getVersion();
 		$this->assertNotEmpty($version);
-		$this->assertTrue(\strpos($version, '.') !== FALSE);
+		$this->assertTrue(\mb_strpos($version, '.') !== FALSE);
 		// homepage
 		$homepage = $composer->getHomepage();
 		$this->assertNotEmpty($homepage);
 		$this->assertTrue(Strings::StartsWith($homepage, 'http'));
-		$this->assertTrue(\strpos($homepage, '.') !== FALSE);
+		$this->assertTrue(\mb_strpos($homepage, '.') !== FALSE);
 	}
 
 

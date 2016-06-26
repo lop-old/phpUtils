@@ -137,19 +137,19 @@ final class dbUtils {
 			fail('tabField argument is required!');
 			exit(1);
 		}
-		$fieldType = \strtolower($schField['type']);
+		$fieldType = \mb_strtolower($schField['type']);
 		$changes = [];
 
 		// check field type
 		if ($fieldType == 'increment') {
-			if (\strtolower($tabField['type']) !== 'int'
-			&& \strtolower($tabField['type']) !== 'increment') {
+			if (\mb_strtolower($tabField['type']) !== 'int'
+			&& \mb_strtolower($tabField['type']) !== 'increment') {
 				$tabType = (string) $tabField['type'];
 				$schType = (string) $schField['type'];
 				return "type({$tabType}|{$schType})";
 			}
 		} else
-		if (\strtolower($tabField['type']) !== $fieldType) {
+		if (\mb_strtolower($tabField['type']) !== $fieldType) {
 				$tabType = (string) $tabField['type'];
 				$schType = (string) $schField['type'];
 				return "type({$tabType}|{$schType})";
@@ -235,7 +235,7 @@ final class dbUtils {
 			fail("Unknown type for field: {$fieldName}");
 			exit(1);
 		}
-		$fieldType = \strtolower($field['type']);
+		$fieldType = \mb_strtolower($field['type']);
 
 		// size
 		if (!isset($field['size']) || empty($field['size'])) {

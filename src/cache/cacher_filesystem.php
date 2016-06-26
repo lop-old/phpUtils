@@ -104,7 +104,7 @@ class cacher_filesystem extends cacher {
 
 
 	protected function ValidateData($data, $context) {
-		$pos = \strpos($data, "\n\n");
+		$pos = \mb_strpos($data, "\n\n");
 		if ($pos === FALSE) {
 			return NULL;
 		}
@@ -114,7 +114,7 @@ class cacher_filesystem extends cacher {
 			$line = \trim($line);
 			if (empty($line)) continue;
 			list($key, $val) = \explode(':', $line, 2);
-			$key = \strtolower(\trim($key));
+			$key = \mb_strtolower(\trim($key));
 			switch ($key) {
 			case 'timestamp':
 				$timestamp = (int) $val;

@@ -240,11 +240,11 @@ class xLog extends xLogPrinting {
 //			if ($str == 'ReflectionMethod') {
 //				$str = $trace[1]['class'];
 //			}
-//			$pos = \strrpos($str, '\\');
+//			$pos = \mb_strrpos($str, '\\');
 //			$name = (
 //				$pos === FALSE
 //				? $str
-//				: \substr($str, $pos+1)
+//				: \mb_substr($str, $pos+1)
 //			);
 //		}
 //		if (empty($name)) $name = '';

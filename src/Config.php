@@ -31,11 +31,11 @@ final class Config {
 
 
 	public static function set($key, $value) {
-		$key = \strtolower($key);
+		$key = \mb_strtolower($key);
 		self::$config[$key] = $value;
 	}
 	public static function get($key) {
-		$key = \strtolower($key);
+		$key = \mb_strtolower($key);
 		if (isset(self::$config[$key])) {
 			return self::$config[$key];
 		}

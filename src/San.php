@@ -91,8 +91,8 @@ final class San {
 			));
 		}
 		unset($temp);
-		if (Strings::StartsWith($dir, '.')) throw new \Exception('Invalid dir argument, cannot start with .');
-		if (\strpos($dir, '..') !== FALSE)  throw new \Exception('Invalid dir argument, cannot contain ..');
+		if (Strings::StartsWith($dir, '.'))    throw new \Exception('Invalid dir argument, cannot start with .');
+		if (\mb_strpos($dir, '..') !== FALSE)  throw new \Exception('Invalid dir argument, cannot contain ..');
 		return $dir.'/';
 	}
 

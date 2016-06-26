@@ -135,7 +135,7 @@ try {
 
 
 //function addlog($text){global $config,$pathroot;
-//if (substr($config['log file'],-4)!='.txt'){die('error in log file var');}
+//if (mb_substr($config['log file'],-4)!='.txt'){die('error in log file var');}
 //$fp=@fopen($pathroot.$config['log file'],'a') or die('failed to write log');
 //fwrite($fp,date('Y-m-d H:i:s').' - '.trim($text)."\r\n");
 //fclose($fp);
@@ -261,7 +261,7 @@ function backtrace($e=NULL) {
 			if (!\is_string($arg)) {
 				$trArgs .= \print_r($arg, TRUE);
 			} else
-			if (!$isShell && \strpos($arg, $CRLF)) {
+			if (!$isShell && \mb_strpos($arg, $CRLF)) {
 				$trArgs .= '<pre>'.$arg.'</pre>';
 			} else {
 				$trArgs .= $arg;
@@ -400,7 +400,7 @@ if (file_exists($kintPath)) {
 	//echo '<pre>';print_r($traceStep);exit();
 	//	if (isset($traceStep['class']) && $traceStep['class'] === 'Kint')
 	//		return NULL;
-	//	if (isset($traceStep['function']) && \strtolower($traceStep['function']) === '__tostring')
+	//	if (isset($traceStep['function']) && \mb_strtolower($traceStep['function']) === '__tostring')
 	//		$traceStep['function'] = '[object converted to string]';
 	//	return $traceStep;
 	//};

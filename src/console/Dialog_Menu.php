@@ -65,8 +65,8 @@ class Dialog_Menu extends Dialog {
 		$cmd[] = $width;
 		$cmd[] = $menuHeight;
 		foreach ($this->options as $key => $val) {
-			$sizeKey = \strlen($key);
-			$sizeVal = \strlen($val);
+			$sizeKey = \mb_strlen($key);
+			$sizeVal = \mb_strlen($val);
 			if ($sizeKey + $sizeVal > $width) {
 				$width = $sizeKey + $sizeVal;
 			}

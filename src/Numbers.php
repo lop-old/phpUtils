@@ -98,10 +98,10 @@ final class Numbers {
 		$str = (string) (double) $value;
 		if ($places <= 0)
 			return $str;
-		$pos = \strrpos($str, '.');
+		$pos = \mb_strrpos($str, '.');
 		if ($pos === FALSE)
 			return $str.'.'.\str_repeat('0', $places);
-		$pos = \strlen($str) - ($pos + 1);
+		$pos = \mb_strlen($str) - ($pos + 1);
 		if ($pos < $places)
 			return $str.\str_repeat('0', $places - $pos);
 		return $str;
@@ -118,10 +118,10 @@ final class Numbers {
 		if (empty($size))
 			return NULL;
 		$size = \trim((string) $size);
-		if (\strtolower(\substr($size, -1, 1)) == 'b') {
-			$size = \trim(\substr($size, 0, -1));
+		if (\mb_strtolower(\mb_substr($size, -1, 1)) == 'b') {
+			$size = \trim(\mb_substr($size, 0, -1));
 		}
-		switch ( \strtolower(\substr($size, -1, 1)) ) {
+		switch ( \mb_strtolower(\mb_substr($size, -1, 1)) ) {
 			case 'k':
 				$size = ((double) $size) * Defines::KB;
 				break;
@@ -204,8 +204,8 @@ final class Numbers {
 	public static function StringToSeconds($text) {
 		$str = '';
 		$value = 0;
-		for ($i = 0; $i < \strlen($text); $i++) {
-			$s = \substr($text, $i, 1);
+		for ($i = 0; $i < \mb_strlen($text); $i++) {
+			$s = \mb_substr($text, $i, 1);
 			if (self::isNumber($s)) {
 				$str .= $s;
 				continue;
@@ -214,7 +214,7 @@ final class Numbers {
 			$val = (int) $str;
 			$str = '';
 			if ($val == 0) continue;
-			switch (\strtolower($s)) {
+			switch (\mb_strtolower($s)) {
 				case 'n':
 					$value += ($val * Defines::S_MS);
 					break;

@@ -27,7 +27,7 @@ final class General {
 
 	// cast variable type
 	public static function castType($data, $type) {
-		switch (\strtolower(\substr( (string) $type, 0, 1))) {
+		switch (\mb_strtolower(\mb_substr( (string) $type, 0, 1))) {
 			// string
 			case 's':
 				return ((string) $data);
@@ -56,10 +56,10 @@ final class General {
 	public static function toBoolean($value) {
 		if (\gettype($value) === 'boolean')
 			return $value;
-		$val = \strtolower(trim( (string) $value ));
+		$val = \mb_strtolower(trim( (string) $value ));
 		if ($val == 'on')  return TRUE;
 		if ($val == 'off') return FALSE;
-		switch (substr($val, 0, 1)) {
+		switch (mb_substr($val, 0, 1)) {
 			case 't': // true
 			case 'y': // yes
 			case 'a': // allow
@@ -99,7 +99,7 @@ final class General {
 		$value = NULL;
 		foreach ($source as $src) {
 			$v = NULL;
-			switch (\strtolower(\substr(\trim( (string) $src ), 0, 1))) {
+			switch (\mb_strtolower(\mb_substr(\trim( (string) $src ), 0, 1))) {
 				// get
 				case 'g':
 					$v = self::get($name, $type);
@@ -172,7 +172,7 @@ final class General {
 		if (isset($_SERVER['REDIRECT_STATUS'])) {
 			$data = $_SERVER['REQUEST_URI'];
 			// parse ? query string
-			if (\strpos($data, '?') !== FALSE) {
+			if (\mb_strpos($data, '?') !== FALSE) {
 				list($data, $query) = \explode('?', $data, 2);
 				if (!empty($query)) {
 					//$arr = explode('&', $query);

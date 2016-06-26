@@ -34,8 +34,8 @@ abstract class BasicEnum {
 			return TRUE;
 		if (!$ignoreCase)
 			return FALSE;
-		$keys = \array_map('\\strtolower', \array_keys($constants));
-		return \in_array(\strtolower($name), $keys);
+		$keys = \array_map('\\mb_strtolower', \array_keys($constants));
+		return \in_array(\mb_strtolower($name), $keys);
 	}
 	public static function isValidValue($value, $ignoreCase=TRUE) {
 		$values = \array_values(self::getConstants());
@@ -43,8 +43,8 @@ abstract class BasicEnum {
 			return TRUE;
 		if (!$ignoreCase)
 			return FALSE;
-		$vals = \array_map('\\strtolower', \array_values($values));
-		return \in_array(\strtolower($value), $vals);
+		$vals = \array_map('\\mb_strtolower', \array_values($values));
+		return \in_array(\mb_strtolower($value), $vals);
 	}
 
 
@@ -55,9 +55,9 @@ abstract class BasicEnum {
 			return $constants[$name];
 		if (!$ignoreCase)
 			return NULL;
-		$n = \strtolower($name);
+		$n = \mb_strtolower($name);
 		foreach ($constants as $k => $v) {
-			if(\strtolower($k) == $n)
+			if(\mb_strtolower($k) == $n)
 				return $v;
 		}
 		return NULL;
@@ -69,9 +69,9 @@ abstract class BasicEnum {
 			return $result;
 		if (!$ignoreCase)
 			return NULL;
-		$val = \strtolower($value);
+		$val = \mb_strtolower($value);
 		foreach ($constants as $k => $v) {
-			if (\strtolower($v) == $val) {
+			if (\mb_strtolower($v) == $val) {
 				return $k;
 			}
 		}

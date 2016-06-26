@@ -34,7 +34,7 @@ abstract class xLogPrinting {
 		}
 		$len = 0;
 		foreach ($msg as $m) {
-			$size = \strlen($m);
+			$size = \mb_strlen($m);
 			if ($size > $len)
 				$len = $size;
 		}

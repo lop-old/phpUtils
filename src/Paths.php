@@ -64,19 +64,19 @@ final class Paths {
 		{
 			$A = self::$local_entry;
 			$B = self::$local_src;
-			$lenA = \strlen($A);
-			$lenB = \strlen($B);
+			$lenA = \mb_strlen($A);
+			$lenB = \mb_strlen($B);
 			if ($lenA < $lenB) {
 				list ($A, $B) = [$B, $A];
 			}
 			$found = FALSE;
-			for ($i=\strlen($A); $i>0; $i--) {
-				$A = \substr($A, 0, $i);
-				if ($i < \strlen($B)) {
-					$B = \substr($B, 0, -1);
+			for ($i=\mb_strlen($A); $i>0; $i--) {
+				$A = \mb_substr($A, 0, $i);
+				if ($i < \mb_strlen($B)) {
+					$B = \mb_substr($B, 0, -1);
 				}
-				if (\substr($A, 0, $i) == $B) {
-					$path = \substr($A, 0, $i);
+				if (\mb_substr($A, 0, $i) == $B) {
+					$path = \mb_substr($A, 0, $i);
 					$path = Strings::TrimEnd($path, '/', '\\', ' ');
 					self::$local_base = $path;
 					$found = TRUE;
@@ -94,9 +94,9 @@ final class Paths {
 			$path = $reflect->getFileName();
 			unset($reflect);
 			if (!empty($path)) {
-				$pos = \strrpos($path, '/');
+				$pos = \mb_strrpos($path, '/');
 				if ($pos !== FALSE) {
-					$path = \substr($path, 0, $pos);
+					$path = \mb_substr($path, 0, $pos);
 					$path = Strings::TrimEnd($path, '/', '\\', ' ');
 					self::$local_portal = $path;
 				}

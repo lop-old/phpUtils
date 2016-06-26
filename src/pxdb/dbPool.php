@@ -217,17 +217,17 @@ class dbPool {
 			// type
 			$field['type'] = $db->getString('Type');
 			// size
-			$pos = \strpos($field['type'], '(');
+			$pos = \mb_strpos($field['type'], '(');
 			if ($pos !== FALSE) {
 				$field['size'] = Strings::Trim(
-					\substr($field['type'], $pos),
+					\mb_substr($field['type'], $pos),
 					'(', ')'
 				);
-				$field['type'] = \substr($field['type'], 0, $pos);
+				$field['type'] = \mb_substr($field['type'], 0, $pos);
 			}
 			// null / not null
 			$nullable = $db->getString('Null');
-			$field['nullable'] = (\strtoupper($nullable) == 'YES');
+			$field['nullable'] = (\mb_strtoupper($nullable) == 'YES');
 			// default value
 			if (isset($row['default'])) {
 				$default = (
@@ -238,12 +238,12 @@ class dbPool {
 			}
 			// primary key
 			$primary = $db->getString('Key');
-			if (\strtoupper($primary) == 'PRI') {
+			if (\mb_strtoupper($primary) == 'PRI') {
 				$field['primary'] = TRUE;
 			}
 			// auto increment
 			$extra = $db->getString('Extra');
-			if (\strpos(\strtolower($extra), 'auto_increment') !== FALSE) {
+			if (\mb_strpos(\mb_strtolower($extra), 'auto_increment') !== FALSE) {
 				$field['increment'] = TRUE;
 			}
 			$fields[$name] = $field;
@@ -311,7 +311,7 @@ class dbPool {
 			echo "\nCreating table: {$tableName} ..\n";
 		}
 		$db->Execute($sql);
-		if (\strtolower($firstField['type']) == 'increment') {
+		if (\mb_strtolower($firstField['type']) == 'increment') {
 			$fieldName = $firstField['name'];
 			if (!self::InitAutoIncrementField($db, $tableName, $fieldName)) {
 				fail("Failed to finish creating auto increment field: {$fieldName}");
@@ -391,8 +391,8 @@ class dbPool {
 		}
 		dbUtils::fillFieldKeys($field);
 		$type = San::AlphaNumUnderscore( $field['type'] );
-		$fieldType = \strtolower($type);
-		$type      = \strtoupper($type);
+		$fieldType = \mb_strtolower($type);
+		$type      = \mb_strtoupper($type);
 		$sql = [];
 		// name
 		$sql[] = "`{$name}`";

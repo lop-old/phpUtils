@@ -74,7 +74,7 @@ final class xLevel {
 			return $level;
 		}
 		// word value
-		$value = \strtoupper($value);
+		$value = \mb_strtoupper($value);
 		if (isset(self::$knownLevels[$value])) {
 			return self::$knownLevels[$value];
 		}

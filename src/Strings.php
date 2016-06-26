@@ -32,7 +32,7 @@ final class Strings {
 		}
 		$allshort = TRUE;
 		foreach ($remove as $str) {
-			if (\strlen($str) > 1) {
+			if (\mb_strlen($str) > 1) {
 				$allshort = FALSE;
 				break;
 			}
@@ -40,13 +40,13 @@ final class Strings {
 		// trim single chars
 		if ($allshort) {
 			$last = $text;
-			while (\in_array(\substr($text, 0, 1), $remove)) {
-				$text = \substr($text, 1);
+			while (\in_array(\mb_substr($text, 0, 1), $remove)) {
+				$text = \mb_substr($text, 1);
 				if ($text === $last) break;
 				$last = $text;
 			}
-			while (\in_array(\substr($text,-1, 1), $remove)) {
-				$text = \substr($text, 0, -1);
+			while (\in_array(\mb_substr($text,-1, 1), $remove)) {
+				$text = \mb_substr($text, 0, -1);
 				if ($text === $last) break;
 				$last = $text;
 			}
@@ -56,17 +56,17 @@ final class Strings {
 			do {
 				$more = FALSE;
 				foreach ($remove as $str) {
-					$len = \strlen($str);
+					$len = \mb_strlen($str);
 					if ($len == 0) continue;
 					$last = $text;
-					while (\substr($text, 0, $len) == $str) {
-						$text = \substr($text, $len);
+					while (\mb_substr($text, 0, $len) == $str) {
+						$text = \mb_substr($text, $len);
 						if($text === $last) break;
 						$last = $text;
 						$more = TRUE;
 					}
-					while (\substr($text, 0 - $len, $len) == $str) {
-						$text = \substr($text, 0, 0 - $len);
+					while (\mb_substr($text, 0 - $len, $len) == $str) {
+						$text = \mb_substr($text, 0, 0 - $len);
 						if ($text === $last) break;
 						$last = $text;
 						$more = TRUE;
@@ -88,7 +88,7 @@ final class Strings {
 		}
 		$allshort = TRUE;
 		foreach ($remove as $str) {
-			if (\strlen($str) > 1) {
+			if (\mb_strlen($str) > 1) {
 				$allshort = FALSE;
 				break;
 			}
@@ -96,8 +96,8 @@ final class Strings {
 		// trim single chars
 		if ($allshort) {
 			$last = $text;
-			while (\in_array(\substr($text, 0, 1), $remove)) {
-				$text = \substr($text, 1);
+			while (\in_array(\mb_substr($text, 0, 1), $remove)) {
+				$text = \mb_substr($text, 1);
 				if ($text === $last) break;
 				$last = $text;
 			}
@@ -107,11 +107,11 @@ final class Strings {
 			do {
 				$more = FALSE;
 				foreach ($remove as $str) {
-					$len = \strlen($str);
+					$len = \mb_strlen($str);
 					if ($len == 0) continue;
 					$last = $text;
-					while (\substr($text, 0, $len) == $str) {
-						$text = \substr($text, $len);
+					while (\mb_substr($text, 0, $len) == $str) {
+						$text = \mb_substr($text, $len);
 						if ($text === $last) break;
 						$last = $text;
 						$more = TRUE;
@@ -133,7 +133,7 @@ final class Strings {
 		}
 		$allshort = TRUE;
 		foreach ($remove as $str) {
-			if (\strlen($str) > 1) {
+			if (\mb_strlen($str) > 1) {
 				$allshort = FALSE;
 				break;
 			}
@@ -141,8 +141,8 @@ final class Strings {
 		// trim single chars
 		if ($allshort) {
 			$last = $text;
-			while (\in_array(\substr($text, -1, 1), $remove)) {
-				$text = \substr($text, 0, -1);
+			while (\in_array(\mb_substr($text, -1, 1), $remove)) {
+				$text = \mb_substr($text, 0, -1);
 				if ($text === $last) break;
 				$last = $text;
 			}
@@ -152,11 +152,11 @@ final class Strings {
 			do {
 				$more = FALSE;
 				foreach ($remove as $str) {
-					$len = \strlen($str);
+					$len = \mb_strlen($str);
 					if ($len == 0) continue;
 					$last = $text;
-					while (\substr($text, 0 - $len, $len) == $str) {
-						$text = \substr($text, 0, 0 - $len);
+					while (\mb_substr($text, 0 - $len, $len) == $str) {
+						$text = \mb_substr($text, 0, 0 - $len);
 						if ($text === $last) break;
 						$last = $text;
 						$more = TRUE;
@@ -177,19 +177,19 @@ final class Strings {
 	 * @return string - String with ' and " quotes removed.
 	 */
 	public static function TrimQuotes($text) {
-		while (\strlen($text) > 1) {
-			$f = \substr($text, 0, 1);
-			$e = \substr($text, -1, 1);
+		while (\mb_strlen($text) > 1) {
+			$f = \mb_substr($text, 0, 1);
+			$e = \mb_substr($text, -1, 1);
 			// trim ' quotes
 			if ($f == Defines::QUOTE_S && $e == Defines::QUOTE_S) {
-				$text = \substr($text, 1, -1);
+				$text = \mb_substr($text, 1, -1);
 			} else
 			// trim " quotes
 			if ($f == Defines::QUOTE_D && $e == Defines::QUOTE_D) {
-				$text = \substr($text, 1, -1);
+				$text = \mb_substr($text, 1, -1);
 			} else
 			if ($f == Defines::ACCENT && $e == Defines::ACCENT) {
-				$text = \substr($text, 1, -1);
+				$text = \mb_substr($text, 1, -1);
 			} else {
 				break;
 			}
@@ -206,7 +206,7 @@ final class Strings {
 
 
 	public static function PadCenter($str, $size, $chr=' ') {
-		$len = $size - \strlen($str);
+		$len = $size - \mb_strlen($str);
 		if ($len < 0)
 			return $str;
 		$padLeft  = \floor( ((double) $len) / 2.0);
@@ -225,26 +225,26 @@ final class Strings {
 	public static function StartsWith($haystack, $needle, $ignoreCase=FALSE) {
 		if (empty($haystack) || empty($needle))
 			return FALSE;
-		$len = \strlen($needle);
-		if ($len > \strlen($haystack))
+		$len = \mb_strlen($needle);
+		if ($len > \mb_strlen($haystack))
 			return FALSE;
 		if ($ignoreCase) {
-			$haystack = \strtolower($haystack);
-			$needle   = \strtolower($needle);
+			$haystack = \mb_strtolower($haystack);
+			$needle   = \mb_strtolower($needle);
 		}
-		return \substr($haystack, 0, $len) == $needle;
+		return \mb_substr($haystack, 0, $len) == $needle;
 	}
 	public static function EndsWith($haystack, $needle, $ignoreCase=FALSE) {
 		if (empty($haystack) || empty($needle))
 			return FALSE;
-		$len = \strlen($needle);
-		if ($len > \strlen($haystack))
+		$len = \mb_strlen($needle);
+		if ($len > \mb_strlen($haystack))
 			return FALSE;
 			if($ignoreCase) {
-			$haystack = \strtolower($haystack);
-			$needle   = \strtolower($needle);
+			$haystack = \mb_strtolower($haystack);
+			$needle   = \mb_strtolower($needle);
 		}
-		return \substr($haystack, 0 - $len) == $needle;
+		return \mb_substr($haystack, 0 - $len) == $needle;
 	}
 
 
@@ -282,10 +282,10 @@ final class Strings {
 		if (empty($haystack) || empty($needle))
 			return FALSE;
 		if ($ignoreCase) {
-			$haystack = \strtolower($haystack);
-			$needle   = \strtolower($needle);
+			$haystack = \mb_strtolower($haystack);
+			$needle   = \mb_strtolower($needle);
 		}
-		return (\strpos($haystack, $needle) !== FALSE);
+		return (\mb_strpos($haystack, $needle) !== FALSE);
 	}
 
 
@@ -301,7 +301,7 @@ final class Strings {
 		// pattern not found
 		if ($result == NULL)
 			return $data;
-		return \substr($data, 0, $result['POS']);
+		return \mb_substr($data, 0, $result['POS']);
 	}
 	public static function grabPart(&$data, $patterns=' ') {
 		$result = self::findPart($data, $patterns);
@@ -312,16 +312,16 @@ final class Strings {
 			return $part;
 		}
 		// get part
-		$part = \substr(
+		$part = \mb_substr(
 				$data,
 				0,
 				$result['POS']
 		);
 		// remove part from data
 		$data = self::TrimFront(
-				\substr(
+				\mb_substr(
 						$data,
-						$result['POS']+\strlen($result['PAT'])
+						$result['POS'] + \mb_strlen($result['PAT'])
 				),
 				$result['PAT']
 		);
@@ -334,12 +334,12 @@ final class Strings {
 		if (!\is_array($patterns))
 			$patterns = [$patterns];
 		// find next delim
-		$pos   = \strlen($data);
+		$pos   = \mb_strlen($data);
 		$delim = NULL;
 		foreach ($patterns as $pat) {
 			if (empty($pat)) continue;
 			$pat = (string) $pat;
-			$p = \strpos($data, $pat);
+			$p = \mb_strpos($data, $pat);
 			if ($p === FALSE) continue;
 			// found a sooner delim
 			if ($p < $pos) {

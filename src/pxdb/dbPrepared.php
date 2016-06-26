@@ -93,11 +93,11 @@ abstract class dbPrepared {
 			return NULL;
 		}
 		try {
-			$pos = \strpos($this->sql, ' ');
-			$firstPart = \strtoupper(
+			$pos = \mb_strpos($this->sql, ' ');
+			$firstPart = \mb_strtoupper(
 				$pos === FALSE
 				? $this->sql
-				: \substr($this->sql, 0, $pos)
+				: \mb_substr($this->sql, 0, $pos)
 			);
 			// run query
 			if (!$this->st->execute()) {
