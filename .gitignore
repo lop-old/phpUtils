@@ -1,8 +1,9 @@
 pxnloader.php
+.htdb*.php
 **/config.php
 **/auth.json
 .cache/
-.twig_cache/
+.*_cache/
 public/static/bootstrap
 public/static/jquery
 error_log
