@@ -1,6 +1,20 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-06-30 phpUtils 0.1.25
+==========================
+* added Paths::portal() function
+* added console\Dialog class
+* renamed Validate_..() functions to is..() in San class
+* renamed ComposerTools::find() function to findJson()
+* changed string functions to mb_..() to properly support multibyte strings
+* added Strings::mb_ucfirst() function
+* added new dbUtils class
+* renamed tableHasField() function to hasTableField() in dbPool class
+* added $e exception argument to backtrace() function
+* much work on pxdb classes (dbBackup is unfinished)
+
+
 2016-06-09 phpUtils 0.1.24
 ==========================
 * added cacher classes for storing simple variables in the filesystem
