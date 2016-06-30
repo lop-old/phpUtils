@@ -16,6 +16,16 @@ final class Strings {
 
 
 
+	public static function mb_ucfirst($str, $full=TRUE) {
+		return \mb_strtoupper(\mb_substr($str, 0, 1)).
+			($full
+				? \strtolower(\mb_substr($str, 1))
+				: \mb_substr($str, 1)
+			);
+	}
+
+
+
 	#################
 	## Trim String ##
 	#################
