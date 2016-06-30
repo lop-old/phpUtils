@@ -11,12 +11,17 @@
 
 // find autoloader.php
 {
-	$pwd = getcwd();
+	$pwd = \getcwd();
 	$search_paths = [
-			$pwd,
-			$pwd.'/..',
-			$pwd.'/../..'
+			__DIR__,
+			__DIR__.'/..',
+			__DIR__.'/../..',
 	];
+	if ($pwd != __DIR__) {
+		$search_paths[] = $pwd;
+		$search_paths[] = $pwd.'/..';
+		$search_paths[] = $pwd.'/../..';
+	}
 	$loader = NULL;
 	foreach ($search_paths as $path) {
 		if (empty($path)) continue;
