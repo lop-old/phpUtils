@@ -217,8 +217,9 @@ final class Strings {
 
 	public static function PadCenter($str, $size, $chr=' ') {
 		$len = $size - \mb_strlen($str);
-		if ($len < 0)
+		if ($len < 0) {
 			return $str;
+		}
 		$padLeft  = \floor( ((double) $len) / 2.0);
 		$padRight = \ceil(  ((double) $len) / 2.0);
 		return \str_repeat($chr, $padLeft) . $str . \str_repeat($chr, $padRight);
@@ -233,11 +234,13 @@ final class Strings {
 
 
 	public static function StartsWith($haystack, $needle, $ignoreCase=FALSE) {
-		if (empty($haystack) || empty($needle))
+		if (empty($haystack) || empty($needle)) {
 			return FALSE;
+		}
 		$len = \mb_strlen($needle);
-		if ($len > \mb_strlen($haystack))
+		if ($len > \mb_strlen($haystack)) {
 			return FALSE;
+		}
 		if ($ignoreCase) {
 			$haystack = \mb_strtolower($haystack);
 			$needle   = \mb_strtolower($needle);
@@ -245,12 +248,14 @@ final class Strings {
 		return \mb_substr($haystack, 0, $len) == $needle;
 	}
 	public static function EndsWith($haystack, $needle, $ignoreCase=FALSE) {
-		if (empty($haystack) || empty($needle))
+		if (empty($haystack) || empty($needle)) {
 			return FALSE;
+		}
 		$len = \mb_strlen($needle);
-		if ($len > \mb_strlen($haystack))
+		if ($len > \mb_strlen($haystack)) {
 			return FALSE;
-			if($ignoreCase) {
+		}
+		if($ignoreCase) {
 			$haystack = \mb_strtolower($haystack);
 			$needle   = \mb_strtolower($needle);
 		}
@@ -266,17 +271,21 @@ final class Strings {
 
 
 	public static function ForceStartsWith($haystack, $prepend) {
-		if (empty($haystack) || empty($prepend))
+		if (empty($haystack) || empty($prepend)) {
 			return $haystack;
-		if (self::StartsWith($haystack, $prepend))
+		}
+		if (self::StartsWith($haystack, $prepend)) {
 			return $haystack;
+		}
 		return $prepend.$haystack;
 	}
 	public static function ForceEndsWith($haystack, $append) {
-		if (empty($haystack) || empty($append))
+		if (empty($haystack) || empty($append)) {
 			return $haystack;
-		if (self::EndsWith($haystack, $append))
+		}
+		if (self::EndsWith($haystack, $append)) {
 			return $haystack;
+		}
 		return $haystack.$append;
 	}
 
@@ -289,8 +298,9 @@ final class Strings {
 
 
 	public static function Contains($haystack, $needle, $ignoreCase=FALSE) {
-		if (empty($haystack) || empty($needle))
+		if (empty($haystack) || empty($needle)) {
 			return FALSE;
+		}
 		if ($ignoreCase) {
 			$haystack = \mb_strtolower($haystack);
 			$needle   = \mb_strtolower($needle);
@@ -309,8 +319,9 @@ final class Strings {
 	public static function peakPart(&$data, $patterns=' ') {
 		$result = self::findPart($data, $patterns);
 		// pattern not found
-		if ($result == NULL)
+		if ($result == NULL) {
 			return $data;
+		}
 		return \mb_substr($data, 0, $result['POS']);
 	}
 	public static function grabPart(&$data, $patterns=' ') {
@@ -323,26 +334,28 @@ final class Strings {
 		}
 		// get part
 		$part = \mb_substr(
-				$data,
-				0,
-				$result['POS']
+			$data,
+			0,
+			$result['POS']
 		);
 		// remove part from data
 		$data = self::TrimFront(
-				\mb_substr(
-						$data,
-						$result['POS'] + \mb_strlen($result['PAT'])
-				),
-				$result['PAT']
+			\mb_substr(
+				$data,
+				$result['POS'] + \mb_strlen($result['PAT'])
+			),
+			$result['PAT']
 		);
 		return $part;
 	}
 	public static function findPart(&$data, $patterns) {
-		if (empty($data))
+		if (empty($data)) {
 			return NULL;
+		}
 		$data = (string) $data;
-		if (!\is_array($patterns))
+		if (!\is_array($patterns)) {
 			$patterns = [$patterns];
+		}
 		// find next delim
 		$pos   = \mb_strlen($data);
 		$delim = NULL;
@@ -360,8 +373,9 @@ final class Strings {
 			if ($p == 0)
 				break;
 		}
-		if ($delim == NULL)
+		if ($delim == NULL) {
 			return NULL;
+		}
 		return [
 			'POS' => $pos,
 			'PAT' => $delim
@@ -377,8 +391,9 @@ final class Strings {
 
 
 	public static function BuildPath(...$parts) {
-		if (empty($parts))
+		if (empty($parts)) {
 			return '';
+		}
 		$prepend = self::StartsWith(\reset($parts), '/');
 		$append  = self::EndsWith  (\end($parts),   '/');
 		$cleaned = [];
