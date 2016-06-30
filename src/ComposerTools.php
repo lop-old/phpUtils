@@ -18,7 +18,7 @@ class ComposerTools {
 
 
 
-	public static function find($depth=2) {
+	public static function findJson($depth=2) {
 		for ($i=0; $i<=$depth; $i++) {
 			$path = \str_repeat('/..', $i);
 			$path = \realpath( '.'.$path.'/' ).'/composer.json';
