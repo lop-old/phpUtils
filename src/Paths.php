@@ -131,6 +131,27 @@ final class Paths {
 
 
 
+	public static function all() {
+		return [
+			'local' => [
+				'pwd'    => self::$local_pwd,
+				'entry'  => self::$local_entry,
+				'base'   => self::$local_base,
+				'src'    => self::$local_src,
+				'utils'  => self::$local_utils,
+				'portal' => self::$local_portal,
+			],
+			'web' => [
+				'base'   => self::$web_base,
+				'images' => self::$web_images,
+			],
+		];
+	}
+
+
+
+
+
 	// local paths
 	public static function pwd() {
 		return self::$local_pwd;
