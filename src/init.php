@@ -168,6 +168,7 @@ function dump($var) {
 		\var_dump($var);
 		echo '</pre>'.$CRLF;
 	}
+	@\ob_flush();
 }
 // d()
 function d($var) {
@@ -219,6 +220,7 @@ function fail($msg=NULL, $code=1, \Exception $e=NULL) {
 	if (debug()) {
 		backtrace($e);
 	}
+	@\ob_flush();
 	if ($code !== NULL) {
 		ExitNow($code);
 	}
@@ -321,6 +323,7 @@ function backtrace($e=NULL) {
 	if (!$isShell) {
 		echo '</table>'.$CRLF.$CRLF;
 	}
+	@\ob_flush();
 }
 
 
@@ -527,3 +530,7 @@ function (\Exception $e) {
 
 
 require ('Globals.php');
+
+
+
+return TRUE;
