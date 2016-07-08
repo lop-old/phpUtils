@@ -28,6 +28,19 @@ use pxn\phpUtils\System;
 
 
 
+if (\defined('pxn\\phpUtils\\inited')) {
+	return FALSE;
+}
+define('pxn\\phpUtils\\inited', TRUE);
+
+
+
+class init {
+	public static function init() {}
+}
+
+
+
 // default error reporting
 {
 	$isShell = System::isShell();
