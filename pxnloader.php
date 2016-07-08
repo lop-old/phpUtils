@@ -13,9 +13,9 @@
 {
 	$pwd = \getcwd();
 	$search_paths = [
-			__DIR__,
-			__DIR__.'/..',
-			__DIR__.'/../..',
+		__DIR__,
+		__DIR__.'/..',
+		__DIR__.'/../..',
 	];
 	if ($pwd != __DIR__) {
 		$search_paths[] = $pwd;

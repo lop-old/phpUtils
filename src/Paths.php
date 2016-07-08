@@ -127,6 +127,8 @@ final class Paths {
 			}
 			unset($paths);
 		}
+//		// ensure in proper dir
+//		\chdir(self::entry());
 	}
 
 
