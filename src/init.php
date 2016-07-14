@@ -87,6 +87,13 @@ try {
 
 
 
+// load shell args
+if (System::isShell()) {
+	ConsoleShell::init();
+}
+
+
+
 ########################
 ##                    ##
 ##  init 2 - defines  ##

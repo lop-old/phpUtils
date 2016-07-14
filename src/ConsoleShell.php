@@ -12,14 +12,24 @@ namespace pxn\phpUtils;
 final class ConsoleShell {
 	private final function __construct() {}
 
+	private static $flags = NULL;
+	private static $args  = NULL;
 
 
-	public static function getConsoleVars() {
-		if (self::$consoleFlags !== NULL) {
-			return self::$consoleFlags;
+
+	public static function init() {
+		self::initConsoleVars();
+	}
+	private static function initConsoleVars() {
+		if (!System::isShell()) {
+			return FALSE;
+		}
+		if (self::$flags !== NULL || self::$args !== NULL) {
+			return FALSE;
 		}
 		global $argv;
-		$flags = [];
+		self::$flags = [];
+		self::$args  = [];
 		for ($index=1; $index<count($argv); $index++) {
 			$arg = $argv[$index];
 			// --flag
@@ -29,7 +39,7 @@ final class ConsoleShell {
 				if ($pos !== FALSE) {
 					$val = \mb_substr($arg, $pos);
 					$arg = \mb_substr($arg, 0, $pos);
-					$flags[$arg] = $val;
+					self::$flags[$arg] = $val;
 					//$_GET[$arg] = $val;
 					continue;
 				}
@@ -38,14 +48,14 @@ final class ConsoleShell {
 					$val = $argv[$index+1];
 					if (!Strings::StartsWith($val, '-')) {
 						$index++;
-						$flags[$arg] = $val;
+						self::$flags[$arg] = $val;
 						//$_GET[$arg] = $val;
 						continue;
 					}
 				}
 				// --flag
-				if (!isset($flags[$arg])) {
-					$flags[$arg] = TRUE;
+				if (!isset(self::$flags[$arg])) {
+					self::$flags[$arg] = TRUE;
 					//$_GET[$arg] = TRUE;
 				}
 				continue;
@@ -57,7 +67,7 @@ final class ConsoleShell {
 				if ($len > 2) {
 					$val = \mb_substr($arg, 2);;
 					$arg = \mb_substr($arg, 0, 2);
-					$flags[$arg] = $val;
+					self::$flags[$arg] = $val;
 					//$_GET[$arg] = $val;
 					continue;
 				}
@@ -66,22 +76,41 @@ final class ConsoleShell {
 					$val = $argv[$index+1];
 					if (!Strings::StartsWith($val, '-')) {
 						$index++;
-						$flags[$arg] = $val;
+						self::$flags[$arg] = $val;
 						//$_GET[$arg] = $val;
 						continue;
 					}
 				}
 				// -f
-				if (!isset($flags[$arg])) {
-					$flags[$arg] = TRUE;
+				if (!isset(self::$flags[$arg])) {
+					self::$flags[$arg] = TRUE;
 					//$_GET[$arg] = TRUE;
 				}
 				continue;
 			}
-			return "Unknown argument: $arg";
+			// not flag, must be argument
+			self::$args[] = $arg;
 		}
-		self::$consoleFlags = $flags;
-		return $flags;
+		return TRUE;
+	}
+
+
+
+	public static function getFlags() {
+		return self::$flags;
+	}
+	public static function getArgs() {
+		return self::$args;
+	}
+
+
+
+	public static function hasFlag($key) {
+		return isset(self::$flags[$key]);
+	}
+	public static function isHelp() {
+		return self::hasFlag('-h') ||
+			self::hasFlag('--help');
 	}
 
 
