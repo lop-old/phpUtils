@@ -12,6 +12,8 @@ namespace pxn\phpUtils;
 final class ConsoleShell {
 	private final function __construct() {}
 
+	public static $ANSI_COLOR_ENABLED = NULL;
+
 	private static $flags = NULL;
 	private static $args  = NULL;
 
@@ -19,6 +21,14 @@ final class ConsoleShell {
 
 	public static function init() {
 		self::initConsoleVars();
+		// ansi color enabled
+		if (self::hasFlag('--ansi')) {
+			Strings::setAnsiColorEnabled(TRUE);
+		}
+		// ansi color disabled
+		if (self::hasFlag('--no-ansi')) {
+			Strings::setAnsiColorEnabled(FALSE);
+		}
 	}
 	private static function initConsoleVars() {
 		if (!System::isShell()) {
@@ -122,6 +132,219 @@ final class ConsoleShell {
 	public static function isHelp() {
 		return self::hasFlag('-h') ||
 			self::hasFlag('--help');
+	}
+
+
+
+	############
+	## Format ##
+	############
+
+
+
+	public static function isAnsiColorEnabled() {
+		if (self::$ANSI_COLOR_ENABLED === NULL) {
+			return TRUE;
+		}
+		return (self::$ANSI_COLOR_ENABLED != FALSE);
+	}
+	public static function setAnsiColorEnabled($enabled) {
+		self::$ANSI_COLOR_ENABLED = $enabled;
+	}
+
+
+
+	public static function FormatString($str) {
+		return \preg_replace_callback(
+			'#\{[a-z0-9,=]+\}#i',
+			[ __CLASS__, 'FormatString_Callback' ],
+			$str
+		);
+	}
+	public static function FormatString_Callback(array $matches) {
+		$match = \reset($matches);
+		if (!self::isAnsiColorEnabled()) {
+			return $match;
+		}
+		if (!Strings::StartsWith($match, '{') || !Strings::EndsWith($match, '}')) {
+			return $match;
+		}
+		$match = \mb_substr($match, 1, -1);
+		$codes = [];
+		$bold = NULL;
+		$parts = \explode(
+			',',
+			\mb_strtolower($match)
+		);
+		foreach ($parts as $part) {
+			if (empty($part)) continue;
+			$pos = \mb_strpos($part, '=');
+			// {tag}
+			if ($pos === FALSE) {
+				switch ($part) {
+				case 'bold':
+					$bold = TRUE;
+					break;
+				case 'reset':
+					return "\033[0m";
+				}
+			// {tag=value}
+			} else {
+				$key = \mb_substr($part, 0, $pos);
+				$val = \mb_substr($part, $pos+1);
+				if ($key == 'color') {
+					switch ($val) {
+					// dark colors
+					case 'black':
+						$codes[] = 30;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'red':
+						$codes[] = 31;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'green':
+						$codes[] = 32;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'orange':
+						$codes[] = 33;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'blue':
+						$codes[] = 34;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'magenta':
+						$codes[] = 35;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'cyan':
+						$codes[] = 36;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'lightgray':
+						$codes[] = 37;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					// light colors
+					case 'gray':
+						$codes[] = 30;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'lightred':
+						$codes[] = 31;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'lime':
+						$codes[] = 32;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'yellow':
+						$codes[] = 33;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'lightblue':
+						$codes[] = 34;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'pink':
+						$codes[] = 35;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'lightcyan':
+						$codes[] = 36;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'white':
+						$codes[] = 37;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					}
+				} else // end color tag
+				if ($key == 'bg' || $key == 'bgcolor' || $key == 'back') {
+					switch ($val) {
+					// dark colors
+					case 'black':
+						$codes[] = 40;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'red':
+						$codes[] = 41;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'green':
+						$codes[] = 42;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'orange':
+						$codes[] = 43;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'blue':
+						$codes[] = 44;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'magenta':
+						$codes[] = 45;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'cyan':
+						$codes[] = 46;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					case 'lightgray':
+						$codes[] = 47;
+						$bold = ($bold === NULL ? FALSE : $bold);
+						break;
+					// light colors
+					case 'gray':
+						$codes[] = 40;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'lightred':
+						$codes[] = 41;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'lime':
+						$codes[] = 42;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'yellow':
+						$codes[] = 43;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'lightblue':
+						$codes[] = 44;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'pink':
+						$codes[] = 45;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'lightcyan':
+						$codes[] = 46;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					case 'white':
+						$codes[] = 47;
+						$bold = ($bold === NULL ? TRUE : $bold);
+						break;
+					}
+				} // end bgcolor tag
+			} // end {tag=value}
+		} // end for
+		if ($bold !== NULL) {
+			\array_unshift(
+				$codes,
+				($bold !== FALSE ? 1 : 0)
+			);
+		}
+		if (\count($codes) > 0) {
+			$code = \implode(';', $codes);
+			return "\033[{$code}m";
+		}
+		return '{'.$match.'}';
 	}
 
 
