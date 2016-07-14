@@ -11,17 +11,25 @@
 
 // find autoloader.php
 {
-	$pwd = \getcwd();
-	$search_paths = [
-		__DIR__,
-		__DIR__.'/..',
-		__DIR__.'/../..',
-	];
-	if ($pwd != __DIR__) {
-		$search_paths[] = $pwd;
-		$search_paths[] = $pwd.'/..';
-		$search_paths[] = $pwd.'/../..';
+	// find entry path
+	$entry = '';
+	if (isset($_SERVER['DOCUMENT_ROOT']) && !empty($_SERVER['DOCUMENT_ROOT'])) {
+		$entry = $_SERVER['DOCUMENT_ROOT'];
 	}
+	// find entry path from backtrace (shell mode)
+	if (empty($entry)) {
+		$trace = \debug_backtrace();
+		$last  = \end($trace);
+		$entry = \dirname($last['file']);
+		unset($trace, $last);
+	}
+	// look in paths
+	$search_paths = [
+		$entry,
+		$entry.'/..',
+		$entry.'/../..',
+	];
+	// find autoload.php in paths
 	$loader = NULL;
 	foreach ($search_paths as $path) {
 		if (empty($path)) continue;
