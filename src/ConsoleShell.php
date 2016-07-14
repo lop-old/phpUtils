@@ -30,8 +30,19 @@ final class ConsoleShell {
 		global $argv;
 		self::$flags = [];
 		self::$args  = [];
+		$allArgs = FALSE;
 		for ($index=1; $index<count($argv); $index++) {
 			$arg = $argv[$index];
+			if (empty($arg)) continue;
+			// --
+			if ($allArgs) {
+				self::$args[] = $arg;
+				continue;
+			}
+			if ($arg == '--') {
+				$allArgs = TRUE;
+				continue;
+			}
 			// --flag
 			if (Strings::StartsWith($arg, '--')) {
 				// --flag=value
