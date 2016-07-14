@@ -30,7 +30,7 @@ final class ConsoleShell {
 					$val = \mb_substr($arg, $pos);
 					$arg = \mb_substr($arg, 0, $pos);
 					$flags[$arg] = $val;
-					$_GET[$arg]  = $val;
+					//$_GET[$arg] = $val;
 					continue;
 				}
 				// --flag value
@@ -39,14 +39,14 @@ final class ConsoleShell {
 					if (!Strings::StartsWith($val, '-')) {
 						$index++;
 						$flags[$arg] = $val;
-						$_GET[$arg]  = $val;
+						//$_GET[$arg] = $val;
 						continue;
 					}
 				}
 				// --flag
 				if (!isset($flags[$arg])) {
 					$flags[$arg] = TRUE;
-					$_GET[$arg]  = TRUE;
+					//$_GET[$arg] = TRUE;
 				}
 				continue;
 			}
@@ -58,7 +58,7 @@ final class ConsoleShell {
 					$val = \mb_substr($arg, 2);;
 					$arg = \mb_substr($arg, 0, 2);
 					$flags[$arg] = $val;
-					$_GET[$arg]  = $val;
+					//$_GET[$arg] = $val;
 					continue;
 				}
 				// -f value
@@ -67,14 +67,14 @@ final class ConsoleShell {
 					if (!Strings::StartsWith($val, '-')) {
 						$index++;
 						$flags[$arg] = $val;
-						$_GET[$arg]  = $val;
+						//$_GET[$arg] = $val;
 						continue;
 					}
 				}
 				// -f
 				if (!isset($flags[$arg])) {
 					$flags[$arg] = TRUE;
-					$_GET[$arg]  = TRUE;
+					//$_GET[$arg] = TRUE;
 				}
 				continue;
 			}
