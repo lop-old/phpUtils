@@ -8,16 +8,9 @@
  */
 namespace pxn\phpUtils;
 
-if (!\ini_get('date.timezone')) {      // @codeCoverageIgnore
-	\ini_set('date.timezone', 'UTC'); // @codeCoverageIgnore
-}                                     // @codeCoverageIgnore
-
 
 final class General {
 	private final function __construct() {}
-	public static function init() {}
-
-	private static $consoleFlags = NULL;
 
 
 
