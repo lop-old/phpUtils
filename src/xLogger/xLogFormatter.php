@@ -8,8 +8,6 @@
  */
 namespace pxn\phpUtils\xLogger;
 
-use pxn\phpUtils\xLogger\xLogRecord;
-
 
 interface xLogFormatter {
 

@@ -8,7 +8,6 @@
  */
 namespace pxn\phpUtils\xLogger;
 
-use pxn\phpUtils\xLogger\xLogFormatter;
 use pxn\phpUtils\Strings;
 
 

@@ -14,10 +14,6 @@
 # init 6 - globals
 namespace pxn\phpUtils;
 
-use pxn\phpUtils\Defines;
-use pxn\phpUtils\General;
-use pxn\phpUtils\System;
-
 
 
 ########################

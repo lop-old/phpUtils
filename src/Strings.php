@@ -8,8 +8,6 @@
  */
 namespace pxn\phpUtils;
 
-use pxn\phpUtils\Arrays;
-
 
 final class Strings {
 	private final function __construct() {}

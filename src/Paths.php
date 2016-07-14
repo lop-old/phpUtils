@@ -8,8 +8,6 @@
  */
 namespace pxn\phpUtils;
 
-use pxn\phpUtils\Strings;
-
 
 final class Paths {
 	private function __construct() {}

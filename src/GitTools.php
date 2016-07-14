@@ -8,9 +8,6 @@
  */
 namespace pxn\phpUtils;
 
-use pxn\phpUtils\Paths;
-use pxn\phpUtils\Strings;
-
 
 class GitTools {
 
