@@ -11,31 +11,39 @@ namespace pxn\phpUtils;
 
 class ConsoleHelp {
 
-	protected $command = NULL;
+	protected $command  = NULL;
+	protected $argName  = NULL;
+	protected $optional = NULL;
+	protected $many     = NULL;
+
 	protected $args  = [];
 	protected $flags = [];
 
 
 
-	public function __construct($command=NULL) {
-		$this->command = $command;
+	public function __construct($command=NULL, $argName=NULL, $optional=NULL, $many=NULL) {
+		$this->command  = $command;
+		$this->argName  = $argName;
+		$this->optional = $optional;
+		$this->many     = $many;
 	}
 
 
 
-	public function addArgument($name, $desc=NULL, $optional=TRUE, $many=FALSE) {
+	public function addArgument($name, $desc=NULL) {
 		if (empty($name)) return;
-		$array = [];
-		if (!empty($desc)) {
-			$array['desc'] = $desc;
-		}
-		if ($optional === TRUE || $optional === FALSE) {
-			$array['optional'] = ($optional != FALSE);
-		}
-		if ($many === TRUE || $many === FALSE) {
-			$array['many'] = ($many != FALSE);
-		}
-		$this->args[$name] = $array;
+//		$array = [];
+//		if (!empty($desc)) {
+//			$array['desc'] = $desc;
+//		}
+//		if ($optional === TRUE || $optional === FALSE) {
+//			$array['optional'] = ($optional != FALSE);
+//		}
+//		if ($many === TRUE || $many === FALSE) {
+//			$array['many'] = ($many != FALSE);
+//		}
+//		$this->args[$name] = $array;
+		$this->args[$name] = $desc;
 	}
 	public function addFlag($flags, $desc=NULL) {
 		$array = [];
@@ -64,19 +72,14 @@ class ConsoleHelp {
 				$usage[] = (string) $this->command;
 			}
 			$usage[] = '[flags]';
-			$first = TRUE;
-			foreach ($this->args as $name => $array) {
-				$optional = (isset($array['optional']) ? $array['optional'] : FALSE);
-				$many     = (isset($array['many'])     ? $array['many']     : FALSE);
-				if ($first) {
-					$first = FALSE;
-					$usage[] = '[--]';
-				}
-				$line = '';
-				if ($optional) {
-					$usage[] = "[<{$name}>]".($many ? '...' : '');
+			if (!empty($this->argName)) {
+				$usage[] = '[--]';
+				$name = $this->argName;
+				$many = ($this->many != FALSE ? '...' : '');
+				if ($this->optional) {
+					$usage[] = "[<$name>]$many";
 				} else {
-					$usage[] = "<{$name}>".($many ? '...' : '');
+					$usage[] = "<$name>$many";
 				}
 			}
 			echo ConsoleShell::FormatString(
@@ -89,7 +92,7 @@ class ConsoleHelp {
 		// prep and find longest line
 		$maxSize = 0;
 		{
-			foreach ($this->args as $name => $array) {
+			foreach ($this->args as $name => $desc) {
 				// find longest line
 				$len = \mb_strlen($name);
 				if ($len > $maxSize) {
@@ -110,25 +113,58 @@ class ConsoleHelp {
 				}
 			}
 			unset($array);
-			$maxSize = Numbers::MinMax($maxSize, 20, 40);
+			$maxSize = Numbers::MinMax($maxSize, 20, 35) + 2;
 		}
+
+		// handle multi-line descriptions
+		$funcWrapDesc = function($desc) use ($maxSize) {
+			// multi-line string to array
+			if (!\is_array($desc)) {
+				$desc = (string) $desc;
+				if (\mb_strpos($desc, "\n") !== FALSE) {
+					$desc = \explode("\n", $desc);
+				}
+			}
+			// single line description
+			if (!\is_array($desc)) {
+				return (string) $desc;
+			}
+			// multi line description
+			$output = [];
+			$first = TRUE;
+			foreach ($desc as $line) {
+				$line = Strings::Trim( (string) $line );
+				if ($first) {
+					$first = FALSE;
+					$output[] = $line;
+				} else {
+					$padding = \str_repeat(' ', $maxSize + 4);
+					$output[] = "{$padding}$line";
+				}
+			}
+			return \implode("\n", $output);
+		};
 
 		// arguments
 		{
+			$name = \ucwords($this->argName);
 			echo ConsoleShell::FormatString(
-				"{color=orange}Arguments:{reset}\n"
+				"{color=orange}$name:{reset}\n"
 			);
-			foreach ($this->args as $name => $array) {
-				$desc = (isset($array['desc']) ? $array['desc'] : '');
+			foreach ($this->args as $name => $desc) {
 				$size = 0;
 				if (\is_string($name)) {
 					$size = \mb_strlen($name);
 				} else {
 					$name = '';
 				}
-				$padding = \str_repeat(' ', $maxSize - $size);
+				$descLines = $funcWrapDesc($desc);
+				$padding = \str_repeat(
+					' ',
+					Numbers::MinMax($maxSize - $size, 1)
+				);
 				echo ConsoleShell::FormatString(
-					"  {color=green}$name{reset}$padding{$desc}\n"
+					"  {color=green}$name{reset}$padding{$descLines}\n"
 				);
 			}
 			echo "\n";
@@ -141,17 +177,20 @@ class ConsoleHelp {
 			);
 			foreach ($this->flags as $array) {
 				$desc = (isset($array['desc']) ? $array['desc'] : '');
-				$line = (isset($array['line']) ? $array['line'] : '');
+				$line = (isset($array['line']) ? (string) $array['line'] : '');
 				$size = \mb_strlen($line);
-				$padding = \str_repeat(' ', $maxSize - $size);
+				$descLines = $funcWrapDesc($desc);
+				$padding = \str_repeat(
+					' ',
+					Numbers::MinMax($maxSize - $size, 1)
+				);
 				echo ConsoleShell::FormatString(
-					"  {color=green}$line{reset}$padding{$desc}\n"
+					"  {color=green}$line{reset}$padding{$descLines}\n"
 				);
 			}
-			echo "\n";
+			echo ConsoleShell::FormatString("{reset}\n");
 		}
 
-		ExitNow(1);
 	}
 
 
