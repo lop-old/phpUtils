@@ -45,7 +45,6 @@
 		"ext-mbstring":    "*",
 		"51systems/doctrine-encrypt": "v5.0.*",
 		"filp/whoops":     "2.1.*",
-		"symfony/console": "v3.1.*",
 		"phpunit/phpunit": "5.*"
 	}
 }
