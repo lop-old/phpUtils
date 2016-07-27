@@ -5,7 +5,7 @@
  * @license GPL-3
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
- */
+ * /
 namespace pxn\phpUtils\console;
 
 use pxn\phpUtils\ComposerTools;
@@ -51,4 +51,4 @@ class ConsoleApp extends \Symfony\Component\Console\Application {
 
 
 
-}
+}*/

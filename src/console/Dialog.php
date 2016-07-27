@@ -5,7 +5,7 @@
  * @license GPL-3
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
- */
+ * /
 namespace pxn\phpUtils\console;
 
 
@@ -58,4 +58,4 @@ abstract class Dialog {
 
 
 
-}
+}*/

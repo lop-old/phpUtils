@@ -5,7 +5,7 @@
  * @license GPL-3
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
- */
+ * /
 namespace pxn\phpUtils\console;
 
 
@@ -43,4 +43,4 @@ class Command extends \Symfony\Component\Console\Command\Command {
 
 
 
-}
+}*/

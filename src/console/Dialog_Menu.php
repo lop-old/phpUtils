@@ -5,7 +5,7 @@
  * @license GPL-3
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
- */
+ * /
 namespace pxn\phpUtils\console;
 
 use pxn\phpUtils\San;
@@ -99,4 +99,4 @@ class Dialog_Menu extends Dialog {
 
 
 
-}
+}*/
