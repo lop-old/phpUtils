@@ -46,5 +46,8 @@
 		"51systems/doctrine-encrypt": "v5.0.*",
 		"filp/whoops":     "2.1.*",
 		"phpunit/phpunit": "5.*"
+	},
+	"scripts": {
+		"test": "phpunit"
 	}
 }
