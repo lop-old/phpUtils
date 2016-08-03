@@ -32,25 +32,36 @@ class ComposerTools {
 	}
 	public static function get($path=NULL) {
 		$path = self::SanPath($path);
-		if (isset(self::$instances[$path])) {
-			$instance = self::$instances[$path];
-		} else {
-			$instance = new static($path);
-			self::$instances[$path] = $instance;
+		try {
+			if (isset(self::$instances[$path])) {
+				$instance = self::$instances[$path];
+			} else {
+				$instance = new static($path);
+				self::$instances[$path] = $instance;
+			}
+		} catch (\Exception $e) {
+			fail($e);
+			ExitNow(1);
 		}
 		return $instance;
 	}
 	protected function __construct($filePath=NULL) {
-		if (empty($filePath) || !\is_file($filePath))
-			throw new \Exception('Invalid composer.json file: '.$filePath);
+		if (empty($filePath) || !\is_file($filePath)) {
+			throw new \Exception("Invalid composer.json file: {$filePath}");
+		}
 		// read file contents
 		$data = \file_get_contents($filePath);
-		if ($data === FALSE)
-			throw new \Exception('Failed to load composer.json '.$filePath);
+		if ($data === FALSE) {
+			throw new \Exception("Failed to load composer.json {$filePath}");
+		}
 		$this->json = \json_decode($data);
 		unset($data);
-		if (!isset($this->json->version))
-			throw new \Exception('Failed to parse composer.json');
+		if ($this->json == NULL) {
+			throw new \Exception("Failed to parse composer.json {$filePath}");
+		}
+//		if (!isset($this->json->version)) {
+//			throw new \Exception("Version field not found in composer.json {$filePath}");
+//		}
 		$this->path = $filePath;
 	}
 
@@ -58,16 +69,19 @@ class ComposerTools {
 
 	public static function SanPath($path) {
 		// trim filename from end
-		if (Strings::EndsWith($path, 'composer.json', FALSE))
+		if (Strings::EndsWith($path, 'composer.json', FALSE)) {
 			$path = \dirname($path);
+		}
 		// normalize path
 		$path = \realpath($path);
 		// trim /src from end of path
-		if (Strings::EndsWith($path, '/src', FALSE))
+		if (Strings::EndsWith($path, '/src', FALSE)) {
 			$path = \realpath($path.'/../');
+		}
 		// validate path
-		if (empty($path) || $path == '/')
+		if (empty($path) || $path == '/') {
 			throw new \Exception('Invalid path');
+		}
 		// append filename
 		return $path.'/composer.json';
 	}
@@ -78,18 +92,21 @@ class ComposerTools {
 
 
 	public function getName() {
-		if (!isset($this->json->name))
+		if (!isset($this->json->name)) {
 			return NULL;
+		}
 		return $this->json->name;
 	}
 	public function getVersion() {
-		if (!isset($this->json->version))
+		if (!isset($this->json->version)) {
 			return NULL;
+		}
 		return $this->json->version;
 	}
 	public function getHomepage() {
-		if (!isset($this->json->homepage))
+		if (!isset($this->json->homepage)) {
 			return NULL;
+		}
 		return $this->json->homepage;
 	}
 
