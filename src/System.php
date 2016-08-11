@@ -44,6 +44,40 @@ final class System {
 
 
 
+	public static function denySuperUser() {
+		$who = self::isSuperUser();
+		if (!empty($who)) {
+			fail("Cannot run this script as super user: {$who}");
+			ExitNow(1);
+		}
+	}
+	public static function isSuperUser($who=NULL) {
+		if (empty($who)) {
+			$who = \get_current_user();
+			if (self::isSuperUser($who) != FALSE) {
+				return $who;
+			}
+			$who = \exec('whoami');
+			if (self::isSuperUser($who) != FALSE) {
+				return $who;
+			}
+			return FALSE;
+		}
+		$who = \strtolower($who);
+		if ($who == 'root') {
+			return $who;
+		}
+		if ($who == 'system') {
+			return $who;
+		}
+		if ($who == 'administrator') {
+			return $who;
+		}
+		return FALSE;
+	}
+
+
+
 	public static function exec($command) {
 		$command = \trim($command);
 		if (empty($command))
