@@ -85,7 +85,7 @@ try {
 
 // load shell args
 if (System::isShell()) {
-	ConsoleShell::init();
+	ShellTools::init();
 }
 
 

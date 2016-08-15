@@ -9,7 +9,7 @@
 namespace pxn\phpUtils;
 
 
-final class ConsoleShell {
+final class ShellTools {
 	private final function __construct() {}
 
 	public static $ANSI_COLOR_ENABLED = NULL;
