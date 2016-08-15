@@ -12,6 +12,8 @@ namespace pxn\phpUtils;
 final class ShellTools {
 	private final function __construct() {}
 
+	private static $inited = FALSE;
+
 	public static $ANSI_COLOR_ENABLED = NULL;
 
 	private static $flags = NULL;
@@ -20,7 +22,10 @@ final class ShellTools {
 
 
 	public static function init() {
+		if (self::$inited)
+			return;
 		self::initConsoleVars();
+		self::$inited = TRUE;
 		// ansi color enabled
 		if (self::hasFlag('--ansi')) {
 			Strings::setAnsiColorEnabled(TRUE);
@@ -31,6 +36,8 @@ final class ShellTools {
 		}
 	}
 	private static function initConsoleVars() {
+		if (self::$inited)
+			return;
 		if (!System::isShell()) {
 			return FALSE;
 		}
