@@ -9,7 +9,7 @@
 namespace pxn\phpUtils;
 
 
-class ConsoleHelp {
+class ShellHelp {
 
 	protected $command  = NULL;
 	protected $argName  = NULL;
@@ -82,7 +82,7 @@ class ConsoleHelp {
 					$usage[] = "<$name>$many";
 				}
 			}
-			echo ConsoleShell::FormatString(
+			echo ShellTools::FormatString(
 				"{color=orange}Usage:{reset}\n"
 			);
 			echo '  '.\implode($usage, ' ')."\n";
