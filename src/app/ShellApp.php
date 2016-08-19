@@ -19,6 +19,8 @@ abstract class ShellApp extends App {
 	public function __construct() {
 		parent::__construct();
 		ShellTools::init();
+		// default render types
+		$this->registerRender( new \pxn\phpUtils\app\render\RenderMain($this) );
 	}
 	protected function initArgs() {
 	}
