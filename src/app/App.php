@@ -18,9 +18,9 @@ abstract class App {
 	private static $instance = NULL;
 	private static $inited = FALSE;
 
-	private $active = NULL;
-	private $name = NULL;
-	private $classpath = NULL;
+	protected $active = NULL;
+	protected $name = NULL;
+	protected $classpath = NULL;
 
 	protected $render = NULL;
 	protected $renders = [];
@@ -80,12 +80,16 @@ abstract class App {
 		}
 		// app name and classpath
 		{
+			// old way
+			//$reflect = new \ReflectionClass(self::get());
+			//$clss = $reflect->getName();
+			//unset($reflect);
 			$path = Strings::Trim(
 				\get_called_class(),
 				'\\'
 			);
 			$pos = \mb_strrpos($path, '\\');
-			if ($pos === FALSE) {
+			if ($pos === FALSE || $pos <= 3) {
 				$this->name = $path;
 				$this->classpath = '';
 			} else {
@@ -109,8 +113,9 @@ abstract class App {
 
 
 
+	// shutdown hook
 	public static function Shutdown() {
-		if (self::$hasRendered == TRUE) {
+		if (self::$hasRendered === TRUE) {
 			return;
 		}
 		if (self::$instance == NULL) {
@@ -120,16 +125,20 @@ abstract class App {
 			fail('Failed to get an app instance!'); ExitNow(1);
 		}
 		self::$instance->doShutdown();
-		self::$hasRendered = TRUE;
 	}
 	protected function doShutdown() {
+		if ($this->hasRendered()) {
+			return;
+		}
 		$render = $this->getRender();
 		if ($render == NULL) {
 			$appName = $this->getName();
 			$renderType = $this->usingRenderType();
 			fail("Failed to get a render-er for app: {$appName}  type: {$renderType}"); ExitNow(1);
 		}
+		// render page contents
 		$render->doRender();
+		$this->setRendered();
 	}
 
 
@@ -184,16 +193,16 @@ abstract class App {
 
 
 	public function hasRendered() {
-		if ($this->hasRendered === NULL) {
+		if (self::$hasRendered === NULL) {
 			return FALSE;
 		}
-		return ($this->hasRendered !== FALSE);
+		return (self::$hasRendered !== FALSE);
 	}
 	public function setRendered($value=NULL) {
 		if ($value === NULL) {
-			$this->hasRendered = TRUE;
+			self::$hasRendered = TRUE;
 		} else {
-			$this->hasRendered = ($value !== FALSE);
+			self::$hasRendered = ($value !== FALSE);
 		}
 	}
 

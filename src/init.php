@@ -188,10 +188,10 @@ function dd($var) {
 // exit functions
 function ExitNow($code=1) {
 	// set rendered
-	if (\class_exists('pxn\\phpPortal\\Website')) {
-		$website = \pxn\phpPortal\Website::peak();
-		if ($website != NULL) {
-			$website->setRendered();
+	if (\class_exists('pxn\\phpPortal\\WebApp')) {
+		$app = \pxn\phpPortal\WebApp::peak();
+		if ($app != NULL) {
+			$app->setRendered();
 		}
 	}
 	// exit code
