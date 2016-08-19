@@ -8,6 +8,7 @@
  */
 namespace pxn\phpUtils\app;
 
+use pxn\phpUtils\Config;
 use pxn\phpUtils\Strings;
 
 
@@ -21,7 +22,8 @@ abstract class App {
 	private $name = NULL;
 	private $classpath = NULL;
 
-	private $renderer = NULL;
+	protected $render = NULL;
+	protected $renders = [];
 	protected static $hasRendered = NULL;
 
 
@@ -121,6 +123,13 @@ abstract class App {
 		self::$hasRendered = TRUE;
 	}
 	protected function doShutdown() {
+		$render = $this->getRender();
+		if ($render == NULL) {
+			$appName = $this->getName();
+			$renderType = $this->usingRenderType();
+			fail("Failed to get a render-er for app: {$appName}  type: {$renderType}"); ExitNow(1);
+		}
+		$render->doRender();
 //TODO:
 
 echo "\n\n\n";
@@ -199,6 +208,32 @@ echo "\n\n\n";
 		} else {
 			$this->hasRendered = ($value !== FALSE);
 		}
+	}
+
+
+
+	public function getRenderType() {
+		return Config::getRenderType();
+	}
+	public function usingRenderType() {
+		return Config::usingRenderType();
+	}
+
+
+
+	public function registerRender(Render $render) {
+		$name = $render->getName();
+		$this->renders[$name] = $render;
+	}
+	public function getRender() {
+		if ($this->render == NULL) {
+			$type = $this->usingRenderType();
+			if (!isset($this->renders[$type])) {
+				fail("Unknown render type: {$type}"); ExitNow(1);
+			}
+			$this->render = $this->renders[$type];
+		}
+		return $this->render;
 	}
 
 
