@@ -8,15 +8,18 @@
  */
 namespace pxn\phpUtils\app;
 
+use pxn\phpUtils\System;
+
 
 abstract class ShellRender extends Render {
 
 
 
 	public function doRender() {
-echo "\n\n\n";
-echo "<p>SHELL RENDER</p>";
-echo "\n\n\n";
+		if (!System::isShell()) {
+			$name = $this->getName();
+			fail("Cannot use a ShellRender class in this mode! {$name}"); ExitNow(1);
+		}
 	}
 
 

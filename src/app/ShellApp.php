@@ -22,8 +22,8 @@ abstract class ShellApp extends App {
 		// default render types
 		$this->registerRender( new \pxn\phpUtils\app\render\RenderMain($this) );
 	}
-	protected function initArgs() {
-	}
+//	protected function initArgs() {
+//	}
 
 
 
