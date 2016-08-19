@@ -11,10 +11,19 @@ namespace pxn\phpUtils\app;
 
 abstract class Render {
 
+	protected $app = NULL;
 
 
 
+	public function __construct(App $app) {
+		$this->app = $app;
+	}
 
+
+
+	public abstract function getName();
+
+	public abstract function doRender();
 
 
 

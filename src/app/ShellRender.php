@@ -13,10 +13,11 @@ class ShellRender extends Render {
 
 
 
-
-
-
-
+	public function doRender() {
+echo "\n\n\n";
+echo "<p>SHELL RENDER</p>";
+echo "\n\n\n";
+	}
 
 
 
