@@ -12,6 +12,8 @@ namespace pxn\phpUtils;
 final class Config {
 	private function __construct() {}
 
+	const DEFAULT_RENDER_TYPE = 'main';
+
 	protected static $inited = FALSE;
 	protected static $config = [
 		'is shell'    => NULL,
@@ -52,14 +54,17 @@ final class Config {
 
 
 	public static function getRenderType() {
-		$renderType =
-			isset(self::$config['render type'])
-			? self::$config['render type']
-			: '';
-		return
-			empty($renderType)
-			? 'main'
-			: $renderType;
+		if (!isset(self::$config['render type'])) {
+			return NULL;
+		}
+		return self::$config['render type'];
+	}
+	public static function usingRenderType() {
+		$type = self::getRenderType();
+		if ($type == NULL) {
+			return self::DEFAULT_RENDER_TYPE;
+		}
+		return $type;
 	}
 
 
