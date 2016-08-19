@@ -105,7 +105,7 @@ abstract class App {
 		}
 		self::$apps[$name] = $this;
 	}
-	protected abstract function initArgs();
+//	protected abstract function initArgs();
 
 
 
@@ -130,19 +130,6 @@ abstract class App {
 			fail("Failed to get a render-er for app: {$appName}  type: {$renderType}"); ExitNow(1);
 		}
 		$render->doRender();
-//TODO:
-
-echo "\n\n\n";
-dump(self::$apps);
-echo "\n\n\n";
-foreach (self::$apps as $app) {
-echo "<p>".$app->getName()." = ".($app->isActive() ? 'YES' : 'no')."</p>\n";
-}
-echo "\n\n\n";
-
-echo "\n\n\n";
-echo "<p>DO SHUTDOWN</p>";
-echo "\n\n\n";
 	}
 
 
