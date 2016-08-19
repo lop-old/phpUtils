@@ -9,7 +9,7 @@
 namespace pxn\phpUtils\app;
 
 
-class ShellRender extends Render {
+abstract class ShellRender extends Render {
 
 
 
