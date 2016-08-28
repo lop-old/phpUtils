@@ -137,6 +137,19 @@ final class ShellTools {
 
 
 
+	// get one
+	public static function getFlag($key) {
+		if (empty($key)) {
+			fail('Flag key argument is required!'); ExitNow(1);
+		}
+		if (isset(self::$flags[$key])) {
+			return self::$flags[$key];
+		}
+		return NULL;
+	}
+
+
+
 	public static function hasFlag($key) {
 		return isset(self::$flags[$key]);
 	}
