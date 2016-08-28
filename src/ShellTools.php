@@ -128,6 +128,7 @@ final class ShellTools {
 
 
 
+	// get all as array
 	public static function getFlags() {
 		return self::$flags;
 	}
@@ -151,8 +152,15 @@ final class ShellTools {
 
 
 	public static function hasFlag($key) {
+		if (empty($key)) {
+			fail('Flag key argument is required!'); ExitNow(1);
+		}
 		return isset(self::$flags[$key]);
 	}
+
+
+
+	// has -h or --help flag
 	public static function isHelp() {
 		return self::hasFlag('-h') ||
 			self::hasFlag('--help');

@@ -228,7 +228,8 @@ abstract class App {
 		if ($this->render == NULL) {
 			$type = $this->usingRenderType();
 			if (!isset($this->renders[$type])) {
-				fail("Unknown render type: {$type}"); ExitNow(1);
+				//fail("Unknown render type: {$type}"); ExitNow(1);
+				return NULL;
 			}
 			$this->render = $this->renders[$type];
 		}
