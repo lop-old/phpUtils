@@ -130,6 +130,9 @@ abstract class App {
 		if ($this->hasRendered()) {
 			return;
 		}
+		$this->doRender();
+	}
+	protected function doRender() {
 		$render = $this->getRender();
 		if ($render == NULL) {
 			$appName = $this->getName();
