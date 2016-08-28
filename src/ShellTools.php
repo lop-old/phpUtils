@@ -12,6 +12,8 @@ namespace pxn\phpUtils;
 final class ShellTools {
 	private final function __construct() {}
 
+	const ALLOW_SHORT_FLAG_VALUES = FALSE;
+
 	private static $inited = FALSE;
 
 	public static $ANSI_COLOR_ENABLED = NULL;
@@ -100,13 +102,15 @@ final class ShellTools {
 					continue;
 				}
 				// -f value
-				if (isset($argv[$index+1])) {
-					$val = $argv[$index+1];
-					if (!Strings::StartsWith($val, '-')) {
-						$index++;
-						self::$flags[$arg] = $val;
-						//$_GET[$arg] = $val;
-						continue;
+				if (self::ALLOW_SHORT_FLAG_VALUES) {
+					if (isset($argv[$index+1])) {
+						$val = $argv[$index+1];
+						if (!Strings::StartsWith($val, '-')) {
+							$index++;
+							self::$flags[$arg] = $val;
+							//$_GET[$arg] = $val;
+							continue;
+						}
 					}
 				}
 				// -f
