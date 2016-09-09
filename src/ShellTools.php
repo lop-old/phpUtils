@@ -169,6 +169,30 @@ final class ShellTools {
 
 
 
+	// get boolean flag
+	public static function getFlagBool(... $keys) {
+		if (\count($keys) == 0) {
+			return NULL;
+		}
+		foreach ($keys as $key) {
+			$val = self::getFlagBool_Single($key);
+			if ($val !== NULL) {
+				return $val;
+			}
+		}
+		return NULL;
+	}
+	private static function getFlagBool_Single($key) {
+		if (empty($key)) {
+			return NULL;
+		}
+		return General::toBoolean(
+			self::getFlag($key)
+		);
+	}
+
+
+
 	// flag exists
 	public static function hasFlag(... $keys) {
 		if (\count($keys) == 0) {
