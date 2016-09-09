@@ -9,10 +9,23 @@
 namespace pxn\phpUtils\pxdb;
 
 
-interface dbSchema {
+abstract class dbSchema {
+
+	protected $fields = NULL;
 
 
-	public function getFields();
+
+	public function __construct() {
+		$this->fields = $this->initFields();
+	}
+	public abstract function initFields();
+
+
+
+	public function getFields() {
+		return $this-fields;
+	}
+
 
 
 }
