@@ -70,7 +70,6 @@ final class ShellTools {
 					$val = \mb_substr($arg, $pos);
 					$arg = \mb_substr($arg, 0, $pos);
 					self::$flags[$arg] = $val;
-					//$_GET[$arg] = $val;
 					continue;
 				}
 				// --flag value
@@ -79,14 +78,12 @@ final class ShellTools {
 					if (!Strings::StartsWith($val, '-')) {
 						$index++;
 						self::$flags[$arg] = $val;
-						//$_GET[$arg] = $val;
 						continue;
 					}
 				}
 				// --flag
 				if (!isset(self::$flags[$arg])) {
 					self::$flags[$arg] = TRUE;
-					//$_GET[$arg] = TRUE;
 				}
 				continue;
 			}
@@ -98,7 +95,6 @@ final class ShellTools {
 					$val = \mb_substr($arg, 2);;
 					$arg = \mb_substr($arg, 0, 2);
 					self::$flags[$arg] = $val;
-					//$_GET[$arg] = $val;
 					continue;
 				}
 				// -f value
@@ -108,7 +104,6 @@ final class ShellTools {
 						if (!Strings::StartsWith($val, '-')) {
 							$index++;
 							self::$flags[$arg] = $val;
-							//$_GET[$arg] = $val;
 							continue;
 						}
 					}
@@ -116,7 +111,6 @@ final class ShellTools {
 				// -f
 				if (!isset(self::$flags[$arg])) {
 					self::$flags[$arg] = TRUE;
-					//$_GET[$arg] = TRUE;
 				}
 				continue;
 			}

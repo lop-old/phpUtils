@@ -49,6 +49,9 @@ final class General {
 	}
 	// convert to boolean
 	public static function toBoolean($value) {
+		if ($value === NULL) {
+			return NULL;
+		}
 		if (\gettype($value) === 'boolean')
 			return $value;
 		$val = \mb_strtolower(trim( (string) $value ));
