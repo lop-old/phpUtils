@@ -139,11 +139,29 @@ final class ShellTools {
 
 
 	// get one
-	public static function getFlag($key) {
+	public static function getFlag(... $keys) {
+		if (\count($keys) == 0) {
+			return NULL;
+		}
+		foreach ($keys as $key) {
+			$val = self::getFlag_Single($key);
+			if ($val != NULL) {
+				return $val;
+			}
+		}
+		return NULL;
+	}
+	private static function getFlag_Single($key) {
 		if (empty($key)) {
-			fail('Flag key argument is required!'); ExitNow(1);
+			return NULL;
 		}
 		if (isset(self::$flags[$key])) {
+			// don't allow -x value
+			if (self::ALLOW_SHORT_FLAG_VALUES != TRUE) {
+				if (!Strings::StartsWith($key, '--')) {
+					return TRUE;
+				}
+			}
 			return self::$flags[$key];
 		}
 		return NULL;
@@ -151,9 +169,22 @@ final class ShellTools {
 
 
 
-	public static function hasFlag($key) {
+	// flag exists
+	public static function hasFlag(... $keys) {
+		if (\count($keys) == 0) {
+			return NULL;
+		}
+		foreach ($keys as $key) {
+			$result = self::hasFlag_Single($key);
+			if ($result === TRUE) {
+				return TRUE;
+			}
+		}
+		return FALSE;
+	}
+	private static function hasFlag_Single($key) {
 		if (empty($key)) {
-			fail('Flag key argument is required!'); ExitNow(1);
+			return NULL;
 		}
 		return isset(self::$flags[$key]);
 	}
