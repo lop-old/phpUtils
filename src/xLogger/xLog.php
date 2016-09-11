@@ -10,8 +10,6 @@ namespace pxn\phpUtils\xLogger;
 
 use pxn\phpUtils\xLogger\formatters\BasicFormat;
 
-\pxn\phpUtils\General::Init();
-
 
 class xLog extends xLogPrinting {
 
@@ -105,7 +103,7 @@ class xLog extends xLogPrinting {
 
 
 
-	public static function HandleBuffer() {
+	public static function CaptureBuffer() {
 		\ob_start([
 			self::getRoot(),
 			'ProcessOB'
