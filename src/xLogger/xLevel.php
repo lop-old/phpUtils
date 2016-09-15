@@ -109,4 +109,36 @@ final class xLevel {
 
 
 
+	// match levels
+	public static function MatchLevel($levelA, $levelB) {
+		if ($levelA == NULL || $levelB == NULL) {
+			return NULL;
+		}
+		$lvlA = self::FindLevel($levelA);
+		$lvlB = self::FindLevel($levelB);
+		return ($lvlA == $lvlB);
+	}
+	public static function MatchLevels(... $levels) {
+		if (\count($levels) == 0) {
+			return NULL;
+		}
+		$match = NULL;
+		foreach ($levels as $lvl) {
+			if ($match == NULL) {
+				$match = self::FindLevel($lvl);
+			} else {
+				$result = self::MatchLevel(
+					$lvl,
+					$match
+				);
+				if (!$result) {
+					return FALSE;
+				}
+			}
+		}
+		return TRUE;
+	}
+
+
+
 }
