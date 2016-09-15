@@ -10,6 +10,8 @@ namespace pxn\phpUtils\xLogger\formatters;
 
 use pxn\phpUtils\xLogger\xLogFormatter;
 use pxn\phpUtils\xLogger\xLogRecord;
+use pxn\phpUtils\xLogger\xLevel;
+
 use pxn\phpUtils\Strings;
 
 
@@ -19,6 +21,8 @@ class FullFormat implements xLogFormatter {
 	const LEVEL_PAD   = 7;
 
 	protected $datetime;
+
+	protected static $isCapture = FALSE;
 
 
 
@@ -37,10 +41,35 @@ class FullFormat implements xLogFormatter {
 		if (empty($record->msg)) {
 			return '';
 		}
+		// stdOut block
+		$isOut = xLevel::MatchLevel($record->level, xLevel::STDOUT);
+		if ($isOut) {
+			if (!self::$isCapture) {
+				$msg = "\n\n <<=== OUT ===>>\n\n{$msg}";
+				self::$isCapture = TRUE;
+			}
+		}
+		// stdErr block
+		$isErr = xLevel::MatchLevel($record->level, xLevel::STDERR);
+		if ($isErr) {
+			if (!self::$isCapture) {
+				$msg = "\n\n <<=== ERR ===>>\n\n{$msg}";
+				self::$isCapture = TRUE;
+			}
+		}
+		// format message
 		$date  = $this->datetime->format(self::DATE_FORMAT);
 		$level = $record->getLevelFormatted();
 		$level = Strings::PadCenter($level, self::LEVEL_PAD);
 		$msg = " {$date} [{$level}]  {$record->msg}";
+		// close stdOut/stdErr blocks
+		if (!$isOut && !$isErr) {
+			if (self::$isCapture) {
+				$msg = "\n <<===========>>\n\n{$msg}";
+				self::$isCapture = FALSE;;
+			}
+		}
+		// finished formatting
 		return \explode("\n", $msg);
 	}
 
