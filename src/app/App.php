@@ -13,7 +13,7 @@ use pxn\phpUtils\Strings;
 
 use pxn\phpUtils\xLogger\xLog;
 use pxn\phpUtils\xLogger\xLevel;
-use pxn\phpUtils\xLogger\formatters\BasicFormat;
+use pxn\phpUtils\xLogger\formatters\FullFormat;
 use pxn\phpUtils\xLogger\handlers\ShellHandler;
 
 
@@ -68,14 +68,10 @@ abstract class App {
 		// init logger
 		$log = xLog::getRoot();
 		$log->setLevel(xLevel::ALL);
-//		$log->setFormatter(
-//			new FullFormat()
-//		);
-		$formatter = new BasicFormat();
-//		$formatter->setPrefix(' <<xBuild>> ');
-		$log->setFormatter(
-			$formatter
-		);
+		$formatter = new FullFormat();
+		//$formatter = new BasicFormat();
+		//$formatter->setPrefix(' <<xBuild>> ');
+		$log->setFormatter($formatter);
 		$handler = new ShellHandler();
 		$log->setHandler(
 			$handler
