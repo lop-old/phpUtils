@@ -5,6 +5,9 @@
 .*_cache/
 public/static/bootstrap
 public/static/jquery
+debug
+DEBUG
+.debug
 error_log
 **/error_log
 
