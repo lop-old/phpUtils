@@ -64,4 +64,32 @@ final class Arrays {
 
 
 
+	// explode() with multiple delimiters
+	public static function toArray($data, ...$delims) {
+		if (\is_array($data)) {
+			return $data;
+		}
+		if (count($delims) == 0) {
+			$delims = [ ' ', ',', ';', "\t", "\r", "\n" ];
+		}
+		$str = (string) $data;
+		$first_delim = NULL;
+		foreach ($delims as $v) {
+			if (empty($v)) continue;
+			$first_delim = $v;
+			break;
+		}
+		if (empty($first_delim)) {
+			throw \NullPointerException('Delim argument is required!');
+		}
+		foreach ($delims as $v) {
+			if (empty($v)) continue;
+			if ($v == $first_delim) continue;
+			$data = \str_replace($v, $first_delim, $data);
+		}
+		return \explode($first_delim, $data);
+	}
+
+
+
 }
