@@ -348,7 +348,7 @@ function debug($debug=NULL) {
 		$last = $pxnUtils_DEBUG;
 		$pxnUtils_DEBUG = General::toBoolean($debug);
 		// update debug mode
-		if ($pxnUtils_DEBUG != $last) {
+		if ($pxnUtils_DEBUG != ($last == TRUE)) {
 			// enabled
 			if ($pxnUtils_DEBUG) {
 				\error_reporting(\E_ALL | \E_STRICT);
@@ -366,6 +366,7 @@ function debug($debug=NULL) {
 		debug(FALSE);
 	return $pxnUtils_DEBUG;
 }
+// by define
 {
 	// by define
 	if (\defined('\DEBUG'))
@@ -373,6 +374,9 @@ function debug($debug=NULL) {
 	if (\defined('pxn\\phpUtils\\DEBUG'))
 		debug(\pxn\phpUtils\DEBUG);
 	// by url
+}
+// by url
+{
 	$val = General::getVar('debug', 'bool');
 	if ($val !== NULL) {
 		// set cookie

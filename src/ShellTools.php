@@ -139,7 +139,7 @@ final class ShellTools {
 		}
 		foreach ($keys as $key) {
 			$val = self::getFlag_Single($key);
-			if ($val != NULL) {
+			if ($val !== NULL) {
 				return $val;
 			}
 		}

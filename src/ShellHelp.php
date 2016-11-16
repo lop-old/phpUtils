@@ -64,6 +64,7 @@ class ShellHelp {
 
 
 	public function Display() {
+		echo "\n";
 
 		// usage
 		{

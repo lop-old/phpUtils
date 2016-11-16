@@ -30,7 +30,7 @@ final class dbUtils {
 		if (empty($tables)) {
 			$tables = $pool->getUsingTables();
 		}
-				if ($isShell) {
+		if ($isShell) {
 			echo "\n\n == Creating/Updating DB Tables..\n";
 		}
 		// multiple tables

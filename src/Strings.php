@@ -24,6 +24,13 @@ final class Strings {
 
 
 
+//TODO: untested
+//	public static function isBase64($str) {
+//		return ( FALSE != preg_match('%^[a-zA-Z0-9/+]*={0,2}$%', $this->getValue()) );
+//	}
+
+
+
 	#################
 	## Trim String ##
 	#################
