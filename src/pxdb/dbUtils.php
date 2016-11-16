@@ -28,7 +28,7 @@ final class dbUtils {
 		$isShell = System::isShell();
 		// default to all tables in use
 		if (empty($tables)) {
-			$tables = $pool->getUsedTables();
+			$tables = $pool->getUsingTables();
 		}
 				if ($isShell) {
 			echo "\n\n == Creating/Updating DB Tables..\n";

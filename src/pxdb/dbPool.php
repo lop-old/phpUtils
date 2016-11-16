@@ -270,7 +270,7 @@ class dbPool {
 	public function UsingTables(...$tables) {
 		$this->usingTables = \array_merge($this->usingTables, $tables);
 	}
-	public function getUsedTables() {
+	public function getUsingTables() {
 		return $this->usingTables;
 	}
 
