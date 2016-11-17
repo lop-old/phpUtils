@@ -9,7 +9,7 @@
 namespace pxn\phpUtils\app\render;
 
 
-class RenderMain extends \pxn\phpUtils\app\ShellRender {
+class RenderMain extends \pxn\phpUtils\app\render\ShellRender {
 
 
 

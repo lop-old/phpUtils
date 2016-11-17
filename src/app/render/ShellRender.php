@@ -6,7 +6,7 @@
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
-namespace pxn\phpUtils\app;
+namespace pxn\phpUtils\app\render;
 
 use pxn\phpUtils\System;
 
