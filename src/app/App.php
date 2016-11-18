@@ -16,6 +16,8 @@ use pxn\phpUtils\xLogger\xLevel;
 use pxn\phpUtils\xLogger\formatters\FullFormat;
 use pxn\phpUtils\xLogger\handlers\ShellHandler;
 
+use pxn\phpPortal\app\render\Render;
+
 
 abstract class App {
 

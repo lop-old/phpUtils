@@ -8,6 +8,8 @@
  */
 namespace pxn\phpUtils\app\render;
 
+use pxn\phpUtils\app\App;
+
 
 abstract class Render {
 
