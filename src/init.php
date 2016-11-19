@@ -363,14 +363,10 @@ function debug($debug=NULL) {
 			}
 		}
 	}
-	// default to false
-	if ($pxnUtils_DEBUG === NULL)
-		debug(FALSE);
 	return $pxnUtils_DEBUG;
 }
 // by define
 {
-	// by define
 	if (\defined('\DEBUG'))
 		debug(\DEBUG);
 	if (\defined('pxn\\phpUtils\\DEBUG'))
@@ -394,7 +390,6 @@ function debug($debug=NULL) {
 			break;
 		}
 	}
-	// by url
 }
 // by url
 {
@@ -418,9 +413,11 @@ function debug($debug=NULL) {
 			debug($val);
 		}
 	}
-	unset($val);
-	// ensure inited
-	debug();
+}
+unset($val);
+// ensure inited (default to false)
+if ($pxnUtils_DEBUG === NULL) {
+	debug(FALSE, 'default');
 }
 
 
