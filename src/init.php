@@ -354,10 +354,12 @@ function debug($debug=NULL) {
 				\error_reporting(\E_ALL | \E_STRICT);
 				\ini_set('display_errors', 'On');
 				\ini_set('html_errors',    'On');
+				\ini_set('log_errors',     'Off');
 			// disabled
 			} else {
 				\error_reporting(\E_ERROR | \E_WARNING | \E_PARSE | \E_NOTICE);
 				\ini_set('display_errors', 'Off');
+				\ini_set('log_errors',     'On');
 			}
 		}
 	}
