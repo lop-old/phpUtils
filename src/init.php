@@ -375,6 +375,25 @@ function debug($debug=NULL) {
 		debug(\DEBUG);
 	if (\defined('pxn\\phpUtils\\DEBUG'))
 		debug(\pxn\phpUtils\DEBUG);
+}
+// by file
+{
+	$entry = Paths::entry();
+	$base  = Paths::base();
+	$paths = [
+		"$entry/debug",
+		"$entry/DEBUG",
+		"$entry/.debug",
+		"$base/debug",
+		"$base/DEBUG",
+		"$base/.debug"
+	];
+	foreach ($paths as $path) {
+		if (\file_exists($path)) {
+			debug(TRUE, 'by file');
+			break;
+		}
+	}
 	// by url
 }
 // by url
