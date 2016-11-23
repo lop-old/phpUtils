@@ -16,6 +16,7 @@ final class Config {
 
 	protected static $inited = FALSE;
 	protected static $config = [];
+	protected static $defaults = [];
 
 
 
@@ -32,6 +33,10 @@ final class Config {
 	public static function set($key, $value) {
 		$key = \mb_strtolower($key);
 		self::$config[$key] = $value;
+	}
+	public static function setDefault($key, $value) {
+		$key = \mb_strtolower($key);
+		self::$defaults[$key] = $value;
 	}
 	public static function get($key) {
 		$key = \mb_strtolower($key);
