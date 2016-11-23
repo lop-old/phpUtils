@@ -90,8 +90,8 @@ abstract class App {
 		$log = xLog::getRoot();
 		$log->setLevel(xLevel::ALL);
 		$formatter = new FullFormat();
-		//$formatter = new BasicFormat();
-		//$formatter->setPrefix(' <<xBuild>> ');
+//		$formatter = new BasicFormat();
+//		$formatter->setPrefix(' <<xBuild>> ');
 		$log->setFormatter($formatter);
 		$handler = new ShellHandler();
 		$log->setHandler(
@@ -244,6 +244,7 @@ abstract class App {
 		}
 		return ($this->active === TRUE);
 	}
+/*
 	protected function setActive() {
 		if (self::$instance != NULL) {
 			$activeName = self::$instance->getName();
@@ -264,6 +265,8 @@ abstract class App {
 		}
 		$this->active = TRUE;
 	}
+*/
+/*
 	protected function setDisactive() {
 		if ($this->active !== NULL) {
 			$appName = $this->getName();
@@ -275,15 +278,18 @@ abstract class App {
 		}
 		$this->active = FALSE;
 	}
+*/
 
 
 
 	public function getName() {
 		return $this->name;
 	}
+/*
 	public function getClasspath() {
 		return $this->classpath;
 	}
+*/
 
 
 
