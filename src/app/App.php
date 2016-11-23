@@ -166,6 +166,55 @@ abstract class App {
 
 
 
+	public function registerRender(\pxn\phpUtils\app\render\Render $render) {
+		$name = $render->getName();
+		if (isset($this->renders[$name])) {
+			fail("A render has already been registered with the name: $name"); ExitNow(1);
+		}
+		$this->renders[$name] = $render;
+	}
+
+
+
+	public function getRenderType() {
+		return Config::getRenderType();
+	}
+	public function usingRenderType() {
+		return Config::usingRenderType();
+	}
+	public function getRender() {
+		if ($this->render == NULL) {
+			$type = $this->usingRenderType();
+			if (!isset($this->renders[$type])) {
+				//fail("Unknown render type: $type"); ExitNow(1);
+				return NULL;
+			}
+			$this->render = $this->renders[$type];
+		}
+		return $this->render;
+	}
+
+
+
+	public function hasRendered() {
+		if (self::$hasRendered === NULL) {
+			return FALSE;
+		}
+		if ($this->render === NULL) {
+			return FALSE;
+		}
+		return (self::$hasRendered === TRUE);
+	}
+	public function setRendered($value=NULL) {
+		if ($value === NULL) {
+			self::$hasRendered = TRUE;
+		} else {
+			self::$hasRendered = ($value === TRUE);
+		}
+	}
+
+
+
 	public function isActive() {
 		if ($this->active === NULL) {
 			return NULL;
@@ -211,49 +260,6 @@ abstract class App {
 	}
 	public function getClasspath() {
 		return $this->classpath;
-	}
-
-
-
-	public function hasRendered() {
-		if (self::$hasRendered === NULL) {
-			return FALSE;
-		}
-		return (self::$hasRendered !== FALSE);
-	}
-	public function setRendered($value=NULL) {
-		if ($value === NULL) {
-			self::$hasRendered = TRUE;
-		} else {
-			self::$hasRendered = ($value !== FALSE);
-		}
-	}
-
-
-
-	public function getRenderType() {
-		return Config::getRenderType();
-	}
-	public function usingRenderType() {
-		return Config::usingRenderType();
-	}
-
-
-
-	public function registerRender(\pxn\phpUtils\app\render\Render $render) {
-		$name = $render->getName();
-		$this->renders[$name] = $render;
-	}
-	public function getRender() {
-		if ($this->render == NULL) {
-			$type = $this->usingRenderType();
-			if (!isset($this->renders[$type])) {
-				//fail("Unknown render type: $type"); ExitNow(1);
-				return NULL;
-			}
-			$this->render = $this->renders[$type];
-		}
-		return $this->render;
 	}
 
 
