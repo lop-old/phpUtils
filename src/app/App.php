@@ -20,6 +20,8 @@ use pxn\phpUtils\xLogger\handlers\ShellHandler;
 
 abstract class App {
 
+	const KEY_RENDER_MODE = 'Render Mode';
+
 	private static $apps        = [];
 	private static $instance    = NULL;
 	private static $inited      = FALSE;
@@ -37,23 +39,20 @@ abstract class App {
 	public static function get() {
 		// pick an app by weight
 		if (self::$instance == NULL) {
-			self::$hasRendered = FALSE;
 			$selected = NULL;
 			$maxWeight = Defines::INT_MIN;
 			foreach (self::$apps as $app) {
-				$thisWeight = $app->getWeight();
-				if ($thisWeight > $maxWeight) {
+				$weight = $app->getWeight();
+				if ($weight > $maxWeight) {
 					$selected = $app;
-					$maxWeight = $thisWeight;
+					$maxWeight = $weight;
 				}
 			}
 			if ($selected == NULL) {
-				$appInfo = [];
-				foreach (self::$apps as $app) {
-					$appInfo[$app->getName()] = 'Weight='.$app->getWeight();
-				}
-				fail('Failed to select an app!', $appInfo); ExitNow(1);
+				fail('Failed to select an app!'); ExitNow(1);
 			}
+			self::$instance = $selected;
+			self::$hasRendered = FALSE;
 			$selected->setActive();
 		}
 		return self::$instance;
@@ -64,7 +63,28 @@ abstract class App {
 
 
 
-	public static function init() {
+	// init/register this app
+	public static function register() {
+		// init the framework
+		self::init();
+		// register instance of this app
+		$clss = \get_called_class();
+		$app = new $clss();
+		$name = $app->getName();
+		// app name already exists
+		if (isset(self::$apps[$name])) {
+			$existingClss = self::$apps[$name]->getClasspath();
+			fail("An app is already registered: $clss  Existing: $existingClss"); ExitNow(1);
+		}
+		self::$apps[$name] = $app;
+		return TRUE;
+	}
+	// init framework once
+	protected static function init() {
+		if (self::$inited) {
+			return FALSE;
+		}
+		self::$inited = TRUE;
 
 		// init logger
 		$log = xLog::getRoot();
@@ -79,18 +99,11 @@ abstract class App {
 		);
 //		xLog::CaptureBuffer();
 
-		// init framework
-		if (!self::$inited) {
-			self::$inited = TRUE;
-			// register shutdown hook
-			\register_shutdown_function([
-				__CLASS__,
-				'Shutdown'
-			]);
-		}
-		// init this app
-		$clss = \get_called_class();
-		$app = new $clss();
+		// register shutdown hook
+		\register_shutdown_function([
+			__CLASS__,
+			'Shutdown'
+		]);
 		return TRUE;
 	}
 	protected function __construct() {
@@ -119,13 +132,7 @@ abstract class App {
 				unset($tmp);
 			}
 		}
-		$name = $this->getName();
-		if (isset(self::$apps[$name])) {
-			fail("App already registered with the name: {$name}"); ExitNow(1);
-		}
-		self::$apps[$name] = $this;
 	}
-//	protected abstract function initArgs();
 
 
 
@@ -177,22 +184,37 @@ abstract class App {
 
 
 
-	public function getRenderType() {
-		return Config::getRenderType();
+	public function getRenderMode() {
+		// find by name in config
+		$name = $this->peakRenderMode();
+		if (!empty($name)) {
+			return $name;
+		}
+		// find by weight
+		$maxWeight = Defines::INT_MIN;
+		$name = NULL;
+		foreach ($this->renders as $r) {
+			$weight = $r->getWeight();
+			if ($weight > $maxWeight) {
+				$maxWeight = $weight;
+				$name = $r->getName();
+			}
+		}
+		return $name;
 	}
-	public function usingRenderType() {
-		return Config::usingRenderType();
+	public function peakRenderMode() {
+		return Config::get(self::KEY_RENDER_MODE);
 	}
 	public function getRender() {
-		if ($this->render == NULL) {
-			$type = $this->usingRenderType();
-			if (!isset($this->renders[$type])) {
-				//fail("Unknown render type: $type"); ExitNow(1);
-				return NULL;
-			}
-			$this->render = $this->renders[$type];
+		if ($this->render != NULL) {
+			return $this->render;
 		}
-		return $this->render;
+		$name = $this->getRenderMode();
+		if (isset($this->renders[$name])) {
+			$this->render = $this->renders[$name];
+			return $this->render;
+		}
+		return NULL;
 	}
 
 
