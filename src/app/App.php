@@ -77,7 +77,7 @@ abstract class App {
 			fail("An app is already registered: $clss  Existing: $existingClss"); ExitNow(1);
 		}
 		self::$apps[$name] = $app;
-		return TRUE;
+		return $app;
 	}
 	// init framework once
 	protected static function init() {
