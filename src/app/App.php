@@ -244,11 +244,10 @@ abstract class App {
 		}
 		return ($this->active === TRUE);
 	}
-/*
 	protected function setActive() {
 		if (self::$instance != NULL) {
-			$activeName = self::$instance->getName();
-			fail("Another app instance is already active: $activeName"); ExitNow(1);
+			$name = self::$instance->getName();
+			fail("Another app instance is already active: $name"); ExitNow(1);
 		}
 		if ($this->active !== NULL) {
 			fail( $this->active === TRUE
@@ -260,13 +259,12 @@ abstract class App {
 		// set app active states
 		self::$instance = $this;
 		foreach (self::$apps as $app) {
-			if ($app === $this) continue;
-			$app->setDisactive();
+			if ($app !== $this) {
+				$app->setDisactive();
+			}
 		}
 		$this->active = TRUE;
 	}
-*/
-/*
 	protected function setDisactive() {
 		if ($this->active !== NULL) {
 			$appName = $this->getName();
@@ -278,18 +276,15 @@ abstract class App {
 		}
 		$this->active = FALSE;
 	}
-*/
 
 
 
 	public function getName() {
 		return $this->name;
 	}
-/*
 	public function getClasspath() {
 		return $this->classpath;
 	}
-*/
 
 
 
