@@ -24,6 +24,7 @@ abstract class Render {
 
 
 	public abstract function getName();
+	public abstract function getWeight();
 
 	public abstract function doRender();
 

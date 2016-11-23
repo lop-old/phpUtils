@@ -10,6 +10,7 @@ namespace pxn\phpUtils\app;
 
 use pxn\phpUtils\Config;
 use pxn\phpUtils\Strings;
+use pxn\phpUtils\Defines;
 
 use pxn\phpUtils\xLogger\xLog;
 use pxn\phpUtils\xLogger\xLevel;
@@ -38,7 +39,7 @@ abstract class App {
 		if (self::$instance == NULL) {
 			self::$hasRendered = FALSE;
 			$selected = NULL;
-			$maxWeight = 0;
+			$maxWeight = Defines::INT_MIN;
 			foreach (self::$apps as $app) {
 				$thisWeight = $app->getWeight();
 				if ($thisWeight > $maxWeight) {
