@@ -16,22 +16,20 @@ use pxn\phpUtils\xLogger\xLevel;
 use pxn\phpUtils\xLogger\formatters\FullFormat;
 use pxn\phpUtils\xLogger\handlers\ShellHandler;
 
-use pxn\phpPortal\app\render\Render;
-
 
 abstract class App {
 
-	private static $apps = [];
-	private static $instance = NULL;
-	private static $inited = FALSE;
+	private static $apps        = [];
+	private static $instance    = NULL;
+	private static $inited      = FALSE;
+	private static $hasRendered = NULL;
 
-	protected $active = NULL;
-	protected $name = NULL;
+	protected $active    = NULL;
+	protected $name      = NULL;
 	protected $classpath = NULL;
 
-	protected $render = NULL;
+	protected $render  = NULL;
 	protected $renders = [];
-	protected static $hasRendered = NULL;
 
 
 
@@ -78,7 +76,7 @@ abstract class App {
 		$log->setHandler(
 			$handler
 		);
-		xLog::CaptureBuffer();
+//		xLog::CaptureBuffer();
 
 		// init framework
 		if (!self::$inited) {
@@ -97,7 +95,7 @@ abstract class App {
 	protected function __construct() {
 		if (self::$instance != NULL) {
 			$name = self::$instance->getName();
-			fail('App class already loaded: {$name}'); ExitNow(1);
+			fail("App class already loaded: $name"); ExitNow(1);
 		}
 		// app name and classpath
 		{
@@ -105,23 +103,19 @@ abstract class App {
 			//$reflect = new \ReflectionClass(self::get());
 			//$clss = $reflect->getName();
 			//unset($reflect);
-			$path = Strings::Trim(
-				\get_called_class(),
-				'\\'
-			);
+			$tmp = \get_called_class();
+			$path = Strings::Trim($tmp, '\\');
+			unset($tmp);
 			$pos = \mb_strrpos($path, '\\');
 			if ($pos === FALSE || $pos <= 3) {
 				$this->name = $path;
 				$this->classpath = '';
 			} else {
-				$this->name = Strings::Trim(
-					\mb_substr($path, $pos),
-					'\\'
-				);
-				$this->classpath = Strings::Trim(
-					\mb_substr($path, 0, $pos),
-					'\\'
-				);
+				$tmp = \mb_substr($path, $pos);
+				$this->name = Strings::Trim($tmp, '\\');
+				$tmp = \mb_substr($path, 0, $pos);
+				$this->classpath = Strings::Trim($tmp, '\\');
+				unset($tmp);
 			}
 		}
 		$name = $this->getName();
@@ -139,13 +133,11 @@ abstract class App {
 		if (self::$hasRendered === TRUE) {
 			return;
 		}
-		if (self::$instance == NULL) {
-			self::get();
-		}
-		if (self::$instance == NULL) {
+		$instance = self::get();
+		if ($instance == NULL) {
 			fail('Failed to get an app instance!'); ExitNow(1);
 		}
-		self::$instance->doShutdown();
+		$instance->doShutdown();
 	}
 	protected function doShutdown() {
 		if ($this->hasRendered()) {
@@ -154,29 +146,36 @@ abstract class App {
 		$this->doRender();
 	}
 	protected function doRender() {
+		if ($this->hasRendered()) {
+			return FALSE;
+		}
 		$render = $this->getRender();
 		if ($render == NULL) {
 			$appName = $this->getName();
-			$renderType = $this->usingRenderType();
-			fail("Failed to get a render-er for app: {$appName}  type: {$renderType}"); ExitNow(1);
+			$renderMode = $this->usingRenderMode();
+			if (empty($renderMode)) {
+				$renderMode = "''";
+			}
+			fail("Failed to get a render object for app/mode: $appName / $renderMode"); ExitNow(1);
 		}
 		// render page contents
 		$render->doRender();
 		$this->setRendered();
+		return TRUE;
 	}
 
 
 
 	public function isActive() {
 		if ($this->active === NULL) {
-			return FALSE;
+			return NULL;
 		}
-		return ($this->active !== FALSE);
+		return ($this->active === TRUE);
 	}
 	protected function setActive() {
 		if (self::$instance != NULL) {
 			$activeName = self::$instance->getName();
-			fail("Another app instance is already active: {$activeName}"); ExitNow(1);
+			fail("Another app instance is already active: $activeName"); ExitNow(1);
 		}
 		if ($this->active !== NULL) {
 			fail( $this->active === TRUE
@@ -197,8 +196,8 @@ abstract class App {
 		if ($this->active !== NULL) {
 			$appName = $this->getName();
 			fail( $this->active !== FALSE
-				? "App already active: {$appName}"
-				: "App already disactive: {$appName}"
+				? "App already active: $appName"
+				: "App already disactive: $appName"
 			);
 			ExitNow(1);
 		}
@@ -241,7 +240,7 @@ abstract class App {
 
 
 
-	public function registerRender(Render $render) {
+	public function registerRender(\pxn\phpUtils\app\render\Render $render) {
 		$name = $render->getName();
 		$this->renders[$name] = $render;
 	}
@@ -249,7 +248,7 @@ abstract class App {
 		if ($this->render == NULL) {
 			$type = $this->usingRenderType();
 			if (!isset($this->renders[$type])) {
-				//fail("Unknown render type: {$type}"); ExitNow(1);
+				//fail("Unknown render type: $type"); ExitNow(1);
 				return NULL;
 			}
 			$this->render = $this->renders[$type];
