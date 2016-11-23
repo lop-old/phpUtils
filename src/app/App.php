@@ -51,9 +51,9 @@ abstract class App {
 			if ($selected == NULL) {
 				fail('Failed to select an app!'); ExitNow(1);
 			}
+			$selected->setActive();
 			self::$instance = $selected;
 			self::$hasRendered = FALSE;
-			$selected->setActive();
 		}
 		return self::$instance;
 	}
