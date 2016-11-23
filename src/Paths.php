@@ -37,6 +37,8 @@ final class Paths {
 			$last  = \end($trace);
 			self::$local_entry = \dirname($last['file']);
 		}
+		self::$local_pwd   = \realpath(self::$local_pwd);
+		self::$local_entry = \realpath(self::$local_entry);
 		// find src/
 		{
 			$search_paths = [
