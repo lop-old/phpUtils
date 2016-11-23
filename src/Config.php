@@ -15,10 +15,7 @@ final class Config {
 	const DEFAULT_RENDER_TYPE = 'main';
 
 	protected static $inited = FALSE;
-	protected static $config = [
-		'is shell'    => NULL,
-		'render type' => '',
-	];
+	protected static $config = [];
 
 
 
@@ -41,30 +38,17 @@ final class Config {
 		if (isset(self::$config[$key])) {
 			return self::$config[$key];
 		}
+		if (isset(self::$defaults[$key])) {
+			return self::$defaults[$key];
+		}
 		return NULL;
 	}
-
-
-
-//TODO: remove this - handled by System.php
-//	public static function isShell() {
-//		return self::$config['is shell'];
-//	}
-
-
-
-	public static function getRenderType() {
-		if (!isset(self::$config['render type'])) {
-			return NULL;
+	public static function peak($key) {
+		$key = \mb_strtolower($key);
+		if (isset(self::$config[$key])) {
+			return self::$config[$key];
 		}
-		return self::$config['render type'];
-	}
-	public static function usingRenderType() {
-		$type = self::getRenderType();
-		if ($type == NULL) {
-			return self::DEFAULT_RENDER_TYPE;
-		}
-		return $type;
+		return NULL;
 	}
 
 
