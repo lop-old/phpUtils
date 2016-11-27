@@ -174,7 +174,7 @@ abstract class App {
 
 
 
-	public function registerRender(\pxn\phpUtils\app\render\Render $render) {
+	public function registerRender(Render $render) {
 		$name = $render->getName();
 		if (isset($this->renders[$name])) {
 			fail("A render has already been registered with the name: $name"); ExitNow(1);

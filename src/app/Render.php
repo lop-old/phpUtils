@@ -6,9 +6,7 @@
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
-namespace pxn\phpUtils\app\render;
-
-use pxn\phpUtils\app\App;
+namespace pxn\phpUtils\app;
 
 
 abstract class Render {
