@@ -21,6 +21,7 @@ use pxn\phpUtils\xLogger\handlers\ShellHandler;
 abstract class App {
 
 	const KEY_RENDER_MODE = 'Render Mode';
+	const DEFAULT_RENDER_MODE = 'main';
 
 	private static $apps        = [];
 	private static $instance    = NULL;
@@ -159,6 +160,7 @@ abstract class App {
 		}
 		$render = $this->getRender();
 		if ($render == NULL) {
+			fail ('Failed to get render mode!'); ExitNow(1);
 			$appName = $this->getName();
 			$renderMode = $this->getRenderMode();
 			if (empty($renderMode)) {
@@ -176,45 +178,48 @@ abstract class App {
 
 	public function registerRender(Render $render) {
 		$name = $render->getName();
+		// multiple possible renderers
 		if (isset($this->renders[$name])) {
-			fail("A render has already been registered with the name: $name"); ExitNow(1);
+			$this->renders[$name] = [
+				$this->renders[$name],
+				$render
+			];
+		} else {
+			// single renderer
+			$this->renders[$name] = $render;
 		}
-		$this->renders[$name] = $render;
 	}
-
-
-
-	public function getRenderMode() {
-		// find by name in config
-		$name = $this->peakRenderMode();
-		if (!empty($name)) {
-			return $name;
-		}
-		// find by weight
-		$maxWeight = Defines::INT_MIN;
-		$name = NULL;
-		foreach ($this->renders as $r) {
-			$weight = $r->getWeight();
-			if ($weight > $maxWeight) {
-				$maxWeight = $weight;
-				$name = $r->getName();
-			}
-		}
-		return $name;
-	}
-	public function peakRenderMode() {
-		return Config::get(self::KEY_RENDER_MODE);
-	}
-	public function getRender() {
+	public function getRender($name=NULL) {
+		// render already set
 		if ($this->render != NULL) {
 			return $this->render;
 		}
-		$name = $this->getRenderMode();
-		if (isset($this->renders[$name])) {
-			$this->render = $this->renders[$name];
-			return $this->render;
+		// get from config
+		if (empty($name)) {
+			$name = Config::get(self::KEY_RENDER_MODE);
 		}
-		return NULL;
+		// default render mode
+		if (empty($name)) {
+			$name = self::DEFAULT_RENDER_MODE;
+		}
+		if (empty($name) || !isset($this->renders[$name])) {
+			fail("Unknown render mode: $name"); ExitNow(1);
+		}
+		$render = $this->renders[$name];
+		// pick from multiple renderers
+		if (\is_array($render)) {
+			$array = $render;
+			$highest = Defines::INT_MIN;
+			foreach ($array as $r) {
+				$wieght = $r->getWeight();
+				if ($weight > $highest) {
+					$highest = $weight;
+					$render = $r;
+				}
+			}
+		}
+		$this->render = $render;
+		return $this->render;
 	}
 
 
