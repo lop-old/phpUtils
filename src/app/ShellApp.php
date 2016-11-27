@@ -18,9 +18,14 @@ abstract class ShellApp extends App {
 
 	public function __construct() {
 		parent::__construct();
-		ShellTools::init();
 //		// default render types
 //		$this->registerRender( new \pxn\phpUtils\app\render\RenderMain($this) );
+	}
+	public static function ValidateShell() {
+		if (!System::isShell()) {
+			$name = $this->getName();
+			fail("Cannot use a ShellApp class in this mode! {$name}"); ExitNow(1);
+		}
 	}
 //	protected function initArgs() {
 //	}
@@ -31,6 +36,13 @@ abstract class ShellApp extends App {
 		return System::isShell()
 			? 1000
 			: 0;
+	}
+
+
+
+	protected function doRender() {
+		self::ValidateShell();
+		ShellTools::init();
 	}
 
 
