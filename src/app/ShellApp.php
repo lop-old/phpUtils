@@ -18,8 +18,6 @@ abstract class ShellApp extends App {
 
 	public function __construct() {
 		parent::__construct();
-//		// default render types
-//		$this->registerRender( new \pxn\phpUtils\app\render\RenderMain($this) );
 	}
 	public static function ValidateShell() {
 		if (!System::isShell()) {
@@ -27,15 +25,13 @@ abstract class ShellApp extends App {
 			fail("Cannot use a ShellApp class in this mode! {$name}"); ExitNow(1);
 		}
 	}
-//	protected function initArgs() {
-//	}
 
 
 
 	protected function getWeight() {
 		return System::isShell()
 			? 1000
-			: 0;
+			: -1;
 	}
 
 
