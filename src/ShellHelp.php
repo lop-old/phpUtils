@@ -149,7 +149,7 @@ class ShellHelp {
 		// arguments
 		{
 			$name = \ucwords($this->argName);
-			echo ConsoleShell::FormatString(
+			echo ShellTools::FormatString(
 				"{color=orange}$name:{reset}\n"
 			);
 			foreach ($this->args as $name => $desc) {
@@ -164,7 +164,7 @@ class ShellHelp {
 					' ',
 					Numbers::MinMax($maxSize - $size, 1)
 				);
-				echo ConsoleShell::FormatString(
+				echo ShellTools::FormatString(
 					"  {color=green}$name{reset}$padding{$descLines}\n"
 				);
 			}
@@ -173,7 +173,7 @@ class ShellHelp {
 
 		// flags
 		{
-			echo ConsoleShell::FormatString(
+			echo ShellTools::FormatString(
 				"{color=orange}Flags:{reset}\n"
 			);
 			foreach ($this->flags as $array) {
@@ -185,11 +185,11 @@ class ShellHelp {
 					' ',
 					Numbers::MinMax($maxSize - $size, 1)
 				);
-				echo ConsoleShell::FormatString(
+				echo ShellTools::FormatString(
 					"  {color=green}$line{reset}$padding{$descLines}\n"
 				);
 			}
-			echo ConsoleShell::FormatString("{reset}\n");
+			echo ShellTools::FormatString("{reset}\n");
 		}
 
 	}
