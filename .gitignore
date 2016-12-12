@@ -1,14 +1,17 @@
-.htdb*.php
-**/config.php
-**/auth.json
-.cache/
-.*_cache/
-public/static/bootstrap
-public/static/jquery
+.git/
+
+pxnloader.php
 debug
 DEBUG
 .debug
-error_log
+.htdb*.php
+**/config.php
+**/auth.json
+**/.cache/
+**/.*_cache/
+**/.backups/
+public/static/bootstrap
+public/static/jquery
 **/error_log
 
 **/vendor/
@@ -16,18 +19,16 @@ error_log
 **/coverage/
 **/.gradle/
 # resources/
-bin/
-target/
-rpmbuild-root/
-out/
-build/
+**/bin/
+**/target/
+**/rpmbuild-root/
+**/out/
+**/build/
 
 .classpath
 .project
 .buildpath
-.git/
-.settings/
-/plugins
+**/.settings/
 
 *.class
 *.iml
