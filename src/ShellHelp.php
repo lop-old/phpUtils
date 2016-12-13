@@ -71,6 +71,8 @@ class ShellHelp {
 			$usage = [];
 			if (!empty($this->command)) {
 				$usage[] = (string) $this->command;
+			} else {
+				$usage[] = '<command>';
 			}
 			$usage[] = '[flags]';
 			if (!empty($this->argName)) {

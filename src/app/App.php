@@ -161,12 +161,12 @@ abstract class App {
 		$render = $this->getRender();
 		if ($render == NULL) {
 			fail ('Failed to get render mode!'); ExitNow(1);
-			$appName = $this->getName();
-			$renderMode = $this->getRenderMode();
-			if (empty($renderMode)) {
-				$renderMode = "<null>";
-			}
-			fail("Failed to get a render object for app/mode: $appName / $renderMode"); ExitNow(1);
+//			$appName = $this->getName();
+//			$renderMode = $this->getRenderMode();
+//			if (empty($renderMode)) {
+//				$renderMode = "<null>";
+//			}
+//			fail("Failed to get a render object for app/mode: $appName / $renderMode"); ExitNow(1);
 		}
 		// render page contents
 		$render->doRender();

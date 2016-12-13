@@ -123,11 +123,11 @@ final class ShellTools {
 
 
 	// get all as array
-	public static function getFlags() {
-		return self::$flags;
-	}
 	public static function getArgs() {
 		return self::$args;
+	}
+	public static function getFlags() {
+		return self::$flags;
 	}
 
 
@@ -148,7 +148,7 @@ final class ShellTools {
 			return NULL;
 		}
 		// match case
-		if (\in_array($arg, self::$args) {
+		if (\in_array($arg, self::$args)) {
 			return TRUE;
 		}
 		// case-insensitive
@@ -160,7 +160,7 @@ final class ShellTools {
 
 
 
-	// get one
+	// get one flag
 	public static function getFlag(... $keys) {
 		if (\count($keys) == 0) {
 			return NULL;
@@ -178,7 +178,7 @@ final class ShellTools {
 			return NULL;
 		}
 		if (isset(self::$flags[$key])) {
-			// don't allow -x value
+			// don't allow "-x value"
 			if (self::ALLOW_SHORT_FLAG_VALUES != TRUE) {
 				if (!Strings::StartsWith($key, '--')) {
 					return TRUE;
