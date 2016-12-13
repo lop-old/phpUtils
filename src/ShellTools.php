@@ -132,6 +132,34 @@ final class ShellTools {
 
 
 
+	// get argument
+	public static function getArg($index=NULL) {
+		if ($index === NULL) {
+			return self::getArg(0);
+		}
+		$index = (int) $index;
+		if (!isset(self::$args[$index])) {
+			return NULL;
+		}
+		return self::$args[$index];
+	}
+	public static function hasArg($arg) {
+		if (empty($arg)) {
+			return NULL;
+		}
+		// match case
+		if (\in_array($arg, self::$args) {
+			return TRUE;
+		}
+		// case-insensitive
+		if (\in_array( \strtolower($arg), \array_map('\\strtolower', self::$args) )) {
+			return TRUE;
+		}
+		return FALSE;
+	}
+
+
+
 	// get one
 	public static function getFlag(... $keys) {
 		if (\count($keys) == 0) {
