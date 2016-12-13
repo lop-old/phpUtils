@@ -156,7 +156,7 @@ abstract class App {
 	}
 	protected function doRender() {
 		if ($this->hasRendered()) {
-			return FALSE;
+			return NULL;
 		}
 		$render = $this->getRender();
 		if ($render == NULL) {

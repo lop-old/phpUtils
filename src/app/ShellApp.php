@@ -39,6 +39,7 @@ abstract class ShellApp extends App {
 	protected function doRender() {
 		self::ValidateShell();
 		ShellTools::init();
+		return TRUE;
 	}
 
 
