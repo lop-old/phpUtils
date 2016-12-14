@@ -15,7 +15,7 @@ use pxn\phpUtils\System;
 use pxn\phpPortal\Website;
 
 
-final class dbUtils {
+final class dbTools {
 	private function __construct() {}
 
 
