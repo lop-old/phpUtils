@@ -20,6 +20,38 @@ final class dbTools {
 
 
 
+	public static function getTableSchema($tableName) {
+		$tableName = San::AlphaNumUnderscore($tableName);
+		if (empty($tableName)) {
+			fail('Table name argument is required!');
+			exit(1);
+		}
+		$namespaces = [];
+		// if website project (not shell)
+		if (\class_exists('pxn\\phpPortal\\Website')) {
+			$namespaces[] = Website::getSiteNamespace().'\\schemas';
+			$namespaces[] = Website::getPortalNamespace().'\\schemas';
+		}
+		$namespaces[] = '\\pxn\\phpUtils\\schemas';
+		// find table class
+		$clss = NULL;
+		foreach ($namespaces as $space) {
+			$clss = "{$space}\\table_{$tableName}";
+			if (\class_exists($clss)) {
+				break;
+			}
+			$clss = '';
+		}
+		if (empty($clss)) {
+			fail("Failed to find table schema class: $tableName");
+			exit(1);
+		}
+		$schema = new $clss();
+		return $schema;
+	}
+
+
+
 	public static function UpdateTables($pool=NULL, $tables=NULL) {
 		if ($pool == NULL) {
 			fail('pool argument is required!');
@@ -365,38 +397,6 @@ final class dbTools {
 				exit(1);
 			}
 		}
-	}
-
-
-
-	public static function getTableSchema($tableName) {
-		$tableName = San::AlphaNumUnderscore($tableName);
-		if (empty($tableName)) {
-			fail('Table name argument is required!');
-			exit(1);
-		}
-		$namespaces = [];
-		// if website project (not shell)
-		if (\class_exists('pxn\\phpPortal\\Website')) {
-			$namespaces[] = Website::getSiteNamespace().'\\schemas';
-			$namespaces[] = Website::getPortalNamespace().'\\schemas';
-		}
-		$namespaces[] = '\\pxn\\phpUtils\\schemas';
-		// find table class
-		$clss = NULL;
-		foreach ($namespaces as $space) {
-			$clss = "{$space}\\table_{$tableName}";
-			if (\class_exists($clss)) {
-				break;
-			}
-			$clss = '';
-		}
-		if (empty($clss)) {
-			fail("Failed to find table schema class: $tableName");
-			exit(1);
-		}
-		$schema = new $clss();
-		return $schema;
 	}
 
 
