@@ -41,14 +41,25 @@ final class System {
 		}
 		return self::$isShell;
 	}
+	public static function RequireShell() {
+		$isShell = self::isShell();
+		if (!$isShell) {
+			fail('This script can only run in shell!'); ExitNow(1);
+		}
+	}
+	public static function RequireWeb() {
+		$isShell = self::isShell();
+		if ($isShell) {
+			fail('Cannot run this script in shell!'); ExitNow(1);
+		}
+	}
 
 
 
 	public static function denySuperUser() {
 		$who = self::isSuperUser();
 		if (!empty($who)) {
-			fail("Cannot run this script as super user: {$who}");
-			ExitNow(1);
+			fail("Cannot run this script as super user: {$who}"); ExitNow(1);
 		}
 	}
 	public static function isSuperUser($who=NULL) {
