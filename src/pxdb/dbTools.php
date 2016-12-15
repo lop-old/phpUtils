@@ -54,14 +54,13 @@ final class dbTools {
 
 	public static function UpdateTables($pool=NULL, $tables=NULL) {
 		if ($pool == NULL) {
-			fail('pool argument is required!');
-			exit(1);
+			fail('dbPool argument is required!'); ExitNow(1);
 		}
-		$isShell = System::isShell();
 		// default to all tables in use
 		if (empty($tables)) {
 			$tables = $pool->getUsingTables();
 		}
+		$isShell = System::isShell();
 		if ($isShell) {
 			echo "\n\n == Creating/Updating DB Tables..\n";
 		}
@@ -175,7 +174,7 @@ final class dbTools {
 		// check field type
 		if ($fieldType == 'increment') {
 			if (\mb_strtolower($tabField['type']) !== 'int'
-			&& \mb_strtolower($tabField['type']) !== 'increment') {
+			&&  \mb_strtolower($tabField['type']) !== 'increment') {
 				$tabType = (string) $tabField['type'];
 				$schType = (string) $schField['type'];
 				return "type({$tabType}|{$schType})";

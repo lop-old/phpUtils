@@ -25,9 +25,10 @@ class dbPool {
 	// conns[index]
 	protected $conns   = [];
 
-	protected $usingTables = [];
+	// cache existing db schema
 	protected $knownTables = NULL;
 	protected $knownTableFields = [];
+	protected $usingTables = [];
 
 
 
@@ -248,8 +249,8 @@ class dbPool {
 			}
 			$fields[$name] = $field;
 		}
-		$this->knownTableFields[$tableName] = $fields;
 		$db->release();
+		$this->knownTableFields[$tableName] = $fields;
 		return $this->knownTableFields[$tableName];
 	}
 	public function hasTableField($tableName, $fieldName) {

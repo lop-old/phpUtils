@@ -48,6 +48,7 @@ final class dbCommands {
 
 	public static function DisplayHelp() {
 //TODO:
+echo "\nHELP\n\n";
 //		$help = new ShellHelp('', 'b', 'c');
 //		$help->addFlag('import-db', 'Database tools to import MySQL tables.');
 //		$help->addFlag('export-db', 'Database tools to export MySQL tables.');
@@ -56,10 +57,12 @@ final class dbCommands {
 	}
 	public static function DisplayHelp_export() {
 //TODO:
+echo "\nHELP\n\n";
 		ExitNow(1);
 	}
 	public static function DisplayHelp_import() {
 //TODO:
+echo "\nHELP\n\n";
 		ExitNow(1);
 	}
 
