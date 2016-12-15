@@ -1,6 +1,26 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2016-12-14 phpUtils 0.1.26
+==========================
+* removed dependency on php56 - the reason for this incomplete release
+* partly finished new ShellApp and related classes
+* added ShellTools and ShellHelp classes to replace symfony console dependency
+* changed App->getRender() function to support multiple renderers with the same name
+* added Render->getWeight() function and improved render selecting
+* added Arrays::toArray() class - explode() with multiple delimiters
+* added System::RequireShell() and System::RequireWeb() functions
+* added System::isSuperUser() and System::denySuperUser() functions
+* added paths::all() function to get an array of all known paths
+* added Config::setDefault() function
+* added GitTools class to find tag info for a project
+* pxdb classes are unfinished and untested - working on import/export
+* renamed dbUtils class to dbTools
+* added dbCommands class - also unfinished
+* logger classes are also untested
+* further cleanup and improvements of the utility classes
+
+
 2016-06-30 phpUtils 0.1.25
 ==========================
 * added Paths::portal() function
