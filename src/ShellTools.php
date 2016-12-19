@@ -8,11 +8,12 @@
  */
 namespace pxn\phpUtils;
 
+use pxn\phpUtils\Config;
+use pxn\phpUtils\Defines;
+
 
 final class ShellTools {
 	private final function __construct() {}
-
-	const ALLOW_SHORT_FLAG_VALUES = FALSE;
 
 	private static $inited = FALSE;
 
@@ -26,6 +27,7 @@ final class ShellTools {
 	public static function init() {
 		if (self::$inited)
 			return;
+		Config::setDefault(Defines::KEY_ALLOW_SHORT_FLAG_VALUES, FALSE);
 		self::initConsoleVars();
 		self::$inited = TRUE;
 		// ansi color enabled
@@ -46,6 +48,7 @@ final class ShellTools {
 		if (self::$flags !== NULL || self::$args !== NULL) {
 			return FALSE;
 		}
+		$AllowShortFlagValues = Config::get(Defines::KEY_ALLOW_SHORT_FLAG_VALUES);
 		global $argv;
 		self::$flags = [];
 		self::$args  = [];
@@ -98,7 +101,7 @@ final class ShellTools {
 					continue;
 				}
 				// -f value
-				if (self::ALLOW_SHORT_FLAG_VALUES) {
+				if ($AllowShortFlagValues) {
 					if (isset($argv[$index+1])) {
 						$val = $argv[$index+1];
 						if (!Strings::StartsWith($val, '-')) {
@@ -179,7 +182,8 @@ final class ShellTools {
 		}
 		if (isset(self::$flags[$key])) {
 			// don't allow "-x value"
-			if (self::ALLOW_SHORT_FLAG_VALUES != TRUE) {
+			$AllowShortFlagValues = Config::get(Defines::KEY_ALLOW_SHORT_FLAG_VALUES);
+			if (!$AllowShortFlagValues) {
 				if (!Strings::StartsWith($key, '--')) {
 					return TRUE;
 				}
