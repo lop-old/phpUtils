@@ -26,8 +26,8 @@ class dbPool {
 	protected $conns   = [];
 
 	// cache existing db schema
-	protected $knownTables = NULL;
-	protected $knownTableFields = [];
+	protected $existingTables = NULL;
+	protected $existingTableFields = [];
 	protected $usingTables = [];
 
 
@@ -161,12 +161,12 @@ class dbPool {
 
 
 
-	public function getKnownTables() {
+	public function getExistingTables() {
 		// cached table list
-		if ($this->knownTables != NULL) {
-			return $this->knownTables;
+		if ($this->existingTables != NULL) {
+			return $this->existingTables;
 		}
-		// get known tables
+		// get existing tables
 		$db = $this->getDB();
 		if ($db == NULL) {
 			fail('Failed to get db for list of tables!');
@@ -178,10 +178,10 @@ class dbPool {
 			$tableName = $db->getString("Tables_in_{$database}");
 			if (Strings::StartsWith($tableName, '_'))
 				continue;
-			$this->knownTables[] = $tableName;
+			$this->existingTables[] = $tableName;
 		}
 		$db->release();
-		return $this->knownTables;
+		return $this->existingTables;
 	}
 	public function hasTable($tableName) {
 		$tableName = San::AlphaNumUnderscore($tableName);
@@ -190,7 +190,7 @@ class dbPool {
 		}
 		return \in_array(
 			$tableName,
-			$this->getKnownTables()
+			$this->getExistingTables()
 		);
 	}
 
@@ -199,10 +199,10 @@ class dbPool {
 	public function getTableFields($tableName) {
 		$tableName = San::AlphaNumUnderscore($tableName);
 		// cached fields list
-		if (isset($this->knownTableFields[$tableName])) {
-			return $this->knownTableFields[$tableName];
+		if (isset($this->existingTableFields[$tableName])) {
+			return $this->existingTableFields[$tableName];
 		}
-		// get known fields
+		// get fields
 		$db = $this->getDB();
 		$db->Execute("DESCRIBE `__TABLE__{$tableName}`;");
 		$fields = [];
@@ -250,8 +250,8 @@ class dbPool {
 			$fields[$name] = $field;
 		}
 		$db->release();
-		$this->knownTableFields[$tableName] = $fields;
-		return $this->knownTableFields[$tableName];
+		$this->existingTableFields[$tableName] = $fields;
+		return $this->existingTableFields[$tableName];
 	}
 	public function hasTableField($tableName, $fieldName) {
 		$tableName = San::AlphaNumUnderscore($tableName);
@@ -319,7 +319,7 @@ class dbPool {
 				exit(1);
 			}
 		}
-		$this->knownTables[] = $tableName;
+		$this->existingTables[] = $tableName;
 		$db->release();
 	}
 
