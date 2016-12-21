@@ -25,8 +25,9 @@ final class ShellTools {
 
 
 	public static function init() {
-		if (self::$inited)
+		if (self::$inited) {
 			return;
+		}
 		Config::setDefault(Defines::KEY_ALLOW_SHORT_FLAG_VALUES, FALSE);
 		self::initConsoleVars();
 		self::$inited = TRUE;
@@ -40,8 +41,9 @@ final class ShellTools {
 		}
 	}
 	private static function initConsoleVars() {
-		if (self::$inited)
+		if (self::$inited) {
 			return;
+		}
 		if (!System::isShell()) {
 			return FALSE;
 		}
@@ -95,8 +97,11 @@ final class ShellTools {
 				// attached value
 				$len = \mb_strlen($arg);
 				if ($len > 2) {
-					$val = \mb_substr($arg, 2);;
+					$val = \mb_substr($arg, 2);
 					$arg = \mb_substr($arg, 0, 2);
+					if (\mb_substr($val, 0, 1) == '=') {
+						$val = \mb_substr($val, 1);
+					}
 					self::$flags[$arg] = $val;
 					continue;
 				}

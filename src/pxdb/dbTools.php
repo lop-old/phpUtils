@@ -23,8 +23,7 @@ final class dbTools {
 	public static function getTableSchema($tableName) {
 		$tableName = San::AlphaNumUnderscore($tableName);
 		if (empty($tableName)) {
-			fail('Table name argument is required!');
-			exit(1);
+			fail('Table name argument is required!'); ExitNow(1);
 		}
 		$namespaces = [];
 		// if website project (not shell)
@@ -43,8 +42,7 @@ final class dbTools {
 			$clss = '';
 		}
 		if (empty($clss)) {
-			fail("Failed to find table schema class: $tableName");
-			exit(1);
+			fail("Failed to find table schema class: $tableName"); ExitNow(1);
 		}
 		$schema = new $clss();
 		return $schema;

@@ -53,11 +53,12 @@ class dbPool {
 			(string) $prefix
 		);
 		unset($u, $p);
-		$db = new self(
+		$pool = new self(
 			$dbName,
 			$conn
 		);
-		self::$pools[$dbName] = $db;
+		self::$pools[$dbName] = $pool;
+		return $pool;
 	}
 	public function __construct($dbName, $conn) {
 		$this->dbName = $dbName;
