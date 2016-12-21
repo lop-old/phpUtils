@@ -71,3 +71,28 @@ if (!\function_exists('debug')) {
 		);
 	}
 }
+
+# pxdb
+if (!\function_exists('pxdb_configure')) {
+	function pxdb_configure(
+		$dbName,
+		$driver,
+		$host,
+		$port,
+		$u,
+		$p,
+		$database,
+		$prefix
+	) {
+		return \pxn\phpUtils\pxdb\dbPool::configure(
+			$dbName,
+			$driver,
+			$host,
+			$port,
+			$u,
+			$p,
+			$database,
+			$prefix
+		);
+	}
+}
