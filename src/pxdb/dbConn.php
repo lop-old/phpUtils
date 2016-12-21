@@ -21,8 +21,8 @@ class dbConn extends dbPrepared {
 	protected $prefix = NULL;
 	protected $dsn    = NULL;
 
-	protected $conn = NULL;
-	protected $used = FALSE;
+	protected $connection = NULL;
+	protected $used       = FALSE;
 
 
 
@@ -77,24 +77,6 @@ class dbConn extends dbPrepared {
 		$this->p      = $p;
 		$this->database = $database;
 		$this->prefix = $prefix;
-		// connect to database
-		try {
-			$options = [
-				\PDO::ATTR_PERSISTENT         => TRUE,
-				\PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
-				\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
-			];
-			$conn = new \PDO(
-				$this->dsn,
-				$this->u,
-				\base64_decode($this->p),
-				$options
-			);
-			$this->conn = $conn;
-		} catch (\PDOException $e) {
-			fail("Failed to connect to database: {$this->dbName} - {$this->dsn}", 1, $e);
-			exit(1);
-		}
 	}
 	public function cloneConn() {
 		$conn = new self(
@@ -110,7 +92,35 @@ class dbConn extends dbPrepared {
 
 
 
+	// connect to database
+	private function doConnect() {
+		if ($this->connection != NULL) {
+			return FALSE;
+		}
+		try {
+			$options = [
+				\PDO::ATTR_PERSISTENT         => TRUE,
+				\PDO::ATTR_ERRMODE            => \PDO::ERRMODE_EXCEPTION,
+				\PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC
+			];
+			$this->connection = new \PDO(
+				$this->dsn,
+				$this->u,
+				\base64_decode($this->p),
+				$options
+			);
+		} catch (\PDOException $e) {
+			$this->connection = NULL;
+			fail("Failed to connect to database: {$this->dbName} - {$this->dsn}", 1, $e);
+			exit(1);
+		}
+		return TRUE;
+	}
+
+
+
 	public function getConn() {
+		$this->doConnect();
 		return $this->conn;
 	}
 	public function getDatabaseName() {
