@@ -77,6 +77,9 @@ class dbConn extends dbPrepared {
 		$this->p      = $p;
 		$this->database = $database;
 		$this->prefix = $prefix;
+		if (\debug()) {
+			$this->doConnect();
+		}
 	}
 	public function cloneConn() {
 		$conn = new self(
