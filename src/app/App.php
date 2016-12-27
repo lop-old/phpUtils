@@ -9,6 +9,7 @@
 namespace pxn\phpUtils\app;
 
 use pxn\phpUtils\Config;
+use pxn\phpUtils\Paths;
 use pxn\phpUtils\Strings;
 use pxn\phpUtils\Defines;
 
@@ -99,6 +100,29 @@ abstract class App {
 			$handler
 		);
 //		xLog::CaptureBuffer();
+
+		// load db configs
+		{
+			$paths = [
+				Paths::entry(),
+				Paths::base()
+			];
+			foreach ($paths as $path) {
+				// find .htdb files
+				$array = \scandir($path);
+				foreach ($array as $entry) {
+					if ($entry == '.' || $entry == '..') {
+						continue;
+					}
+					if (!Strings::StartsWith($entry, '.htdb')) {
+						continue;
+					}
+					$file = Strings::BuildPath($path, $entry);
+//TODO: log this
+					require($file);
+				}
+			}
+		}
 
 		// register shutdown hook
 		\register_shutdown_function([
