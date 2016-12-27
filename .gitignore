@@ -4,7 +4,7 @@ pxnloader.php
 debug
 DEBUG
 .debug
-.htdb*.php
+.htdb*
 **/config.php
 **/auth.json
 **/.cache/
