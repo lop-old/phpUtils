@@ -60,5 +60,17 @@ final class Defines {
 	const GB = 1073741824;
 	const TB = 1099511627776;
 
+	const EXIT_CODE_OK               = 0;
+	const EXIT_CODE_GENERAL          = 1;
+	const EXIT_CODE_USAGE_ERROR      = 64;
+	const EXIT_CODE_INVALID_FORMAT   = 65;
+	const EXIT_CODE_UNAVAILABLE      = 69;
+	const EXIT_CODE_INTERNAL_ERROR   = 70;
+	const EXIT_CODE_IO_ERROR         = 74;
+	const EXIT_CODE_NOPERM           = 77;
+	const EXIT_CODE_CONFIG_ERROR     = 78;
+	const EXIT_CODE_INVALID_COMMAND  = 127;
+	const EXIT_CODE_INVALID_ARGUMENT = 128;
+
 
 }
