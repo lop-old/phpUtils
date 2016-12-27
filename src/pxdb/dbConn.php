@@ -8,6 +8,8 @@
  */
 namespace pxn\phpUtils\pxdb;
 
+use pxn\phpUtils\Strings;
+
 
 class dbConn extends dbPrepared {
 
@@ -170,12 +172,18 @@ class dbConn extends dbPrepared {
 		$host,
 		$port
 	) {
-		$driver = \strtolower($driver);
-		$dsn = "{$driver}:dbname={$database};host={$host}";
-		if ($port != NULL && $port > 0 && $port != 3306) {
-			$dsn .= ";port={$port}";
+		$dsn = \strtolower($driver).':';
+		// unix socket
+		if (Strings::StartsWith($host, '/')) {
+			$dsn .= "unix_socket={$host}";
+		// normal tcp
+		} else {
+			$dsn .= "host={$host}";
+			if ($port != NULL && $port > 0 && $port != 3306) {
+				$dsn .= ";port={$port}";
+			}
 		}
-		$dsn .= ';charset=utf8mb4';
+		$dsn .= ";dbname={$database};charset=utf8mb4";
 		return $dsn;
 	}
 
