@@ -134,6 +134,9 @@ class dbPool {
 		return isset(self::$pools[$dbName])
 			&& self::$pools[$dbName] != NULL;
 	}
+	public static function getPools() {
+		return self::$pools;
+	}
 
 
 
