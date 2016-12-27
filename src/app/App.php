@@ -89,17 +89,19 @@ abstract class App {
 		self::$inited = TRUE;
 
 		// init logger
-		$log = xLog::getRoot();
-		$log->setLevel(xLevel::ALL);
-		$formatter = new FullFormat();
-//		$formatter = new BasicFormat();
-//		$formatter->setPrefix(' <<xBuild>> ');
-		$log->setFormatter($formatter);
-		$handler = new ShellHandler();
-		$log->setHandler(
-			$handler
-		);
-//		xLog::CaptureBuffer();
+		{
+			$log = xLog::getRoot();
+			$log->setLevel(xLevel::ALL);
+			$formatter = new FullFormat();
+//			$formatter = new BasicFormat();
+//			$formatter->setPrefix(' <<xBuild>> ');
+			$log->setFormatter($formatter);
+			$handler = new ShellHandler();
+			$log->setHandler(
+				$handler
+			);
+//			xLog::CaptureBuffer();
+		}
 
 		// load db configs
 		{

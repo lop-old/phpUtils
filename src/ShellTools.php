@@ -140,7 +140,7 @@ final class ShellTools {
 
 
 
-	// get argument
+	// get argument (starts at 0)
 	public static function getArg($index=NULL) {
 		if ($index === NULL) {
 			return self::getArg(0);
