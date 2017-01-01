@@ -237,6 +237,8 @@ function backtrace($e=NULL) {
 	} else {
 		$trace = $e->getTrace();
 	}
+
+	// ignored trace entries
 	$ignore = [
 		'init.php' => [
 			'pxn\\phpUtils\\fail',
@@ -250,13 +252,17 @@ function backtrace($e=NULL) {
 		]
 	];
 	foreach ($trace as $index => $tr) {
-		if (!isset($tr['file']))
+		if (!isset($tr['file'])) {
 			continue;
-		$file = \basename($tr['file']);
-		if (isset($ignore[$file])) {
-			$func = $tr['function'];
-			if (\in_array($func, $ignore[$file])) {
-				unset($trace[$index]);
+		}
+		$file = $tr['file'];
+		$func = $tr['function'];
+		foreach ($ignore as $ignoreFile => $ignoreEntry) {
+			if (Strings::EndsWith($file, $ignoreFile)) {
+				if (\in_array($func, $ignoreEntry)) {
+					unset ($trace[$index]);
+					break;
+				}
 			}
 		}
 	}
@@ -266,12 +272,14 @@ function backtrace($e=NULL) {
 		echo '<table style="background-color: #ffeedd; padding: 10px; '.
 			'border-width: 1px; border-style: solid; border-color: #aaaaaa;">'.$CRLF;
 	}
+
+	// display trace
 	$first   = TRUE;
 	$evenodd = FALSE;
 	foreach ($trace as $num => $tr) {
 		if (!$first) {
 			if ($isShell) {
-				echo " ----- \n";
+				echo ' ----- ----- ----- ----- '.$CRLF;
 			} else {
 				echo '<tr><td height="20">&nbsp;</td></tr>'.$CRLF;
 			}
@@ -297,18 +305,18 @@ function backtrace($e=NULL) {
 		$trFunc = @$tr['function'];
 		$trLine = @$tr['line'];
 		if ($isShell) {
-			echo "{$num} - {$trFile}\n";
+			echo "$num - $trFile\n";
 			echo ' ';
 			if (!empty($trBaseFile)) {
-				echo " {$trBaseFile}";
+				echo " $trBaseFile";
 			}
-			echo " --> {$trFunc} {$trLine}";
+			echo " --> {$trFunc} ";
 			if (!empty($trLine)) {
-				echo "  Line: {$trLine}";
+				echo " Line: $trLine";
 			}
 			echo "\n";
 			if (!empty($trArgs)) {
-				echo "ARGS: {$trArgs}\n";
+				echo " ARGS: $trArgs\n";
 			}
 		} else {
 			$evenodd = ! $evenodd;
@@ -323,15 +331,16 @@ function backtrace($e=NULL) {
 				(empty($trBaseFile) ? '' : '<i>'.$trBaseFile.'</i> ' ).
 				'<font size="-1">--&gt;</font> '.
 				'<b>'.$trFunc.'</b> '.
-				'( '.$trArgs.' ) '.
+				' ( '.$trArgs.' ) '.
 				(empty($trLine) ? '' : '<font size="-1">line: '.$trLine.'</font>' ).
 				'</td>'.$CRLF;
 			echo '</tr>'.$CRLF;
 		}
 	}
 	if (!$isShell) {
-		echo '</table>'.$CRLF.$CRLF;
+		echo '</table>'.$CRLF;
 	}
+	echo $CRLF;
 	@\ob_flush();
 }
 
