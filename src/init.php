@@ -238,12 +238,16 @@ function backtrace($e=NULL) {
 		$trace = $e->getTrace();
 	}
 	$ignore = [
-		'inc.php' => [
-			'fail',
-			'backtrace',
+		'init.php' => [
+			'pxn\\phpUtils\\fail',
+			'pxn\\phpUtils\\backtrace',
 			'autoload',
 			'__autoload',
 		],
+		'Globals.php' => [
+			'pxn\\phpUtils\\fail',
+			'pxn\\phpUtils\\backtrace',
+		]
 	];
 	foreach ($trace as $index => $tr) {
 		if (!isset($tr['file']))
