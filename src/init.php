@@ -277,6 +277,7 @@ function backtrace($e=NULL) {
 	$first   = TRUE;
 	$evenodd = FALSE;
 	foreach ($trace as $num => $tr) {
+		$index = ((int) $num) + 1;
 		if (!$first) {
 			if ($isShell) {
 				echo ' ----- ----- ----- ----- '.$CRLF;
@@ -299,13 +300,12 @@ function backtrace($e=NULL) {
 				$trArgs .= $arg;
 			}
 		}
-		$num = (int) $num;
 		$trFile = @$tr['file'];
 		$trBaseFile = \basename($trFile);
 		$trFunc = @$tr['function'];
 		$trLine = @$tr['line'];
 		if ($isShell) {
-			echo "$num - $trFile\n";
+			echo "#$index - $trFile\n";
 			echo ' ';
 			if (!empty($trBaseFile)) {
 				echo " $trBaseFile";
@@ -322,7 +322,7 @@ function backtrace($e=NULL) {
 			$evenodd = ! $evenodd;
 			$bgcolor = ($evenodd ? '#ffe0d0' : '#fff8e8');
 			echo '<tr style="background-color: '.$bgcolor.';">'.$CRLF;
-			echo $TAB.'<td><font size="-2">#'.((int) $num).'</font></td>'.$CRLF;
+			echo $TAB.'<td><font size="-2">#'.$index.')</font></td>'.$CRLF;
 			echo $TAB.'<td>'.$trFile.'</td>'.$CRLF;
 			echo '</tr>'.$CRLF;
 			echo '<tr style="background-color: '.$bgcolor.';">'.$CRLF;
