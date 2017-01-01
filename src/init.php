@@ -260,6 +260,8 @@ function backtrace($e=NULL) {
 			}
 		}
 	}
+	$trace = \array_values($trace);
+	$trace = \array_reverse($trace, TRUE);
 	if (!$isShell) {
 		echo '<table style="background-color: #ffeedd; padding: 10px; '.
 			'border-width: 1px; border-style: solid; border-color: #aaaaaa;">'.$CRLF;
