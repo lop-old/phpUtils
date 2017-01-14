@@ -214,13 +214,47 @@ final class Strings {
 
 
 
-	##############
-	## Pad With ##
-	##############
+	##################
+	## Pad to Width ##
+	##################
 
 
 
+	public static function PadLeft($str, $size, $chr=' ') {
+		$padding = self::getPadding($str, $size, $chr);
+		return $str.$padding;
+	}
+	public static function PadRight($str, $size, $chr=' ') {
+		$padding = self::getPadding($str, $size, $chr);
+		return $padding.$str;
+	}
+	private static function getPadding($str, $size, $chr=' ') {
+		if (empty($chr)) {
+			$chr = ' ';
+		}
+		$len = $size - \mb_strlen($str);
+		if ($len < 0) {
+			return '';
+		}
+		$chrLen = \mb_strlen($chr);
+		if ($chrLen > 1) {
+			$padding = \str_repeat(
+				$chr,
+				\floor($len / $chrLen)
+			);
+			$padding .= \mb_substr(
+				$chr,
+				0,
+				$len % $chrLen
+			);
+			return $padding;
+		}
+		return \str_repeat($chr, $len);
+	}
 	public static function PadCenter($str, $size, $chr=' ') {
+		if (empty($chr)) {
+			$chr = ' ';
+		}
 		$len = $size - \mb_strlen($str);
 		if ($len < 0) {
 			return $str;
