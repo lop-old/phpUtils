@@ -286,8 +286,12 @@ class dbPool {
 
 
 
-	public function UsingTables(...$tables) {
-		$this->usingTables = \array_merge($this->usingTables, $tables);
+	// format: [ 'table_name' => 'path\\to\\schema\\class', .. ]
+	public function addUsingTables(array $tables) {
+		$this->usingTables = \array_merge(
+			$this->usingTables,
+			$tables
+		);
 	}
 	public function getUsingTables() {
 		return $this->usingTables;
