@@ -14,6 +14,11 @@ use pxn\phpUtils\Strings;
 use pxn\phpUtils\System;
 use pxn\phpUtils\Defines;
 
+use pxn\phpUtils\pxdb\commands\dbCommand_List;
+use pxn\phpUtils\pxdb\commands\dbCommand_Update;
+use pxn\phpUtils\pxdb\commands\dbCommand_Import;
+use pxn\phpUtils\pxdb\commands\dbCommand_Export;
+
 
 abstract class dbCommands {
 

@@ -6,11 +6,11 @@
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
-namespace pxn\phpUtils\pxdb;
+namespace pxn\phpUtils\pxdb\commands;
 
 
 
-class dbCommand_Update extends dbCommands {
+class dbCommand_Update extends \pxn\phpUtils\pxdb\dbCommands {
 
 
 

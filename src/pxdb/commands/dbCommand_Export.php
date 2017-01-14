@@ -6,10 +6,10 @@
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
-namespace pxn\phpUtils\pxdb;
+namespace pxn\phpUtils\pxdb\commands;
 
 
-class dbCommand_Export extends dbCommands {
+class dbCommand_Export extends \pxn\phpUtils\pxdb\dbCommands {
 
 
 

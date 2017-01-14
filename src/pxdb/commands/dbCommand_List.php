@@ -6,12 +6,14 @@
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
-namespace pxn\phpUtils\pxdb;
+namespace pxn\phpUtils\pxdb\commands;
 
 use pxn\phpUtils\Strings;
 
+use pxn\phpUtils\pxdb\dbPool;
 
-class dbCommand_List extends dbCommands {
+
+class dbCommand_List extends \pxn\phpUtils\pxdb\dbCommands {
 
 
 
