@@ -10,6 +10,7 @@ namespace pxn\phpUtils\pxdb;
 
 use pxn\phpUtils\San;
 use pxn\phpUtils\ShellTools;
+use pxn\phpUtils\Strings;
 use pxn\phpUtils\System;
 use pxn\phpUtils\Defines;
 
@@ -119,7 +120,7 @@ abstract class dbCommands {
 			}
 		}
 
-		// list all
+		// no argument - default to: list all
 		if ($cmd == 'list') {
 			$result = self::runCommand(
 				$cmd,
@@ -136,6 +137,9 @@ abstract class dbCommands {
 	}
 	public static function runCommand($cmd, $pool, $table, $dry) {
 		echo "\n";
+		if ($dry) {
+			echo " Dry Mode..\n";
+		}
 		// all pools and tables
 		if ($pool == '*' && $table == '*') {
 			echo " Cmd: $cmd  Pool: -all-  Table: -all-\n\n";
@@ -233,6 +237,9 @@ abstract class dbCommands {
 		$pool = dbPool::getPool($pool);
 		if ($pool == NULL) {
 			fail("Failed to find db pool: $poolName"); ExitNow(Defines::EXIT_CODE_INVALID_ARGUMENT);
+		}
+		if (Strings::StartsWith($table, '_')) {
+			fail("Table cannot start with _ underscore: {$poolName}:{$table}"); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$cmdObj = NULL;
 		switch ($cmd) {

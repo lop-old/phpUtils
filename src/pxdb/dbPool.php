@@ -11,6 +11,7 @@ namespace pxn\phpUtils\pxdb;
 use pxn\phpUtils\Strings;
 use pxn\phpUtils\San;
 use pxn\phpUtils\System;
+use pxn\phpUtils\Defines;
 
 
 class dbPool {

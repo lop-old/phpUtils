@@ -18,9 +18,9 @@ abstract class ShellApp extends App {
 
 
 
-	public function __construct() {
-		parent::__construct();
-	}
+//	public function __construct() {
+//		parent::__construct();
+//	}
 	public static function ValidateShell() {
 		if (!System::isShell()) {
 			$name = $this->getName();
