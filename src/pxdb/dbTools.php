@@ -1,7 +1,7 @@
 <?php
 /*
  * PoiXson phpUtils - PHP Utilities Library
- * @copyright 2004-2016
+ * @copyright 2004-2017
  * @license GPL-3
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
@@ -9,10 +9,7 @@
 namespace pxn\phpUtils\pxdb;
 
 use pxn\phpUtils\San;
-use pxn\phpUtils\Strings;
-use pxn\phpUtils\System;
-
-use pxn\phpPortal\Website;
+use pxn\phpUtils\Defines;
 
 
 final class dbTools {
@@ -20,155 +17,20 @@ final class dbTools {
 
 
 
-	public static function getTableSchema($tableName) {
-		$tableName = San::AlphaNumUnderscore($tableName);
-		if (empty($tableName)) {
-			fail('Table name argument is required!'); ExitNow(1);
+	public static function CheckFieldNeedsChanges(array $schemaField, array $existingField) {
+		if ($schemaField == NULL || \count($schemaField) == 0) {
+			fail('Missing schema field array!'); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
-		$namespaces = [];
-		// if website project (not shell)
-		if (\class_exists('pxn\\phpPortal\\Website')) {
-			$namespaces[] = Website::getSiteNamespace().'\\schemas';
-			$namespaces[] = Website::getPortalNamespace().'\\schemas';
+		if ($existingField == NULL || \count($existingField) == 0) {
+			fail('Missing -existing- field array!'); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
-		$namespaces[] = '\\pxn\\phpUtils\\schemas';
-		// find table class
-		$clss = NULL;
-		foreach ($namespaces as $space) {
-			$clss = "{$space}\\table_{$tableName}";
-			if (\class_exists($clss)) {
-				break;
-			}
-			$clss = '';
-		}
-		if (empty($clss)) {
-			fail("Failed to find table schema class: $tableName"); ExitNow(1);
-		}
-		$schema = new $clss();
-		return $schema;
-	}
-
-
-
-	public static function UpdateTables($pool=NULL, $tables=NULL) {
-		if ($pool == NULL) {
-			fail('dbPool argument is required!'); ExitNow(1);
-		}
-		// default to all tables in use
-		if (empty($tables)) {
-			$tables = $pool->getUsingTables();
-		}
-		$isShell = System::isShell();
-		if ($isShell) {
-			echo "\n\n == Creating/Updating DB Tables..\n";
-		}
-		// multiple tables
-		if (\is_array($tables)) {
-			$countTables = 0;
-			foreach ($tables as $tableName) {
-				if (empty($tableName)) {
-					continue;
-				}
-				if (Strings::StartsWith($tableName, '_')) {
-					continue;
-				}
-				$hasCreated = self::doUpdateTable($pool, $tableName);
-				if ($hasCreated) {
-					$countTables++;
-				}
-			}
-			if ($isShell && $countTables > 0) {
-				echo "Created [ {$countTables} ] tables.\n";
-			}
-			return TRUE;
-		}
-		//single table
-		return self::doUpdateTable($pool, (string)$tables);
-	}
-	protected static function doUpdateTable($pool, $tableName) {
-		$tableName = San::AlphaNumUnderscore($tableName);
-		if (empty($tableName)) {
-			fail('Table argument is required!');
-			exit(1);
-		}
-		if (Strings::StartsWith($tableName, '_')) {
-			fail("Cannot use tables starting with an underscore: {$tableName}");
-			exit(1);
-		}
-		// find table schema
-		$schema = self::getTableSchema($tableName);
-		$schemaFields = $schema->getFields();
-
-		// create new table
-		$createdTable = FALSE;
-		if (!$pool->hasTable($tableName)) {
-			// get first fields
-			\reset($schemaFields);
-			list($fieldName, $field) = \each($schemaFields);
-			// ensure has name key
-			if (!isset($field['name']) || empty($field['name'])) {
-				$field = \array_merge(['name' => $fieldName], $field);
-			}
-			$pool->CreateTable(
-				$tableName,
-				$field
-			);
-			$createdTable = TRUE;
-		}
-
-		// check fields
-		$tableFields = $pool->getTableFields($tableName);
-		$countAdded   = 0;
-		$countAltered = 0;
-		foreach ($schemaFields as $fieldName => $schField) {
-			self::fillFieldKeys($schField, $fieldName);
-			// ensure field exists
-			if (!$pool->hasTableField($tableName, $fieldName)) {
-				// add field to table
-				$result = $pool->addTableField($tableName, $schField);
-				if ($result) {
-					$countAdded++;
-					continue;
-				}
-			}
-			// ensure field properties are correct
-			$tabField = $tableFields[$fieldName];
-			self::fillFieldKeys($tabField, $fieldName);
-			$result = self::fieldNeedsChanges($schField, $tabField);
-			if ($result !== FALSE) {
-				$schFieldType = $schField['type'];
-				echo "\nTable/Field [ {$tableName}::{$fieldName}({$schFieldType}) ] needs changes:  {$result}\n";
-				// alter table
-				$pool->updateTableField($tableName, $schField);
-				$countAltered++;
-			}
-		}
-
-		// stats
-		if (System::isShell() && ($countAdded > 0 || $countAltered > 0)) {
-			if ($countAdded > 0) {
-				echo "\nAdded [ {$countAdded} ] fields to table: {$tableName}\n";
-			}
-			if ($countAltered > 0) {
-				echo "\nAltered [ {$countAltered} ] fields in table: {$tableName}\n";
-			}
-			echo "\n";
-		}
-		// done
-		return $createdTable;
-	}
-	protected static function fieldNeedsChanges(array $schField, array $tabField) {
-		if ($schField == NULL || \count($schField) == 0) {
-			fail('schField argument is required!');
-			exit(1);
-		}
-		if ($tabField == NULL || \count($tabField) == 0) {
-			fail('tabField argument is required!');
-			exit(1);
-		}
-		$fieldType = \mb_strtolower($schField['type']);
 		$changes = [];
+//TODO: unfinished
+fail();
 
+
+
+/*
 		// check field type
 		if ($fieldType == 'increment') {
 			if (\mb_strtolower($tabField['type']) !== 'int'
@@ -242,33 +104,44 @@ final class dbTools {
 			return FALSE;
 		}
 		return \implode(', ', $changes);
+*/
 	}
 
 
 
-	public static function fillFieldKeys(array &$field, $fieldName=NULL) {
-		if ($field == NULL || \count($field) == 0) {
+	public static function FillFieldKeys(&$fieldName, array &$field) {
+		if ($field == NULL || ! \is_array($field) || \count($field) == 0) {
 			return NULL;
 		}
 		// field name
+		$fieldName = San::AlphaNumUnderscore($fieldName);
+		if (empty($fieldName)) {
+			fail('Invalid or missing field name!'); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+		}
 		if (!isset($field['name']) || empty($field['name'])) {
-			if (empty($fieldName)) {
-				fail('Unknown field name!');
-				exit(1);
-			}
-			$field['name'] = $fieldName;
+			// prepend name key
+			$field = \array_merge(
+				['name' => $fieldName],
+				$field
+			);
 		}
 		$fieldName = $field['name'];
 		// field type
 		if (!isset($field['type']) || empty($field['type'])) {
-			fail("Unknown type for field: {$fieldName}");
-			exit(1);
+			fail("Missing field type for field: $fieldName"); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
-		$fieldType = \mb_strtolower($field['type']);
-
+		$field['type'] = \mb_strtolower(
+			San::AlphaNumUnderscore(
+				$field['type']
+			)
+		);
+		if (empty($field['type'])) {
+			fail("Invalid field type for field: $fieldName"); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+		}
 		// size
 		if (!isset($field['size']) || empty($field['size'])) {
-			switch ($fieldType) {
+			// guess default
+			switch ($field['type']) {
 			case 'int': case 'increment':
 				$field['size'] = 11;
 				break;
@@ -303,18 +176,19 @@ final class dbTools {
 			case 'date': case 'time':     case 'datetime':
 				break;
 			default:
-				fail("Unknown size for field: {$fieldType} - {$fieldName}");
-				exit(1);
+				$fieldType = $field['type'];
+				fail("Unable to guess size for field: [$fieldType] $fieldName"); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
 			}
 		}
-
 		// nullable
+//TODO:
 		if (isset($field['default']) && $field['default'] === NULL) {
 			if (!isset($field['nullable'])) {
 				$field['nullable'] = TRUE;
 			}
 		} else {
-			switch ($fieldType) {
+			// guess default
+			switch ($field['type']) {
 			case 'increment':
 			case 'int':       case 'tinyint':  case 'smallint':
 			case 'mediumint': case 'bigint':
@@ -333,11 +207,15 @@ final class dbTools {
 				}
 				break;
 			default:
-				fail("Unsupported field type: {$fieldName}({$fieldType})");
-				exit(1);
+				fail(); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
 			}
 		}
+//TODO: unfinished
+fail();
 
+
+
+/*
 		// default value
 		if ($field['nullable'] === TRUE) {
 			if (!isset($field['default'])) {
@@ -394,6 +272,7 @@ final class dbTools {
 				exit(1);
 			}
 		}
+*/
 	}
 
 
