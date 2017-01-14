@@ -294,7 +294,25 @@ class dbPool {
 		);
 	}
 	public function getUsingTables() {
-		return $this->usingTables;
+		$result = [];
+		foreach ($this->usingTables as $tableName => $schemaClass) {
+			$name = San::AlphaNumUnderscore($tableName);
+			if (empty($name)) {
+				fail('Invalid or missing table name!');
+				ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+			}
+			if (Strings::StartsWith($tableName, '_')) {
+				fail("Invalid table name, cannot start with _ underscore: $tableName");
+				ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+			}
+			$schema = new $schemaClass();
+			if (! $schema instanceof \pxn\phpUtils\pxdb\dbSchema) {
+				fail("Invalid db schema class for table: $schemaClass");
+				ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+			}
+			$result[$name] = $schema;
+		}
+		return $result;
 	}
 
 
