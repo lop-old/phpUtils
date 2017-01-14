@@ -9,7 +9,7 @@
 namespace pxn\phpUtils\pxdb;
 
 
-final class dbCommand_Import {
+class dbCommand_Import extends dbCommands {
 
 
 

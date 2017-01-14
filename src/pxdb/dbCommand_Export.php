@@ -9,7 +9,7 @@
 namespace pxn\phpUtils\pxdb;
 
 
-final class dbCommand_Export {
+class dbCommand_Export extends dbCommands {
 
 
 

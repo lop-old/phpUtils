@@ -9,7 +9,8 @@
 namespace pxn\phpUtils\pxdb;
 
 
-final class dbCommand_Update {
+
+class dbCommand_Update extends dbCommands {
 
 
 
