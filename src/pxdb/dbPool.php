@@ -176,7 +176,7 @@ class dbPool {
 
 	public function getExistingTables() {
 		// cached table list
-		if ($this->existingTables != NULL) {
+		if (\is_array($this->existingTables)) {
 			return $this->existingTables;
 		}
 		// get existing tables
@@ -187,6 +187,7 @@ class dbPool {
 		}
 		$db->Execute("SHOW TABLES");
 		$database = $db->getDatabaseName();
+		$this->existingTables = [];
 		while ($db->hasNext()) {
 			$tableName = $db->getString("Tables_in_{$database}");
 			if (Strings::StartsWith($tableName, '_'))
@@ -201,9 +202,13 @@ class dbPool {
 		if (empty($tableName)) {
 			return NULL;
 		}
+		$tables = $this->getExistingTables();
+		if ($tables == NULL) {
+			return NULL;
+		}
 		return \in_array(
 			$tableName,
-			$this->getExistingTables()
+			$tables
 		);
 	}
 

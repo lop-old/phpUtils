@@ -7,6 +7,9 @@
  * @link http://poixson.com/
  */
 
+use pxn\phpUtils\pxdb\dbPool;
+use pxn\phpUtils\Defines;
+
 
 
 # dump()
@@ -84,7 +87,7 @@ if (!\function_exists('pxdb_configure')) {
 		$database,
 		$prefix
 	) {
-		return \pxn\phpUtils\pxdb\dbPool::configure(
+		return dbPool::configure(
 			$dbName,
 			$driver,
 			$host,

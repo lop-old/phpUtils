@@ -126,7 +126,7 @@ class dbConn extends dbPrepared {
 
 	public function getConn() {
 		$this->doConnect();
-		return $this->conn;
+		return $this->connection;
 	}
 	public function getDatabaseName() {
 		return $this->database;
