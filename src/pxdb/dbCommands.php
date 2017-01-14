@@ -286,19 +286,7 @@ abstract class dbCommands {
 				$poolName  = $array[0];
 				$tableName = $array[1];
 			}
-			// default pool name
-			if (empty($poolName)) {
-				$poolName = dbPool::dbNameDefault;
-			}
-			if ($poolName == '*' || \mb_strtolower($poolName) == 'all') {
-				$poolName = '*';
-			} else {
-				$poolName = San::AlphaNumUnderscore($poolName);
-				if (empty($poolName)) {
-					fail('Invalid pool name provided!');
-					ExitNow(Defines::EXIT_CODE_INVALID_ARGUMENT);
-				}
-			}
+			// parse table name
 			if (empty($tableName) || $tableName == '*' || \mb_strtolower($tableName) == 'all') {
 				$tableName = '*';
 			} else {
@@ -308,6 +296,25 @@ abstract class dbCommands {
 					ExitNow(Defines::EXIT_CODE_INVALID_ARGUMENT);
 				}
 			}
+			// default pool name
+			if (empty($poolName)) {
+				if ($tableName == '*') {
+					$poolName = '*';
+				} else {
+					$poolName = dbPool::dbNameDefault;
+				}
+			}
+			// parse pool name
+			if ($poolName == '*' || \mb_strtolower($poolName) == 'all') {
+				$poolName = '*';
+			} else {
+				$poolName = San::AlphaNumUnderscore($poolName);
+				if (empty($poolName)) {
+					fail('Invalid pool name provided!');
+					ExitNow(Defines::EXIT_CODE_INVALID_ARGUMENT);
+				}
+			}
+			// build entry
 			$entries["$poolName:$tableName"] = [
 				'pool'  => $poolName,
 				'table' => $tableName
