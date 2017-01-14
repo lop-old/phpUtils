@@ -150,6 +150,15 @@ class dbPool {
 	public function getName() {
 		return $this->dbName;
 	}
+	public static function castPoolName($pool) {
+		if (\is_string($pool)) {
+			return (string) $pool;
+		}
+		if ($pool instanceof \pxn\phpUtils\pxdb\dbPool) {
+			return $pool->getName();
+		}
+		return NULL;
+	}
 
 
 
