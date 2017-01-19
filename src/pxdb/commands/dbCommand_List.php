@@ -42,7 +42,10 @@ class dbCommand_List extends \pxn\phpUtils\pxdb\dbCommands {
 			echo "$msg\n";
 		// missing table
 		} else {
-			echo "Missing: {$poolName}:{$table}\n";
+			$msg = "Missing: {$poolName}:{$table}";
+			$msg = Strings::PadLeft($msg, 30, ' ');
+			$msg .= '[-]';
+			echo "$msg\n";
 		}
 		return TRUE;
 	}
