@@ -23,7 +23,7 @@ abstract class dbSchema {
 
 
 	public function getFields() {
-		return $this-fields;
+		return $this->fields;
 	}
 
 

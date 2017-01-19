@@ -217,6 +217,10 @@ class dbPool {
 
 	public function getTableFields($tableName) {
 		$tableName = San::AlphaNumUnderscore($tableName);
+		// table not found
+		if (!$this->hasTable($tableName)) {
+			return NULL;
+		}
 		// cached fields list
 		if (isset($this->existingTableFields[$tableName])) {
 			return $this->existingTableFields[$tableName];
