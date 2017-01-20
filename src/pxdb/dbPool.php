@@ -435,10 +435,12 @@ class dbPool {
 			fail('Field type is required!',
 				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
-		dbUtils::fillFieldKeys($field);
-		$type = San::AlphaNumUnderscore( $field['type'] );
-		$fieldType = \mb_strtolower($type);
-		$type      = \mb_strtoupper($type);
+		$field = dbTools::FillFieldKeys_Full($field['name'], $field);
+		$fieldType = \mb_strtolower(
+			San::AlphaNumUnderscore(
+				$field['type']
+			)
+		);
 		$sql = [];
 		// name
 		$sql[] = "`{$name}`";
@@ -449,10 +451,10 @@ class dbPool {
 		} else {
 			$size = '';
 			if (!isset($field['size']) || empty($field['size'])) {
-				$sql[] = $type;
+				$sql[] = $fieldType;
 			} else {
 				$size = San::AlphaNumSpaces($field['size']);
-				$sql[] = "{$type}({$size})";
+				$sql[] = "{$fieldType}({$size})";
 			}
 		}
 		// charset
