@@ -46,7 +46,7 @@ class dbCommand_Update extends \pxn\phpUtils\pxdb\dbCommands {
 			$field = dbTools::FillFieldKeys_Full($fieldName, $field);
 			$dryStr = ($this->dry ? '[DRY] ' : '[ACTION] ');
 			$fieldType = $field['type'];
-			echo "($dryStr}CREATE TABLE: $table [ $fieldName | $fieldType ]\n";
+			echo "{$dryStr}CREATE TABLE: $table [ $fieldName | $fieldType ]\n";
 //TODO: logging
 			if ($this->dry) {
 				return TRUE;
@@ -110,8 +110,11 @@ class dbCommand_Update extends \pxn\phpUtils\pxdb\dbCommands {
 		}
 
 		// stats
-		if ($countAdded > 0 || $countAlter > 0) {
+		if ($countAdded == 0 && $countAlter == 0) {
+			echo "No changes needed for table: $table\n";
 			echo "\n";
+		} else
+		if ($countAdded > 0 || $countAlter > 0) {
 			if ($countAdded > 0) {
 				$fieldMultiple = ($countAdded > 1 ? 's' : ' ');
 				echo "Added   [ $countAdded ] field{$fieldMultiple} to table: {$table}\n";
