@@ -176,13 +176,28 @@ abstract class App {
 			fail('Failed to get an app instance!',
 				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
-		$instance->doShutdown();
+		$result = $instance->doShutdown();
+		// render failed
+		if ($result === FALSE) {
+			ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+		}
+		// render success or already done
+		if ($result === TRUE || $result === NULL) {
+			ExitNow(Defines::EXIT_CODE_OK);
+		}
+		// other render result
+		$result = (int) $result;
+		if ($result == 0) {
+			ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+		}
+		ExitNow($result);
 	}
 	protected function doShutdown() {
 		if ($this->hasRendered()) {
-			return;
+			return NULL;
 		}
-		$this->doRender();
+		$result = $this->doRender();
+		return $result;
 	}
 	protected function doRender() {
 		if ($this->hasRendered()) {
@@ -201,9 +216,9 @@ abstract class App {
 //				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		// render page contents
-		$render->doRender();
+		$result = $render->doRender();
 		$this->setRendered();
-		return TRUE;
+		return $result;
 	}
 
 
