@@ -43,17 +43,17 @@ class FullFormat implements xLogFormatter {
 		}
 		// stdOut block
 		$isOut = xLevel::MatchLevel($record->level, xLevel::STDOUT);
+		$isErr = xLevel::MatchLevel($record->level, xLevel::STDERR);
 		if ($isOut) {
 			if (!self::$isCapture) {
-				$msg = "\n\n <<=== OUT ===>>\n\n{$msg}";
+				$msg = "\n <<=== OUT ===>>\n\n{$msg}";
 				self::$isCapture = TRUE;
 			}
-		}
+		} else
 		// stdErr block
-		$isErr = xLevel::MatchLevel($record->level, xLevel::STDERR);
 		if ($isErr) {
 			if (!self::$isCapture) {
-				$msg = "\n\n <<=== ERR ===>>\n\n{$msg}";
+				$msg = "\n <<=== ERR ===>>\n\n{$msg}";
 				self::$isCapture = TRUE;
 			}
 		}
@@ -61,7 +61,7 @@ class FullFormat implements xLogFormatter {
 		$date  = $this->datetime->format(self::DATE_FORMAT);
 		$level = $record->getLevelFormatted();
 		$level = Strings::PadCenter($level, self::LEVEL_PAD);
-		$msg = " {$date} [{$level}]  {$record->msg}";
+		$msg = " $date [{$level}]  $msg";
 		// close stdOut/stdErr blocks
 		if (!$isOut && !$isErr) {
 			if (self::$isCapture) {

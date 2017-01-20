@@ -50,10 +50,10 @@ if (!\function_exists('ExitNow')) {
 
 # fail()
 if (!\function_exists('fail')) {
-	function fail($msg=NULL, $code=1, \Exception $e=NULL) {
+	function fail($msg=NULL, $exitcode=1, \Exception $e=NULL) {
 		return \pxn\phpUtils\fail(
 			$msg,
-			$code,
+			$exitcode,
 			$e
 		);
 	}

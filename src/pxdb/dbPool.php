@@ -29,6 +29,7 @@ class dbPool {
 	// cache existing db schema
 	protected $existingTables = NULL;
 	protected $existingTableFields = [];
+//TODO: is this populated with table schemas when in production mode?
 	protected $usingTables = [];
 
 
@@ -183,8 +184,7 @@ class dbPool {
 		// get existing tables
 		$db = $this->getDB();
 		if ($db == NULL) {
-			fail('Failed to get db for list of tables!');
-			exit(1);
+			return NULL;
 		}
 		$db->Execute("SHOW TABLES");
 		$database = $db->getDatabaseName();
