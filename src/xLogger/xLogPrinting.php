@@ -46,7 +46,7 @@ abstract class xLogPrinting {
 				$len,
 				' '
 			);
-			$this->publish(" ** {$line} ** ");
+			$this->publish(" ** $line ** ");
 		}
 		$this->publish(" ***{$topbottom}*** ");
 		$this->publish();

@@ -95,7 +95,7 @@ final class dbBackup {
 				Defines::EXIT_CODE_INTERNAL_ERROR, $e);
 		}
 		if ($isShell) {
-			echo "Exported [ {$count} ] blog entries.\n";
+			echo "Exported [ $count ] blog entries.\n";
 		}
 		$db->release();
 		return TRUE;

@@ -352,9 +352,9 @@ class dbPool {
 		// create table sql
 		$fieldSQL = self::getFieldSQL($firstField);
 		$engine = 'InnoDB';
-		$sql = "CREATE TABLE `__TABLE__{$tableName}` ( {$fieldSQL} ) ENGINE={$engine} DEFAULT CHARSET=latin1";
+		$sql = "CREATE TABLE `__TABLE__{$tableName}` ( $fieldSQL ) ENGINE={$engine} DEFAULT CHARSET=latin1";
 		if (System::isShell()) {
-			echo "\nCreating table: {$tableName} ..\n";
+			echo "\nCreating table: $tableName ..\n";
 		}
 		$db->Execute($sql);
 		if (\mb_strtolower($firstField['type']) == 'increment') {
@@ -385,7 +385,7 @@ class dbPool {
 		}
 		$db = $this->getDB();
 		$sql = self::getFieldSQL($field);
-		$sql = "ALTER TABLE `{$tableName}` ADD {$sql}";
+		$sql = "ALTER TABLE `{$tableName}` ADD $sql";
 		$db->Execute($sql);
 		$db->release();
 		return TRUE;
@@ -403,7 +403,7 @@ class dbPool {
 		$fieldName = $field['name'];
 		$db = $this->getDB();
 		$sql = self::getFieldSQL($field);
-		$sql = "ALTER TABLE `__TABLE__{$tableName}` CHANGE `{$fieldName}` {$sql}";
+		$sql = "ALTER TABLE `__TABLE__{$tableName}` CHANGE `{$fieldName}` $sql";
 		echo \str_replace('__TABLE__', $db->getTablePrefix(), $sql)."\n";
 		$result = $db->Execute($sql);
 		if ($result == FALSE) {

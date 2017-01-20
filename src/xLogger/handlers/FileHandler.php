@@ -23,7 +23,7 @@ class FileHandler implements \pxn\phpUtils\xLogger\Handler {
 				'a'
 		);
 		if ($this->handle == FALSE) {
-			throw new \Exception("Failed to open log file for writing! {$outputFile}");
+			throw new \Exception("Failed to open log file for writing! $outputFile");
 		}
 	}
 	public function __destruct() {

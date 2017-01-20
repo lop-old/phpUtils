@@ -107,7 +107,7 @@ class ShellHelp {
 				$line = \implode($array['flags'], ', ');
 				$firstLine = \reset($array['flags']);
 				if (Strings::StartsWith($firstLine, '--')) {
-					$line = "    {$line}";
+					$line = "    $line";
 				}
 				$array['line'] = $line;
 				$len = \mb_strlen($line);

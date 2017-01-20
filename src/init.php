@@ -211,7 +211,7 @@ function fail($msg=NULL, $code=1, \Exception $e=NULL) {
 		$msg = \print_r($msg, TRUE);
 	}
 	if (System::isShell()) {
-		echo "\n *** FATAL: {$msg} *** \n\n";
+		echo "\n *** FATAL: $msg *** \n\n";
 	} else {
 		echo '<pre style="color: black; background-color: #ffaaaa; '.
 				'padding: 10px;"><font size="+2">FATAL: '.$msg.'</font></pre>'.$CRLF;
@@ -310,7 +310,7 @@ function backtrace($e=NULL) {
 			if (!empty($trBaseFile)) {
 				echo " $trBaseFile";
 			}
-			echo " --> {$trFunc} ";
+			echo " --> $trFunc ";
 			if (!empty($trLine)) {
 				echo " Line: $trLine";
 			}

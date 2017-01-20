@@ -25,7 +25,7 @@ class BasicFormat implements xLogFormatter {
 		if (empty($record->msg)) {
 			return '';
 		}
-		$msg = "{$record->msg}";
+		$msg = "$record->msg";
 		return \explode("\n", $msg);
 	}
 

@@ -14,12 +14,14 @@ class Command extends \Symfony\Component\Console\Command\Command {
 
 
 	public static function NewCommand($name, $callback=NULL) {
-		if (empty($name))
+		if (empty($name)) {
 			throw new \Exception('Command name argument is required');
+		}
 		// build the command
 		$command = new static($name);
-		if ($callback != NULL)
+		if ($callback != NULL) {
 			$command->setCode($callback);
+		}
 		return $command;
 	}
 	public static function RegisterNew($name, $callback=NULL) {
@@ -33,12 +35,15 @@ class Command extends \Symfony\Component\Console\Command\Command {
 
 
 	public function setInfo($desc=NULL, $help=NULL, $usage=NULL) {
-		if (!empty($desc))
+		if (!empty($desc)) {
 			$this->setDescription($desc);
-		if (!empty($help))
+		}
+		if (!empty($help)) {
 			$this->setHelp($help);
-		if (!empty($usage))
+		}
+		if (!empty($usage)) {
 			$this->addUsage($usage);
+		}
 	}
 
 

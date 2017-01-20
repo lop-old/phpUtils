@@ -49,20 +49,20 @@ class ComposerTools {
 	}
 	protected function __construct($filePath=NULL) {
 		if (empty($filePath) || !\is_file($filePath)) {
-			throw new \Exception("Invalid composer.json file: {$filePath}");
+			throw new \Exception("Invalid composer.json file: $filePath");
 		}
 		// read file contents
 		$data = \file_get_contents($filePath);
 		if ($data === FALSE) {
-			throw new \Exception("Failed to load composer.json {$filePath}");
+			throw new \Exception("Failed to load composer.json $filePath");
 		}
 		$this->json = \json_decode($data);
 		unset($data);
 		if ($this->json == NULL) {
-			throw new \Exception("Failed to parse composer.json {$filePath}");
+			throw new \Exception("Failed to parse composer.json $filePath");
 		}
 //		if (!isset($this->json->version)) {
-//			throw new \Exception("Version field not found in composer.json {$filePath}");
+//			throw new \Exception("Version field not found in composer.json $filePath");
 //		}
 		$this->path = $filePath;
 	}

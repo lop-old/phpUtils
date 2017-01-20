@@ -62,7 +62,9 @@ abstract class dbPrepared {
 			$this->st = $this->getConn()
 					->prepare($this->sql);
 		} catch (\PDOException $e) {
-			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			$sql  = $this->sql;
+			$desc = $this->desc;
+			$this->setError("Query failed: $sql - $desc", $e);
 			return NULL;
 		}
 		return $this;
@@ -112,7 +114,9 @@ abstract class dbPrepared {
 				$this->rowCount = $this->st->rowCount();
 			}
 		} catch (\PDOException $e) {
-			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			$sql  = $this->sql;
+			$desc = $this->desc;
+			$this->setError("Query failed: $sql - $desc", $e);
 			return NULL;
 		}
 		return $this;
@@ -138,7 +142,9 @@ abstract class dbPrepared {
 				return FALSE;
 			}
 		} catch (\PDOException $e) {
-			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			$sql  = $this->sql;
+			$desc = $this->desc;
+			$this->setError("Query failed: $sql - $desc", $e);
 			return FALSE;
 		}
 		return TRUE;
@@ -250,9 +256,11 @@ abstract class dbPrepared {
 		try {
 			$value = General::castType($value, 'str');
 			$this->st->bindParam($index, $value);
-			$this->args[] = "String: {$value}";
+			$this->args[] = "String: $value";
 		} catch (\PDOException $e) {
-			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			$sql  = $this->sql;
+			$desc = $this->desc;
+			$this->setError("Query failed: $sql - $desc", $e);
 			return NULL;
 		}
 		return $this;
@@ -264,9 +272,11 @@ abstract class dbPrepared {
 		try {
 			$value = General::castType($value, 'int');
 			$this->st->bindParam($index, $value);
-			$this->args[] = "Int: {$value}";
+			$this->args[] = "Int: $value";
 		} catch (\PDOException $e) {
-			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			$sql  = $this->sql;
+			$desc = $this->desc;
+			$this->setError("Query failed: $sql - $desc", $e);
 			return NULL;
 		}
 		return $this;
@@ -278,9 +288,11 @@ abstract class dbPrepared {
 		try {
 			$value = General::castType($value, 'dbl');
 			$this->st->bindParam($index, $value);
-			$this->args[] = "Dbl: {$value}";
+			$this->args[] = "Dbl: $value";
 		} catch (\PDOException $e) {
-			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			$sql  = $this->sql;
+			$desc = $this->desc;
+			$this->setError("Query failed: $sql - $desc", $e);
 			return NULL;
 		}
 		return $this;
@@ -292,9 +304,11 @@ abstract class dbPrepared {
 		try {
 			$value = General::castType($value, 'lng');
 			$this->st->bindParam($index, $value);
-			$this->args[] = "Lng: {$value}";
+			$this->args[] = "Lng: $value";
 		} catch (\PDOException $e) {
-			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			$sql  = $this->sql;
+			$desc = $this->desc;
+			$this->setError("Query failed: $sql - $desc", $e);
 			return NULL;
 		}
 		return $this;
@@ -306,9 +320,11 @@ abstract class dbPrepared {
 		try {
 			$value = General::castType($value, 'bool');
 			$this->st->bindParam($index, $value);
-			$this->args[] = "Bool: {$value}";
+			$this->args[] = "Bool: $value";
 		} catch (\PDOException $e) {
-			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+			$sql  = $this->sql;
+			$desc = $this->desc;
+			$this->setError("Query failed: $sql - $desc", $e);
 			return NULL;
 		}
 		return $this;
@@ -320,9 +336,11 @@ abstract class dbPrepared {
 //		try {
 //			$value = General::castType($value, 'str');
 //			$this->st->bindParam($index, $value);
-//			$this->args[] = "Date: {$value}";
+//			$this->args[] = "Date: $value";
 //		} catch (\PDOException $e) {
-//			$this->setError("Query failed: {$this->sql} - {$this->desc}", $e);
+//			$sql  = $this->sql;
+//			$desc = $this->desc;
+//			$this->setError("Query failed: $sql - $desc", $e);
 //			return NULL;
 //		}
 //		return $this;

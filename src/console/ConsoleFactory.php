@@ -17,8 +17,9 @@ class ConsoleFactory {
 
 
 	public static function get() {
-		if (self::$instance != NULL)
+		if (self::$instance != NULL) {
 			return self::$instance;
+		}
 		self::$instance = new ConsoleApp();
 		return self::$instance;
 	}

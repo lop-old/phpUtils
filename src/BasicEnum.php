@@ -30,10 +30,12 @@ abstract class BasicEnum {
 
 	public static function isValidName($name, $ignoreCase=TRUE) {
 		$constants = self::getConstants();
-		if (\array_key_exists($name, $constants))
+		if (\array_key_exists($name, $constants)) {
 			return TRUE;
-		if (!$ignoreCase)
+		}
+		if (!$ignoreCase) {
 			return FALSE;
+		}
 		$keys = \array_map('\\mb_strtolower', \array_keys($constants));
 		return \in_array(\mb_strtolower($name), $keys);
 	}

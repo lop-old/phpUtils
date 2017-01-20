@@ -14,7 +14,7 @@ class FileNotFoundException extends \Exception {
 
 
 	public function __construct($msg) {
-		parent::__construct('File not found: '.$msg);
+		parent::__construct("File not found: $msg");
 	}
 
 

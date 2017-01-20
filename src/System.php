@@ -103,7 +103,7 @@ final class System {
 		\exec($command, $output, $return);
 		// command failed
 		if ($return !== 0) {
-			$log->warning("Command failed: {$command}");
+			$log->warning("Command failed: $command");
 		}
 		// log output
 		if (!empty($output) && \is_array($output)) {
@@ -134,7 +134,7 @@ final class System {
 		}
 		// dir already exists
 		if (\is_dir($dir)) {
-			$log->debug("Found existing directory: {$dir}");
+			$log->debug("Found existing directory: $dir");
 			return;
 		}
 		// build paths array
@@ -160,27 +160,27 @@ final class System {
 		// create directories
 		for ($index = $start; $index < $count; $index++) {
 			$path = $nodes[$index];
-			$log->debug("Creating: {$path}");
+			$log->debug("Creating: $path");
 			\mkdir($path, $oct);
 		}
 //		\clearstatcache(TRUE, $dir);
 		// ensure created directories exist
-		if (!\is_dir($dir)) throw new \Exception("Failed to create directory: {$dir}");
+		if (!\is_dir($dir)) throw new \Exception("Failed to create directory: $dir");
 	}
 	public static function rmDir($dir) {
 		if (empty($dir)) throw new \Exception('dir argument is required');
 		$log = self::log();
 		// ensure exists
 		$temp = \realpath($dir);
-		if (empty($temp)) throw new \Exception("dir not found, cannot delete! {$dir}");
+		if (empty($temp)) throw new \Exception("dir not found, cannot delete! $dir");
 		$dir = $temp;
 		unset($temp);
 		\clearstatcache(TRUE, $dir);
-		if (!\is_dir($dir)) throw new \Exception("dir argument is not a directory! {$dir}");
+		if (!\is_dir($dir)) throw new \Exception("dir argument is not a directory! $dir");
 		if ($dir == '/')    throw new \Exception('cannot delete / directory!');
 		// list contents
 		$array = \scandir($dir);
-		if ($array == FALSE) throw new \Exception("Failed to list contents of directory: {$dir}");
+		if ($array == FALSE) throw new \Exception("Failed to list contents of directory: $dir");
 		foreach ($array as $entry) {
 			if ($entry == '.' || $entry == '..')
 				continue;
@@ -188,16 +188,16 @@ final class System {
 			if (\is_dir($full)) {
 				self::rmDir($full);
 			} else {
-				$log->debug("Removing file: {$entry}");
+				$log->debug("Removing file: $entry");
 				\unlink($full);
 			}
 //			\rmdir($full);
-//			$log->debug("Removing directory: {$entry}");
+//			$log->debug("Removing directory: $entry");
 		}
 		\rmdir($dir);
 //		\clearstatcache(TRUE, $dir);
-		if (\is_dir($dir)) throw new \Exception("Failed to remove directory: {$dir}");
-		$log->debug("Removing directory: {$dir}");
+		if (\is_dir($dir)) throw new \Exception("Failed to remove directory: $dir");
+		$log->debug("Removing directory: $dir");
 	}
 
 
