@@ -8,6 +8,8 @@
  */
 namespace pxn\phpUtils;
 
+use pxn\phpUtils\Defines;
+
 
 class GitTools {
 
@@ -25,8 +27,8 @@ class GitTools {
 		}
 		$p = \realpath($path);
 		if (empty($p)) {
-			fail("Invalid path: {$path}");
-			exit(1);
+			fail("Invalid path: $path",
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		// existing instance
 		if (isset(self::$instances[$path]) && self::$instances[$path] != NULL) {

@@ -12,6 +12,7 @@ namespace pxn\phpUtils\pxdb;
 
 use pxn\phpUtils\Strings;
 use pxn\phpUtils\System;
+use pxn\phpUtils\Defines;
 
 
 final class dbBackup {
@@ -22,16 +23,16 @@ final class dbBackup {
 
 	public static function export($pool, $tableName, $path) {
 		if ($pool == NULL) {
-			fail('pool argument is required!');
-			exit(1);
+			fail('pool argument is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		if (empty($tableName)) {
-			fail('tableName argument is required!');
-			exit(1);
+			fail('tableName argument is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		if (empty($path)) {
-			fail('path argument is required!');
-			exit(1);
+			fail('path argument is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$isShell = System::isShell();
 		$db = $pool->getDB(dbConn::ERROR_MODE_EXCEPTION);
@@ -67,8 +68,8 @@ final class dbBackup {
 					\JSON_PRETTY_PRINT
 				);
 				if (empty($json)) {
-					fail("Failed to generate json data for entry id: {$id}");
-					exit(1);
+					fail("Failed to generate json data for entry id: $id",
+						Defines::EXIT_CODE_INTERNAL_ERROR);
 				}
 				// write backup file
 				$filePath = Strings::BuildPath(
@@ -76,8 +77,8 @@ final class dbBackup {
 					"{$id}.txt"
 				);
 				if (\file_exists($filePath)) {
-					fail("Cannot export, file already exists: {$filePath}");
-					exit(1);
+					fail("Cannot export, file already exists: $filePath",
+						Defines::EXIT_CODE_INTERNAL_ERROR);
 				}
 				$result = \file_put_contents(
 					$filePath,
@@ -85,13 +86,13 @@ final class dbBackup {
 					\LOCK_EX
 				);
 				if ($result === FALSE) {
-					fail("Failed to write export file: {$filePath}");
-					exit(1);
+					fail("Failed to write export file: $filePath",
+						Defines::EXIT_CODE_IO_ERROR);
 				}
 			}
 		} catch (\PDOException $e) {
-			fail("Query failed: {$sql}", $e);
-			exit(1);
+			fail("Query failed: $sql",
+				Defines::EXIT_CODE_INTERNAL_ERROR, $e);
 		}
 		if ($isShell) {
 			echo "Exported [ {$count} ] blog entries.\n";
@@ -101,17 +102,17 @@ final class dbBackup {
 	}
 	public static function import($pool, $filePath) {
 		if ($pool == NULL) {
-			fail('pool argument is required!');
-			exit(1);
+			fail('pool argument is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		if (!file_exists($filePath)) {
-			fail("File not found: {$filePath}");
-			exit(1);
+			fail("File not found: $filePath",
+				Defines::EXIT_CODE_IO_ERROR);
 		}
 		$data = \file_get_contents($filePath);
 		if ($data === FALSE) {
-			fail("Failed to read file contents: {$filePath}");
-			exit(1);
+			fail("Failed to read file contents: $filePath",
+				Defines::EXIT_CODE_IO_ERROR);
 		}
 		
 		

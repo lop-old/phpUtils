@@ -88,8 +88,8 @@ class dbPool {
 		$dbName = (string) $dbName;
 		// db pool doesn't exist
 		if (!self::dbExists($dbName)) {
-			fail("Database isn't configured: $dbName");
-			exit(1);
+			fail("Database isn't configured: $dbName",
+				Defines::EXIT_CODE_CONFIG_ERROR);
 		}
 		return self::$pools[$dbName];
 	}
@@ -112,8 +112,8 @@ class dbPool {
 		// clone if in use
 		if ($found === NULL) {
 			if (\count($this->conns) >= self::MaxConnections) {
-				fail("Max connections reached for database: {$dbName}");
-				exit(1);
+				fail("Max connections reached for database: $dbName",
+					Defines::EXIT_CODE_IO_ERROR);
 			}
 			// get first connection
 			$conn = \reset($this->conns);
@@ -303,17 +303,17 @@ class dbPool {
 		foreach ($this->usingTables as $tableName => $schemaClass) {
 			$name = San::AlphaNumUnderscore($tableName);
 			if (empty($name)) {
-				fail('Invalid or missing table name!');
-				ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+				fail('Invalid or missing table name!',
+					Defines::EXIT_CODE_INVALID_FORMAT);
 			}
 			if (Strings::StartsWith($tableName, '_')) {
-				fail("Invalid table name, cannot start with _ underscore: $tableName");
-				ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+				fail("Invalid table name, cannot start with _ underscore: $tableName",
+					Defines::EXIT_CODE_INVALID_FORMAT);
 			}
 			$schema = new $schemaClass();
 			if (! $schema instanceof \pxn\phpUtils\pxdb\dbSchema) {
-				fail("Invalid db schema class for table: $schemaClass");
-				ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+				fail("Invalid db schema class for table: $schemaClass",
+					Defines::EXIT_CODE_INTERNAL_ERROR);
 			}
 			$result[$name] = $schema;
 		}
@@ -324,29 +324,29 @@ class dbPool {
 
 	public function CreateTable($tableName, array $firstField) {
 		if (empty($tableName)) {
-			fail('tableName argument is required!');
-			exit(1);
+			fail('tableName argument is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		if ($firstField == NULL || \count($firstField) == 0) {
-			fail('firstField argument is required!');
-			exit(1);
+			fail('firstField argument is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$tableName = San::AlphaNumUnderscore($tableName);
 		if (empty($tableName)) {
-			fail('table name argument is required!');
-			exit(1);
+			fail('table name argument is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		if (Strings::StartsWith($tableName, '_')) {
-			fail("Cannot create tables starting with underscore: {$tableName}");
-			exit(1);
+			fail("Cannot create tables starting with underscore: $tableName",
+				Defines::EXIT_CODE_INVALID_FORMAT);
 		}
 		if ($this->hasTable($tableName)) {
-			fail("Cannot create table, already exists: {$tableName}");
-			exit(1);
+			fail("Cannot create table, already exists: $tableName",
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		if (empty($firstField)) {
-			fail('first field argument is required!');
-			exit(1);
+			fail('first field argument is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$db = $this->getDB();
 		// create table sql
@@ -360,8 +360,8 @@ class dbPool {
 		if (\mb_strtolower($firstField['type']) == 'increment') {
 			$fieldName = $firstField['name'];
 			if (!self::InitAutoIncrementField($db, $tableName, $fieldName)) {
-				fail("Failed to finish creating auto increment field: {$fieldName}");
-				exit(1);
+				fail("Failed to finish creating auto increment field: $fieldName",
+					Defines::EXIT_CODE_INTERNAL_ERROR);
 			}
 		}
 		$this->existingTables[] = $tableName;
@@ -372,12 +372,12 @@ class dbPool {
 
 	public function addTableField($tableName, array $field) {
 		if (empty($tableName)) {
-			fail('tableName argument is required!');
-			exit(1);
+			fail('tableName argument is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		if ($field == NULL || \count($field) == 0) {
-			fail('field argument is required!');
-			exit(1);
+			fail('field argument is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$tableName = San::AlphaNumUnderscore($tableName);
 		if ($this->hasTableField($tableName, $field['name'])) {
@@ -392,12 +392,12 @@ class dbPool {
 	}
 	public function updateTableField($tableName, array $field) {
 		if (empty($tableName)) {
-			fail('tableName argument is required!');
-			exit(1);
+			fail('tableName argument is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		if ($field == NULL || \count($field) == 0) {
-			fail('field argument is required!');
-			exit(1);
+			fail('field argument is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$tableName = San::AlphaNumUnderscore($tableName);
 		$fieldName = $field['name'];
@@ -407,8 +407,8 @@ class dbPool {
 		echo \str_replace('__TABLE__', $db->getTablePrefix(), $sql)."\n";
 		$result = $db->Execute($sql);
 		if ($result == FALSE) {
-			fail("Failed to update table field: {$tableName}::{$fieldName}");
-			exit(1);
+			fail("Failed to update table field: {$tableName}::{$fieldName}",
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		echo "\n";
 		$db->release();
@@ -419,21 +419,21 @@ class dbPool {
 
 	protected static function getFieldSQL(array $field) {
 		if ($field == NULL || \count($field) == 0) {
-			fail('field argument is required!');
-			exit(1);
+			fail('field argument is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		if (!isset($field['name']) || empty($field['name'])) {
-			fail('Field name is required!');
-			exit(1);
+			fail('Field name is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$name = San::AlphaNumUnderscore( $field['name'] );
 		if (Strings::StartsWith($name, '_')) {
-			fail("Field names cannot start with underscore: {$name}");
-			exit(1);
+			fail("Field names cannot start with underscore: $name",
+				Defines::EXIT_CODE_INVALID_FORMAT);
 		}
 		if (!isset($field['type']) || empty($field['type'])) {
-			fail('Field type is required!');
-			exit(1);
+			fail('Field type is required!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		dbUtils::fillFieldKeys($field);
 		$type = San::AlphaNumUnderscore( $field['type'] );

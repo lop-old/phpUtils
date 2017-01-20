@@ -24,7 +24,8 @@ abstract class ShellApp extends App {
 	public static function ValidateShell() {
 		if (!System::isShell()) {
 			$name = $this->getName();
-			fail("This ShellApp class can only run as shell! {$name}"); ExitNow(1);
+			fail("This ShellApp class can only run as shell! $name",
+				Defines::EXIT_CODE_NOPERM);
 		}
 	}
 

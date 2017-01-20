@@ -9,6 +9,7 @@
 namespace pxn\phpUtils\pxdb;
 
 use pxn\phpUtils\Strings;
+use pxn\phpUtils\Defines;
 
 
 class dbConn extends dbPrepared {
@@ -46,8 +47,8 @@ class dbConn extends dbPrepared {
 			$port
 		);
 		if (empty($dsn)) {
-			fail("Failed to generate DSN for database: $dbName");
-			exit(1);
+			fail("Failed to generate DSN for database: $dbName",
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$conn = new self(
 			$dbName,
@@ -70,8 +71,8 @@ class dbConn extends dbPrepared {
 	) {
 		parent::__construct();
 		if (empty($dbName)) {
-			fail('Database name is required!');
-			exit(1);
+			fail('Database name is required!',
+				Defines::EXIT_CODE_CONFIG_ERROR);
 		}
 		$this->dbName = $dbName;
 		$this->dsn    = $dsn;
@@ -116,8 +117,10 @@ class dbConn extends dbPrepared {
 			);
 		} catch (\PDOException $e) {
 			$this->connection = NULL;
-			fail("Failed to connect to database: {$this->dbName} - {$this->dsn}", 1, $e);
-			exit(1);
+			$dbName = $this->dbName;
+			$dsn    = $this->dsn;
+			fail("Failed to connect to database: $dbName - $dsn",
+				Defines::EXIT_CODE_CONFIG_ERROR, $e);
 		}
 		return TRUE;
 	}
@@ -151,8 +154,9 @@ class dbConn extends dbPrepared {
 	}
 	public function lock() {
 		if ($this->used == TRUE) {
-			fail("Database already locked: {$this->dbName}");
-			exit(1);
+			$dbName = $this->dbName;
+			fail("Database already locked: $dbName",
+				Defines::EXIT_CODE_USAGE_ERROR);
 		}
 		$this->used = TRUE;
 	}

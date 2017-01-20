@@ -11,6 +11,7 @@ namespace pxn\phpUtils\cache;
 use pxn\phpUtils\Arrays;
 use pxn\phpUtils\Strings;
 use pxn\phpUtils\General;
+use pxn\phpUtils\Defines;
 
 
 class cacher_filesystem extends cacher {
@@ -121,8 +122,8 @@ class cacher_filesystem extends cacher {
 				continue;
 			// unknown key
 			default:
-				fail("Unknown tag in cache file: {$context} - {$line}");
-				exit(1);
+				fail("Unknown tag in cache file: $context - $line",
+					Defines::EXIT_CODE_UNAVAILABLE);
 				break;
 			}
 		}

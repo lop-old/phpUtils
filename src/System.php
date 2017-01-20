@@ -8,6 +8,8 @@
  */
 namespace pxn\phpUtils;
 
+use pxn\phpUtils\Defines;
+
 
 final class System {
 	private function __construct() {}
@@ -44,13 +46,15 @@ final class System {
 	public static function RequireShell() {
 		$isShell = self::isShell();
 		if (!$isShell) {
-			fail('This script can only run in shell!'); ExitNow(1);
+			fail('This script can only run in shell!',
+				Defines::EXIT_CODE_NOPERM);
 		}
 	}
 	public static function RequireWeb() {
 		$isShell = self::isShell();
 		if ($isShell) {
-			fail('Cannot run this script in shell!'); ExitNow(1);
+			fail('Cannot run this script in shell!',
+				Defines::EXIT_CODE_NOPERM);
 		}
 	}
 
@@ -59,7 +63,8 @@ final class System {
 	public static function denySuperUser() {
 		$who = self::isSuperUser();
 		if (!empty($who)) {
-			fail("Cannot run this script as super user: {$who}"); ExitNow(1);
+			fail("Cannot run this script as super user: $who",
+				Defines::EXIT_CODE_NOPERM);
 		}
 	}
 	public static function isSuperUser($who=NULL) {

@@ -73,8 +73,8 @@ abstract class dbCommands {
 				} else {
 					$poolFlag = San::AlphaNumUnderscore($poolFlag);
 					if (empty($poolFlag)) {
-						fail('Invalid pool name provided!');
-						ExitNow(Defines::EXIT_CODE_INVALID_ARGUMENT);
+						fail('Invalid pool name provided!',
+							Defines::EXIT_CODE_INVALID_ARGUMENT);
 					}
 				}
 				if (empty($tableFlag) || $tableFlag == '*' || \mb_strtolower($tableFlag) == 'all') {
@@ -82,8 +82,8 @@ abstract class dbCommands {
 				} else {
 					$tableFlag = San::AlphaNumUnderscore($tableFlag);
 					if (empty($tableFlag)) {
-						fail('Invalid table name provided!');
-						ExitNow(Defines::EXIT_CODE_INVALID_ARGUMENT);
+						fail('Invalid table name provided!',
+							Defines::EXIT_CODE_INVALID_ARGUMENT);
 					}
 				}
 				// perform the command
@@ -202,8 +202,8 @@ abstract class dbCommands {
 			echo " Cmd: $cmd  Pool: $poolName  Table: -all-\n\n";
 			$poolEntry = dbPool::getPool($pool);
 			if ($poolEntry == NULL) {
-				fail('Invalid pool!');
-				ExitNow(Defines::EXIT_CODE_INVALID_ARGUMENT);
+				fail('Invalid pool!',
+					Defines::EXIT_CODE_INVALID_ARGUMENT);
 			}
 			$tables = $poolEntry->getUsingTables();
 			$count = 0;
@@ -241,10 +241,12 @@ abstract class dbCommands {
 		$poolName = dbPool::castPoolName($pool);
 		$pool = dbPool::getPool($pool);
 		if ($pool == NULL) {
-			fail("Failed to find db pool: $poolName"); ExitNow(Defines::EXIT_CODE_INVALID_ARGUMENT);
+			fail("Failed to find db pool: $poolName",
+				Defines::EXIT_CODE_INVALID_ARGUMENT);
 		}
 		if (Strings::StartsWith($table, '_')) {
-			fail("Table cannot start with _ underscore: {$poolName}:{$table}"); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+			fail("Table cannot start with _ underscore: {$poolName}:{$table}",
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$cmdObj = NULL;
 		switch ($cmd) {
@@ -304,8 +306,8 @@ abstract class dbCommands {
 			} else {
 				$tableName = San::AlphaNumUnderscore($tableName);
 				if (empty($tableName)) {
-					fail('Invalid table name provided!');
-					ExitNow(Defines::EXIT_CODE_INVALID_ARGUMENT);
+					fail('Invalid table name provided!',
+						Defines::EXIT_CODE_INVALID_ARGUMENT);
 				}
 			}
 			// default pool name
@@ -322,8 +324,8 @@ abstract class dbCommands {
 			} else {
 				$poolName = San::AlphaNumUnderscore($poolName);
 				if (empty($poolName)) {
-					fail('Invalid pool name provided!');
-					ExitNow(Defines::EXIT_CODE_INVALID_ARGUMENT);
+					fail('Invalid pool name provided!',
+						Defines::EXIT_CODE_INVALID_ARGUMENT);
 				}
 			}
 			// build entry

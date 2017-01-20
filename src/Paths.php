@@ -8,6 +8,8 @@
  */
 namespace pxn\phpUtils;
 
+use pxn\phpUtils\Defines;
+
 
 final class Paths {
 	private function __construct() {}
@@ -84,8 +86,8 @@ final class Paths {
 				}
 			}
 			if (!$found) {
-				fail('Failed to find common base path!');
-				exit(1);
+				fail('Failed to find common base path!',
+					Defines::EXIT_CODE_INTERNAL_ERROR);
 			}
 		}
 		// find phpPortal
@@ -121,8 +123,8 @@ final class Paths {
 			];
 			foreach ($paths as $name => $path) {
 				if (empty($path)) {
-					fail("Failed to detect path: {$name} !");
-					exit(1);
+					fail("Failed to detect path: $name !",
+						Defines::EXIT_CODE_INTERNAL_ERROR);
 				}
 			}
 			unset($paths);

@@ -10,6 +10,7 @@ namespace pxn\phpUtils\console;
 
 use pxn\phpUtils\San;
 use pxn\phpUtils\Numbers;
+use pxn\phpUtils\Defines;
 
 
 class Dialog_Menu extends Dialog {
@@ -36,8 +37,8 @@ class Dialog_Menu extends Dialog {
 
 	public function getCommand() {
 		if (\count($this->options) == 0) {
-			fail('Menu Dialog requires options!');
-			exit(1);
+			fail('Menu Dialog requires options!',
+				Defines::EXIT_CODE_INVALID_ARGUMENT);
 		}
 		$msg = \escapeshellarg($this->msg);
 		$menuHeight = Numbers::MinMax(

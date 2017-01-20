@@ -103,8 +103,8 @@ if (!\function_exists('pxdb_configure')) {
 if (!\function_exists('register_app')) {
 	function register_app($classPath) {
 		if (!\class_exists($classPath)) {
-			fail("App class doesn't exist: $classPath");
-			ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+			fail("App class doesn't exist: $classPath",
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		return $classPath::register();
 	}

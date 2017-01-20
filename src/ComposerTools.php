@@ -8,6 +8,8 @@
  */
 namespace pxn\phpUtils;
 
+use pxn\phpUtils\Defines;
+
 
 class ComposerTools {
 
@@ -40,8 +42,8 @@ class ComposerTools {
 				self::$instances[$path] = $instance;
 			}
 		} catch (\Exception $e) {
-			fail($e);
-			ExitNow(1);
+			fail('Failed to get composer instance!',
+				Defines::EXIT_CODE_INTERNAL_ERROR, $e);
 		}
 		return $instance;
 	}

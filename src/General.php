@@ -8,6 +8,8 @@
  */
 namespace pxn\phpUtils;
 
+use pxn\phpUtils\Defines;
+
 
 final class General {
 	private final function __construct() {}
@@ -115,8 +117,8 @@ final class General {
 					$v = self::session($name, $type);
 					break;
 				default:
-					fail('Unknown value source: '.$src);
-					exit(1);
+					fail("Unknown value source: $src",
+						Defines::EXIT_CODE_INTERNAL_ERROR);
 			}
 			// value found
 			if ($v !== NULL) {
@@ -267,8 +269,7 @@ final class General {
 				\header('Location: '.$url);
 			}
 		}
-		ExitNow(0);
-		exit(0);
+		ExitNow(Defines::EXIT_CODE_OK);
 	}
 
 

@@ -51,7 +51,8 @@ abstract class App {
 				}
 			}
 			if ($selected == NULL) {
-				fail('Failed to select an app!'); ExitNow(1);
+				fail('Failed to select an app!',
+					Defines::EXIT_CODE_INVALID_COMMAND);
 			}
 			$selected->setActive();
 			self::$instance = $selected;
@@ -76,7 +77,8 @@ abstract class App {
 		// app name already exists
 		if (isset(self::$apps[$name])) {
 			$existingClss = self::$apps[$name]->getClasspath();
-			fail("An app is already registered: $clss  Existing: $existingClss"); ExitNow(1);
+			fail("An app is already registered: $clss  Existing: $existingClss",
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		self::$apps[$name] = $app;
 		return $app;
@@ -136,7 +138,8 @@ abstract class App {
 	protected function __construct() {
 		if (self::$instance != NULL) {
 			$name = self::$instance->getName();
-			fail("App class already loaded: $name"); ExitNow(1);
+			fail("App class already loaded: $name",
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		// app name and classpath
 		{
@@ -170,7 +173,8 @@ abstract class App {
 		}
 		$instance = self::get();
 		if ($instance == NULL) {
-			fail('Failed to get an app instance!'); ExitNow(1);
+			fail('Failed to get an app instance!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$instance->doShutdown();
 	}
@@ -186,13 +190,15 @@ abstract class App {
 		}
 		$render = $this->getRender();
 		if ($render == NULL) {
-			fail ('Failed to get render mode!'); ExitNow(1);
+			fail('Failed to get render mode!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 //			$appName = $this->getName();
 //			$renderMode = $this->getRenderMode();
 //			if (empty($renderMode)) {
 //				$renderMode = "<null>";
 //			}
-//			fail("Failed to get a render object for app/mode: $appName / $renderMode"); ExitNow(1);
+//			fail("Failed to get a render object for app/mode: $appName / $renderMode",
+//				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		// render page contents
 		$render->doRender();
@@ -229,7 +235,8 @@ abstract class App {
 			$name = self::DEFAULT_RENDER_MODE;
 		}
 		if (empty($name) || !isset($this->renders[$name])) {
-			fail("Unknown render mode: $name"); ExitNow(1);
+			fail("Unknown render mode: $name",
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$render = $this->renders[$name];
 		// pick from multiple renderers
@@ -278,14 +285,16 @@ abstract class App {
 	protected function setActive() {
 		if (self::$instance != NULL) {
 			$name = self::$instance->getName();
-			fail("Another app instance is already active: $name"); ExitNow(1);
+			fail("Another app instance is already active: $name",
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		if ($this->active !== NULL) {
-			fail( $this->active === TRUE
-				? 'This app instance is already active!'
-				: 'Another app instance is already active!'
-			);
-			ExitNow(1);
+			if ($this->active === TRUE) {
+				fail('This app instance is already active!',
+					Defines::EXIT_CODE_INTERNAL_ERROR);
+			}
+			fail('Another app instance is already active!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		// set app active states
 		self::$instance = $this;
@@ -299,11 +308,12 @@ abstract class App {
 	protected function setDisactive() {
 		if ($this->active !== NULL) {
 			$appName = $this->getName();
-			fail( $this->active !== FALSE
-				? "App already active: $appName"
-				: "App already disactive: $appName"
-			);
-			ExitNow(1);
+			if ($this->active !== FALSE) {
+				fail("App already active: $appName",
+					Defines::EXIT_CODE_INTERNAL_ERROR);
+			}
+			fail("App already disactive: $appName",
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$this->active = FALSE;
 	}

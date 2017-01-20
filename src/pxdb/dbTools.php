@@ -19,10 +19,12 @@ final class dbTools {
 
 	public static function CheckFieldNeedsChanges(array $schemaField, array $existingField) {
 		if ($schemaField == NULL || \count($schemaField) == 0) {
-			fail('Missing schema field array!'); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+			fail('Missing schema field array!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		if ($existingField == NULL || \count($existingField) == 0) {
-			fail('Missing -existing- field array!'); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+			fail('Missing -existing- field array!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$changes = [];
 //TODO: unfinished
@@ -97,8 +99,8 @@ fail();
 			break;
 		default:
 			$fieldName = $schField['name'];
-			fail("Unsupported field type: {$fieldType} - {$fieldName}");
-			exit(1);
+			fail("Unsupported field type: $fieldType - $fieldName",
+				Defines::EXIT_CODE_USAGE_ERROR);
 		}
 		if (\count($changes) == 0) {
 			return FALSE;
@@ -116,7 +118,8 @@ fail();
 		// field name
 		$fieldName = San::AlphaNumUnderscore($fieldName);
 		if (empty($fieldName)) {
-			fail('Invalid or missing field name!'); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+			fail('Invalid or missing field name!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		if (!isset($field['name']) || empty($field['name'])) {
 			// prepend name key
@@ -128,7 +131,8 @@ fail();
 		$fieldName = $field['name'];
 		// field type
 		if (!isset($field['type']) || empty($field['type'])) {
-			fail("Missing field type for field: $fieldName"); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+			fail("Missing field type for field: $fieldName",
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$field['type'] = \mb_strtolower(
 			San::AlphaNumUnderscore(
@@ -136,7 +140,8 @@ fail();
 			)
 		);
 		if (empty($field['type'])) {
-			fail("Invalid field type for field: $fieldName"); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+			fail("Invalid field type for field: $fieldName",
+				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		// size
 		if (!isset($field['size']) || empty($field['size'])) {
@@ -177,7 +182,8 @@ fail();
 				break;
 			default:
 				$fieldType = $field['type'];
-				fail("Unable to guess size for field: [$fieldType] $fieldName"); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+				fail("Unable to guess size for field: [$fieldType] $fieldName",
+					Defines::EXIT_CODE_INTERNAL_ERROR);
 			}
 		}
 		// nullable
@@ -207,7 +213,9 @@ fail();
 				}
 				break;
 			default:
-				fail(); ExitNow(Defines::EXIT_CODE_INTERNAL_ERROR);
+				$fieldType = $field['type'];
+				fail("Unsupported field type: {$fieldName}({$fieldType})",
+					Defines::EXIT_CODE_INTERNAL_ERROR);
 			}
 		}
 //TODO: unfinished
@@ -268,8 +276,8 @@ fail();
 				}
 				break;
 			default:
-				fail("Unsupported field type: {$fieldName}({$fieldType})");
-				exit(1);
+				fail("Unsupported field type: {$fieldName}({$fieldType})",
+					Defines::EXIT_CODE_USAGE_ERROR);
 			}
 		}
 */
