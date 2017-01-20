@@ -83,7 +83,7 @@ class dbCommand_Update extends \pxn\phpUtils\pxdb\dbCommands {
 				echo "{$dryStr}ADD FIELD: $table [ $fieldName | $fieldType ($fieldSize) ]\n";
 //TODO: logging
 				if (!$this->dry) {
-					$result = $pool->addTableField($table, $field);
+					$result = $pool->addTableField($table, $schemField);
 					if (!$result) {
 						fail("Failed to add field to table! $table [ $fieldName | $fieldType ($fieldSize) ]",
 							Defines::EXIT_CODE_INTERNAL_ERROR);
@@ -103,7 +103,7 @@ class dbCommand_Update extends \pxn\phpUtils\pxdb\dbCommands {
 				echo "{$dryStr}ALTER FIELD: $table [ $fieldName | $existFieldType > $schemaFieldType ] -> {$result}\n";
 //TODO: logging
 				if (!$this->dry) {
-					$pool->updateTableField($table, $field);
+					$pool->updateTableField($table, $schemField);
 				}
 				continue;
 			}
