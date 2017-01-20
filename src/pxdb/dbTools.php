@@ -17,59 +17,22 @@ final class dbTools {
 
 
 
-	public static function CheckFieldNeedsChanges(array $schemaField, array $existingField) {
-		if ($schemaField == NULL || \count($schemaField) == 0) {
+	public static function CheckFieldNeedsChanges(array $schemField, array $existField) {
+		$fieldName = $schemField['name'];
+		$schemField = self::FillFieldKeys_Full  ($fieldName, $schemField);
+		$existField = self::FillFieldKeys_Simple($fieldName, $existField);
+		if ($schemField == NULL || !\is_array($schemField) || \count($schemField) == 0) {
 			fail('Missing schema field array!',
 				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
-		if ($existingField == NULL || \count($existingField) == 0) {
-			fail('Missing -existing- field array!',
+		if ($existField == NULL || !\is_array($existField) || \count($existField) == 0) {
+			fail('Missing existing field array!',
 				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$changes = [];
-//TODO: unfinished
-fail();
-
-
-
-/*
-		// check field type
-		if ($fieldType == 'increment') {
-			if (\mb_strtolower($tabField['type']) !== 'int'
-			&&  \mb_strtolower($tabField['type']) !== 'increment') {
-				$tabType = (string) $tabField['type'];
-				$schType = (string) $schField['type'];
-				return "type({$tabType}|{$schType})";
-			}
-		} else
-		if (\mb_strtolower($tabField['type']) !== $fieldType) {
-				$tabType = (string) $tabField['type'];
-				$schType = (string) $schField['type'];
-				return "type({$tabType}|{$schType})";
-		}
 
 		// check properties based on field type
-		switch ($fieldType) {
-		// auto-increment
-		case 'increment':
-			$tabSize = (string) $tabField['size'];
-			if ($tabSize != '11' ) {
-				$changes[] = "size({$tabSize}|11)";
-			}
-			if ($tabField['default'] != NULL) {
-				$tabDefault = (string) $tabField['default'];
-				$changes[] = "default({$tabDefault}|NULL)";
-			}
-			if ($tabField['increment'] !== TRUE) {
-				$changes[] = 'auto-increment';
-			}
-			if ($tabField['primary'] !== TRUE) {
-				$changes[] = 'primary-key';
-			}
-			if ($tabField['nullable'] === TRUE) {
-				$changes[] = 'nullable(YES|NOT)';
-			}
-			break;
+		switch ($schemField['type']) {
 		// length size
 		case 'int':       case 'tinyint': case 'smallint':
 		case 'mediumint': case 'bigint':
@@ -78,57 +41,94 @@ fail();
 		case 'boolean':   case 'bool':
 		case 'varchar':
 		case 'enum': case 'set':
-			$tabSize = (string) $tabField['size'];
-			$schSize = (string) $schField['size'];
-			if ($tabSize != $schSize) {
-				$changes[] = "size({$tabSize}|{$schSize})";
+			$existSize = ($existField['size'] === NULL ? 'null' : (string) $existField['size']);
+			$schemSize = ($schemField['size'] === NULL ? 'null' : (string) $schemField['size']);
+			if ($existSize != $schemSize) {
+				$changes[] = "size({$existSize}>{$schemSize})";
 			}
 		// no size
 		case 'text': case 'longtext': case 'blob':
 		case 'date': case 'time':     case 'datetime':
-			$tabDefault = (string) $tabField['default'];
-			$schDefault = (string) $schField['default'];
-			if ($tabDefault != $schDefault) {
-				$changes[] = "default({$tabDefault}|{$schDefault})";
+			$existDefault = $existField['default'];
+			$schemDefault = $schemField['default'];
+			if ($existDefault != $schemDefault) {
+				$changes[] = "default({$existDefault}>{$schemDefault})";
 			}
-			if ($tabField['nullable'] !== $schField['nullable']) {
-				$n1 = ($tabField['nullable'] ? 'YES' : 'NOT');
-				$n2 = ($schField['nullable'] ? 'YES' : 'NOT');
-				$changes[] = "nullable({$n1}|{$n2})";
+			if ($existField['nullable'] !== $schemField['nullable']) {
+				$n1 = ($existField['nullable'] ? 'YES' : 'NOT');
+				$n2 = ($schemField['nullable'] ? 'YES' : 'NOT');
+				$changes[] = "nullable({$n1}>{$n2})";
 			}
 			break;
 		default:
-			$fieldName = $schField['name'];
+			$fieldName = $schemField['name'];
+			$fieldType = $schemField['type'];
 			fail("Unsupported field type: $fieldType - $fieldName",
 				Defines::EXIT_CODE_USAGE_ERROR);
 		}
+
+//		// nullable
+//		{
+//			$schemFieldNullable = (isset($schemField['nullable']) ? $schemField['nullable'] : NULL);
+//			$schemNullStr = NULL;
+//			if ($schemFieldNullable === TRUE) {
+//				$schemNullStr = 'NULL';
+//			} else
+//			if ($schemFieldNullable === FALSE) {
+//				$schemNullStr = 'NOT_NULL';
+//			} else {
+//				$schemNullStr = '?NULL?';
+//			}
+//			$existFieldNullable = (isset($existField['nullable']) ? $existField['nullable'] : NULL);
+//			$existNullStr = NULL;
+//			if ($existFieldNullable === TRUE) {
+//				$existNullStr = 'NULL';
+//			} else
+//			if ($existFieldNullable === FALSE) {
+//				$existNullStr = 'NOT_NULL';
+//			} else {
+//				$existNullStr = '?NULL?';
+//			}
+//			$changes[] = "nullable($existNullStr>$schemNullStr)";
+//		}
+
+		// auto-increment
+		if (isset($schemField['increment']) && $schemField['increment'] == TRUE) {
+			if (!isset($existField['increment']) || $existField['increment'] != TRUE) {
+				$changes[] = "increment";
+			}
+		}
+		// primary key
+		if (isset($schemField['primary']) && $schemField['primary'] == TRUE) {
+			if (!isset($existField['primary']) || $existField['primary'] != TRUE) {
+				$changes[] = 'primary';
+			}
+		}
+		// done
 		if (\count($changes) == 0) {
 			return FALSE;
 		}
 		return \implode(', ', $changes);
-*/
 	}
 
 
 
-	public static function FillFieldKeys(&$fieldName, array &$field) {
-		if ($field == NULL || ! \is_array($field) || \count($field) == 0) {
-			return NULL;
-		}
+	private static function FillFieldKeys_Common(&$fieldName, array &$field) {
 		// field name
-		$fieldName = San::AlphaNumUnderscore($fieldName);
+		$fieldName = \mb_strtolower((string) $fieldName);
+		$fieldName = San::AlphaNumUnderscore( $fieldName );
 		if (empty($fieldName)) {
 			fail('Invalid or missing field name!',
 				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
-		if (!isset($field['name']) || empty($field['name'])) {
+		if (!isset($field['name'])) {
 			// prepend name key
 			$field = \array_merge(
 				['name' => $fieldName],
 				$field
 			);
 		}
-		$fieldName = $field['name'];
+		$field['name'] = $fieldName;
 		// field type
 		if (!isset($field['type']) || empty($field['type'])) {
 			fail("Missing field type for field: $fieldName",
@@ -136,7 +136,7 @@ fail();
 		}
 		$field['type'] = \mb_strtolower(
 			San::AlphaNumUnderscore(
-				$field['type']
+				(string) $field['type']
 			)
 		);
 		if (empty($field['type'])) {
@@ -144,10 +144,67 @@ fail();
 				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		// size
-		if (!isset($field['size']) || empty($field['size'])) {
-			// guess default
+		if (!isset($field['size']) || $field['size'] === NULL) {
+			$field['size'] = NULL;
+		} else {
 			switch ($field['type']) {
-			case 'int': case 'increment':
+			case 'int':       case 'tinyint': case 'smallint':
+			case 'mediumint': case 'bigint':
+			case 'bit':       case 'char':
+			case 'boolean':   case 'bool':
+			case 'varchar':
+				$field['size'] = (int) $field['size'];
+			case 'decimal': case 'double':   case 'float':
+			case 'enum':    case 'set':
+			case 'text':    case 'longtext': case 'blob':
+			case 'date':    case 'time':     case 'datetime':
+				$field['size'] = (string) $field['size'];
+				break;
+			default:
+				$fieldType = $field['type'];
+				fail("Unable to guess size for field: [$fieldType] $fieldName",
+					Defines::EXIT_CODE_INTERNAL_ERROR);
+			}
+		}
+	}
+	public static function FillFieldKeys_Simple($fieldName, array $field) {
+		if ($field == NULL || ! \is_array($field) || \count($field) == 0) {
+			return NULL;
+		}
+		self::FillFieldKeys_Common($fieldName, $field);
+//TODO: may need to add more here
+		if (!isset($field['default'])) {
+			$field['default'] = NULL;
+		}
+		// done
+		return $field;
+	}
+	public static function FillFieldKeys_Full($fieldName, array $field) {
+		if ($field == NULL || ! \is_array($field) || \count($field) == 0) {
+			return NULL;
+		}
+		self::FillFieldKeys_Common($fieldName, $field);
+		$fieldName = $field['name'];
+		$fieldType = $field['type'];
+		// auto-increment
+		if ($field['type'] == 'increment') {
+			$field['increment'] = TRUE;
+		}
+		if (isset($field['increment'])) {
+			if ($field['increment'] == TRUE) {
+				$field['primary']  = TRUE;
+				$field['type']     = 'int';
+				$field['size']     = 11;
+				$field['nullable'] = FALSE;
+			} else {
+				unset($field['increment']);
+			}
+		}
+		// size
+		if (!isset($field['size']) || empty($field['size'])) {
+			// guess default size
+			switch ($field['type']) {
+			case 'int':
 				$field['size'] = 11;
 				break;
 			case 'tinyint':
@@ -181,11 +238,11 @@ fail();
 			case 'date': case 'time':     case 'datetime':
 				break;
 			default:
-				$fieldType = $field['type'];
 				fail("Unable to guess size for field: [$fieldType] $fieldName",
 					Defines::EXIT_CODE_INTERNAL_ERROR);
 			}
 		}
+		$field['size'] = (int) $field['size'];
 		// nullable
 //TODO:
 		if (isset($field['default']) && $field['default'] === NULL) {
@@ -213,24 +270,17 @@ fail();
 				}
 				break;
 			default:
-				$fieldType = $field['type'];
-				fail("Unsupported field type: {$fieldName}({$fieldType})",
+				fail("Unsupported field type: [$fieldType] $fieldName",
 					Defines::EXIT_CODE_INTERNAL_ERROR);
 			}
 		}
-//TODO: unfinished
-fail();
-
-
-
-/*
 		// default value
 		if ($field['nullable'] === TRUE) {
 			if (!isset($field['default'])) {
 				$field['default'] = NULL;
 			}
 		} else {
-			switch ($fieldType) {
+			switch ($field['type']) {
 			case 'increment':
 			case 'varchar': case 'char':
 			case 'enum':    case 'set':
@@ -276,11 +326,11 @@ fail();
 				}
 				break;
 			default:
-				fail("Unsupported field type: {$fieldName}({$fieldType})",
+				fail("Unsupported field type: [$fieldType] $fieldName",
 					Defines::EXIT_CODE_USAGE_ERROR);
 			}
 		}
-*/
+		return $field;
 	}
 
 
