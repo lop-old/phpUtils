@@ -380,6 +380,10 @@ class dbPool {
 				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$tableName = San::AlphaNumUnderscore($tableName);
+		if (!isset($field['name']) || empty($field['name'])) {
+			fail('Field name key not set!',
+				Defines::EXIT_CODE_INVALID_FORMAT);
+		}
 		if ($this->hasTableField($tableName, $field['name'])) {
 			return FALSE;
 		}
