@@ -36,7 +36,12 @@ class dbCommand_List extends \pxn\phpUtils\pxdb\dbCommands {
 						$msg .= ', ';
 					}
 					$fieldType = $field['type'];
-					$msg .= "{$fieldType}|{$fieldName}";
+					$fieldTypeStr = (
+						isset($field['size']) && !empty($field['size'])
+						? $fieldType.'|'.$field['size']
+						: $fieldType
+					);
+					$msg .= "[{$fieldTypeStr}]{$fieldName}";
 				}
 			}
 			echo "$msg\n";

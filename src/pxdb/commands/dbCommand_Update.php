@@ -46,7 +46,12 @@ class dbCommand_Update extends \pxn\phpUtils\pxdb\dbCommands {
 			$field = dbTools::FillFieldKeys_Full($fieldName, $field);
 			$dryStr = ($this->dry ? '[DRY] ' : '[ACTION] ');
 			$fieldType = $field['type'];
-			echo "{$dryStr}CREATE TABLE: $table [ $fieldName | $fieldType ]\n";
+			$fieldTypeStr = (
+				isset($field['size']) && !empty($field['size'])
+				? $fieldType.'|'.$field['size']
+				: $fieldType
+			);
+			echo "{$dryStr}CREATE TABLE: $table [{$fieldTypeStr}]{$fieldName}\n";
 //TODO: logging
 			if ($this->dry) {
 				return TRUE;
@@ -78,14 +83,18 @@ class dbCommand_Update extends \pxn\phpUtils\pxdb\dbCommands {
 			if (!$pool->hasTableField($table, $fieldName)) {
 				$countAdded++;
 				$dryStr = ($this->dry ? '[DRY] ' : '[ACTION] ');
-				$fieldType = $schemField['type'];
-				$fieldSize = $schemField['size'];
-				echo "{$dryStr}ADD FIELD: $table [ $fieldName | $fieldType ($fieldSize) ]\n";
+				$schemaFieldType = $schemField['type'];
+				$schemaFieldTypeStr = (
+					isset($schemField['size']) && !empty($schemField['size'])
+					? $schemaFieldType.'|'.$schemField['size']
+					: $schemaFieldType
+				);
+				echo "{$dryStr}ADD FIELD: $table [{$schemaFieldTypeStr}]{$fieldName}\n";
 //TODO: logging
 				if (!$this->dry) {
 					$result = $pool->addTableField($table, $schemField);
 					if (!$result) {
-						fail("Failed to add field to table! $table [ $fieldName | $fieldType ($fieldSize) ]",
+						fail("Failed to add field to table! $table [{$schemaFieldTypeStr}]{$fieldName}",
 							Defines::EXIT_CODE_INTERNAL_ERROR);
 					}
 				}
@@ -99,8 +108,18 @@ class dbCommand_Update extends \pxn\phpUtils\pxdb\dbCommands {
 				$dryStr = ($this->dry ? '[DRY] ' : '[ACTION] ');
 				$existFieldType  = $existField['type'];
 				$schemaFieldType = $schemField['type'];
+				$existFieldTypeStr = (
+					isset($existField['size']) && !empty($existField['size'])
+					? $existFieldType.'|'.$existField['size']
+					: $existFieldType
+				);
+				$schemaFieldTypeStr = (
+					isset($schemField['size']) && !empty($schemField['size'])
+					? $schemaFieldType.'|'.$schemField['size']
+					: $schemaFieldType
+				);
 				// alter table
-				echo "{$dryStr}ALTER FIELD: $table [ $fieldName | $existFieldType > $schemaFieldType ] -> {$result}\n";
+				echo "{$dryStr}ALTER FIELD: $table [{$existFieldTypeStr}] -> [{$schemaFieldTypeStr}] $fieldName\n";
 //TODO: logging
 				if (!$this->dry) {
 					$pool->updateTableField($table, $schemField);
@@ -115,13 +134,14 @@ class dbCommand_Update extends \pxn\phpUtils\pxdb\dbCommands {
 			echo "\n";
 		} else
 		if ($countAdded > 0 || $countAlter > 0) {
+			echo "\n";
 			if ($countAdded > 0) {
 				$fieldMultiple = ($countAdded > 1 ? 's' : ' ');
-				echo "Added   [ $countAdded ] field{$fieldMultiple} to table: {$table}\n";
+				echo " Added   [ $countAdded ] field{$fieldMultiple} to table: {$table}\n";
 			}
 			if ($countAlter > 0) {
 				$fieldMultiple = ($countAlter > 1 ? 's' : ' ');
-				echo "Altered [ $countAlter ] field{$fieldMultiple} in table: {$table}\n";
+				echo " Altered [ $countAlter ] field{$fieldMultiple} in table: {$table}\n";
 			}
 			echo "\n";
 			return TRUE;
