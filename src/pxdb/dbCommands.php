@@ -141,9 +141,8 @@ abstract class dbCommands {
 		ExitNow(Defines::EXIT_CODE_INVALID_COMMAND);
 	}
 	public static function runCommand($cmd, $pool, $table, $dry) {
-		echo "\n";
 		if ($dry) {
-			echo " Dry Mode..\n";
+			echo " [Dry Mode] \n";
 		}
 		// all pools and tables
 		if ($pool == '*' && $table == '*') {

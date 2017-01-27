@@ -322,7 +322,7 @@ class dbPool {
 
 
 
-	public function CreateTable($tableName, array $firstField) {
+	public function CreateTable($tableName, array $firstField, $dry=FALSE) {
 		if (empty($tableName)) {
 			fail('tableName argument is required!',
 				Defines::EXIT_CODE_INTERNAL_ERROR);
@@ -349,6 +349,7 @@ class dbPool {
 				Defines::EXIT_CODE_INTERNAL_ERROR);
 		}
 		$db = $this->getDB();
+		$db->setDry($dry);
 		// create table sql
 		$fieldSQL = self::getFieldSQL($firstField);
 		$engine = 'InnoDB';
@@ -370,7 +371,7 @@ class dbPool {
 
 
 
-	public function addTableField($tableName, array $field) {
+	public function addTableField($tableName, array $field, $dry=FALSE) {
 		if (empty($tableName)) {
 			fail('tableName argument is required!',
 				Defines::EXIT_CODE_INTERNAL_ERROR);
@@ -388,13 +389,14 @@ class dbPool {
 			return FALSE;
 		}
 		$db = $this->getDB();
+		$db->setDry($dry);
 		$sql = self::getFieldSQL($field);
 		$sql = "ALTER TABLE `{$tableName}` ADD $sql";
 		$db->Execute($sql);
 		$db->release();
 		return TRUE;
 	}
-	public function updateTableField($tableName, array $field) {
+	public function updateTableField($tableName, array $field, $dry=FALSE) {
 		if (empty($tableName)) {
 			fail('tableName argument is required!',
 				Defines::EXIT_CODE_INTERNAL_ERROR);
@@ -406,6 +408,7 @@ class dbPool {
 		$tableName = San::AlphaNumUnderscore($tableName);
 		$fieldName = $field['name'];
 		$db = $this->getDB();
+		$db->setDry($dry);
 		$sql = self::getFieldSQL($field);
 		$sql = "ALTER TABLE `__TABLE__{$tableName}` CHANGE `{$fieldName}` $sql";
 		echo \str_replace('__TABLE__', $db->getTablePrefix(), $sql)."\n";

@@ -21,6 +21,7 @@ abstract class dbPrepared {
 	protected $rs   = NULL;
 	protected $sql  = NULL;
 	protected $desc = NULL;
+	protected $dry  = NULL;
 
 	protected $row      = NULL;
 	protected $args     = [];
@@ -101,17 +102,26 @@ abstract class dbPrepared {
 				? $this->sql
 				: \mb_substr($this->sql, 0, $pos)
 			);
-			// run query
-			if (!$this->st->execute()) {
-				$this->setError();
-				return NULL;
+			if (debug()) {
+				$msg = " [SQL] $sql ;";
+				if (!empty($desc)) {
+					$msg .= " /* $desc */";
+				}
+				echo "$msg\n";
 			}
-			// get insert id
-			if ($firstPart == 'INSERT') {
-				$this->insertId = $this->conn->lastInsertId();
-			// get row count
-			} else {
-				$this->rowCount = $this->st->rowCount();
+			if (!$this->isDry()) {
+				// run query
+				if (!$this->st->execute()) {
+					$this->setError();
+					return NULL;
+				}
+				// get insert id
+				if ($firstPart == 'INSERT') {
+					$this->insertId = $this->conn->lastInsertId();
+				// get row count
+				} else {
+					$this->rowCount = $this->st->rowCount();
+				}
 			}
 		} catch (\PDOException $e) {
 			$sql  = $this->sql;
@@ -176,6 +186,24 @@ abstract class dbPrepared {
 
 
 
+	public function isDry() {
+		// default
+		if ($this->dry === NULL) {
+			return FALSE;
+		}
+		// not dry
+		if ($this->dry === FALSE) {
+			return FALSE;
+		}
+		// is dry
+		return TRUE;
+	}
+	public function setDry($dry=TRUE) {
+		$this->dry = $dry;
+	}
+
+
+
 	public function setError($msg=NULL, $e=NULL) {
 		if (empty($msg)) {
 			$msg = '';
@@ -235,6 +263,7 @@ abstract class dbPrepared {
 		$this->rs       = NULL;
 		$this->sql      = NULL;
 		$this->desc     = NULL;
+		$this->dry      = NULL;
 		$this->row      = NULL;
 		$this->args     = [];
 		$this->rowCount = -1;

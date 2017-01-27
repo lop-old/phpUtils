@@ -53,13 +53,13 @@ class dbCommand_Update extends \pxn\phpUtils\pxdb\dbCommands {
 			);
 			echo "{$dryStr}CREATE TABLE: $table [{$fieldTypeStr}]{$fieldName}\n";
 //TODO: logging
+			$pool->CreateTable(
+				$table,
+				$field,
+				$this->dry
+			);
 			if ($this->dry) {
 				return TRUE;
-			} else {
-				$pool->CreateTable(
-					$table,
-					$field
-				);
 			}
 		}
 
@@ -121,9 +121,7 @@ class dbCommand_Update extends \pxn\phpUtils\pxdb\dbCommands {
 				// alter table
 				echo "{$dryStr}ALTER FIELD: $table [{$existFieldTypeStr}] -> [{$schemaFieldTypeStr}] $fieldName\n";
 //TODO: logging
-				if (!$this->dry) {
-					$pool->updateTableField($table, $schemField);
-				}
+				$pool->updateTableField($table, $schemField, $this->dry);
 				continue;
 			}
 		}
