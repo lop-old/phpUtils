@@ -33,11 +33,11 @@ final class ShellTools {
 		self::$inited = TRUE;
 		// ansi color enabled
 		if (self::hasFlag('--ansi')) {
-			Strings::setAnsiColorEnabled(TRUE);
+			self::setAnsiColorEnabled(TRUE);
 		}
 		// ansi color disabled
 		if (self::hasFlag('--no-ansi')) {
-			Strings::setAnsiColorEnabled(FALSE);
+			self::setAnsiColorEnabled(FALSE);
 		}
 	}
 	private static function initConsoleVars() {
