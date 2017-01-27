@@ -15,47 +15,35 @@ use pxn\phpUtils\Defines;
 # dump()
 if (!\function_exists('dump')) {
 	function dump($var) {
-		return \pxn\phpUtils\dump(
-			$var
-		);
+		return \pxn\phpUtils\dump($var);
 	}
 }
 
 # d()
 if (!\function_exists('d')) {
 	function d($var) {
-		return \pxn\phpUtils\d(
-			$var
-		);
+		return \pxn\phpUtils\d($var);
 	}
 }
 
 # dd()
 if (!\function_exists('dd')) {
 	function dd($var) {
-		return \pxn\phpUtils\dd(
-			$var
-		);
+		return \pxn\phpUtils\dd($var);
 	}
 }
 
 # ExitNow()
 if (!\function_exists('ExitNow')) {
 	function ExitNow($code=1) {
-		return \pxn\phpUtils\ExitNow(
-			$code
-		);
+		return \pxn\phpUtils\ExitNow($code);
 	}
 }
 
 # fail()
 if (!\function_exists('fail')) {
 	function fail($msg=NULL, $exitcode=1, \Exception $e=NULL) {
-		return \pxn\phpUtils\fail(
-			$msg,
-			$exitcode,
-			$e
-		);
+		return \pxn\phpUtils\fail($msg, $exitcode, $e);
 	}
 }
 
@@ -69,9 +57,7 @@ if (!\function_exists('backtrace')) {
 # debug()
 if (!\function_exists('debug')) {
 	function debug($debug=NULL) {
-		return \pxn\phpUtils\debug(
-			$debug
-		);
+		return \pxn\phpUtils\debug($debug);
 	}
 }
 
