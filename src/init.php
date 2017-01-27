@@ -160,11 +160,15 @@ if (System::isShell()) {
 
 
 // dump()
-function dump($var) {
+function dump($var, $msg=NULL) {
 	if (System::isShell()) {
-		echo "--DUMP--\n";
+		if (empty($msg)) {
+			echo "--DUMP--\n";
+		} else {
+			echo "--DUMP-{$msg}--\n";
+		}
 		\var_dump($var);
-		echo "\n--------\n";
+		echo "--------\n";
 	} else {
 		$CRLF = "\n";
 		echo '<pre style="color: black; background-color: #dfc0c0; padding: 10px;">';
@@ -174,12 +178,12 @@ function dump($var) {
 	@\ob_flush();
 }
 // d()
-function d($var) {
-	dump($var);
+function d($var, $msg=NULL) {
+	dump($var, $msg);
 }
 // dd()
-function dd($var) {
-	dump($var);
+function dd($var, $msg=NULL) {
+	dump($var, $msg);
 	ExitNow(1);
 }
 

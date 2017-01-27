@@ -14,22 +14,22 @@ use pxn\phpUtils\Defines;
 
 # dump()
 if (!\function_exists('dump')) {
-	function dump($var) {
-		return \pxn\phpUtils\dump($var);
+	function dump($var, $msg=NULL) {
+		return \pxn\phpUtils\dump($var, $msg);
 	}
 }
 
 # d()
 if (!\function_exists('d')) {
-	function d($var) {
-		return \pxn\phpUtils\d($var);
+	function d($var, $msg=NULL) {
+		return \pxn\phpUtils\d($var, $msg);
 	}
 }
 
 # dd()
 if (!\function_exists('dd')) {
-	function dd($var) {
-		return \pxn\phpUtils\dd($var);
+	function dd($var, $msg=NULL) {
+		return \pxn\phpUtils\dd($var, $msg);
 	}
 }
 
