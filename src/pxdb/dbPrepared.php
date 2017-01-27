@@ -9,6 +9,7 @@
 namespace pxn\phpUtils\pxdb;
 
 use pxn\phpUtils\General;
+use pxn\phpUtils\Strings;
 
 
 abstract class dbPrepared {
@@ -103,9 +104,12 @@ abstract class dbPrepared {
 				: \mb_substr($this->sql, 0, $pos)
 			);
 			if (debug()) {
-				$msg = " [SQL] $sql ;";
+				$msg = " [SQL] $this->sql";
+				if (!Strings::EndsWith($this->sql, ';')) {
+					$msg .= ' ;';
+				}
 				if (!empty($desc)) {
-					$msg .= " /* $desc */";
+					$msg .= "  /* $desc */";
 				}
 				echo "$msg\n";
 			}
