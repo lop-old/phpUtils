@@ -423,7 +423,6 @@ class dbPool {
 		$db->setDry($dry);
 		$sql = self::getFieldSQL($field);
 		$sql = "ALTER TABLE `__TABLE__{$tableName}` CHANGE `{$fieldName}` $sql";
-		echo \str_replace('__TABLE__', $db->getTablePrefix(), $sql)."\n";
 		$result = $db->Execute(
 			$sql,
 			'updateTableField()'
