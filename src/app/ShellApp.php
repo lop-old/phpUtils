@@ -51,6 +51,10 @@ abstract class ShellApp extends App {
 	protected function doRender() {
 		self::ValidateShell();
 		ShellTools::init();
+		echo "\n";
+		if (Debug()) {
+			echo " [Debug Mode] \n";
+		}
 		// return false in case not overridden
 		return FALSE;
 	}
