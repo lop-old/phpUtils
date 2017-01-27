@@ -186,7 +186,10 @@ class dbPool {
 		if ($db == NULL) {
 			return NULL;
 		}
-		$db->Execute("SHOW TABLES");
+		$db->Execute(
+			"SHOW TABLES",
+			'getExistingTables()'
+		);
 		$database = $db->getDatabaseName();
 		$this->existingTables = [];
 		while ($db->hasNext()) {
@@ -227,7 +230,10 @@ class dbPool {
 		}
 		// get fields
 		$db = $this->getDB();
-		$db->Execute("DESCRIBE `__TABLE__{$tableName}`;");
+		$db->Execute(
+			"DESCRIBE `__TABLE__{$tableName}`;",
+			'getTableFields()'
+		);
 		$fields = [];
 		while ($db->hasNext()) {
 			$row = $db->getRow();
@@ -357,7 +363,10 @@ class dbPool {
 		if (System::isShell()) {
 			echo "\nCreating table: $tableName ..\n";
 		}
-		$db->Execute($sql);
+		$db->Execute(
+			$sql,
+			'CreateTable()'
+		);
 		if (\mb_strtolower($firstField['type']) == 'increment') {
 			$fieldName = $firstField['name'];
 			if (!self::InitAutoIncrementField($db, $tableName, $fieldName)) {
@@ -392,7 +401,10 @@ class dbPool {
 		$db->setDry($dry);
 		$sql = self::getFieldSQL($field);
 		$sql = "ALTER TABLE `{$tableName}` ADD $sql";
-		$db->Execute($sql);
+		$db->Execute(
+			$sql,
+			'addTableField()'
+		);
 		$db->release();
 		return TRUE;
 	}
@@ -412,7 +424,10 @@ class dbPool {
 		$sql = self::getFieldSQL($field);
 		$sql = "ALTER TABLE `__TABLE__{$tableName}` CHANGE `{$fieldName}` $sql";
 		echo \str_replace('__TABLE__', $db->getTablePrefix(), $sql)."\n";
-		$result = $db->Execute($sql);
+		$result = $db->Execute(
+			$sql,
+			'updateTableField()'
+		);
 		if ($result == FALSE) {
 			fail("Failed to update table field: {$tableName}::{$fieldName}",
 				Defines::EXIT_CODE_INTERNAL_ERROR);
@@ -516,11 +531,19 @@ class dbPool {
 		$tableName = San::AlphaNumUnderscore($tableName);
 		$fieldName = San::AlphaNumUnderscore($fieldName);
 		$sql = "ALTER TABLE `__TABLE__{$tableName}` ADD PRIMARY KEY ( `{$fieldName}` )";
-		if (!$db->Execute($sql)) {
+		$result = $db->Execute(
+			$sql,
+			'InitAutoIncrementField(primary-key)'
+		);
+		if (!$result) {
 			return FALSE;
 		}
 		$sql = "ALTER TABLE `__TABLE__{$tableName}` MODIFY `{$fieldName}` int(11) NOT NULL AUTO_INCREMENT";
-		if (!$db->Execute($sql)) {
+		$result = $db->Execute(
+			$sql,
+			'InitAutoIncrementField(auto-increment)'
+		);
+		if (!$result) {
 			return FALSE;
 		}
 		return TRUE;
