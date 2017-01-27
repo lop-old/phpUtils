@@ -46,7 +46,7 @@ abstract class dbPrepared {
 
 
 	public function Prepare($sql, $desc=NULL) {
-		$this->clean();
+		$this->clean(TRUE);
 		if (!empty($desc)) {
 			$this->desc($desc);
 		}
@@ -262,12 +262,14 @@ abstract class dbPrepared {
 
 
 
-	public function clean() {
+	public function clean($keepDry=FALSE) {
 		$this->st       = NULL;
 		$this->rs       = NULL;
 		$this->sql      = NULL;
 		$this->desc     = NULL;
-		$this->dry      = NULL;
+		if ($keepDry == FALSE) {
+			$this->dry  = NULL;
+		}
 		$this->row      = NULL;
 		$this->args     = [];
 		$this->rowCount = -1;
