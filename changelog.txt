@@ -1,6 +1,16 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2017-01-31 phpUtils 0.1.27
+* removed pxdb classes (moved to its own library)
+* added optional $msg argument to dump() function
+* changed how backtrace() is displayed
+* added Strings::PadLeft() and PadRight() functions
+* added ShellApp::setAllowShortFlagValues() function
+* added exit codes to Defines class and ExitNow() calls
+* added register_app() and pxdb_configure() global functions
+* other small fixes
+
 2016-12-14 phpUtils 0.1.26
 ==========================
 * removed dependency on php56 - the reason for this incomplete release
