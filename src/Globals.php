@@ -7,7 +7,6 @@
  * @link http://poixson.com/
  */
 
-use pxn\phpUtils\pxdb\dbPool;
 use pxn\phpUtils\Defines;
 
 
@@ -62,18 +61,9 @@ if (!\function_exists('debug')) {
 }
 
 # pxdb
-if (!\function_exists('pxdb_configure')) {
-	function pxdb_configure(
-		$dbName,
-		$driver,
-		$host,
-		$port,
-		$u,
-		$p,
-		$database,
-		$prefix
-	) {
-		return dbPool::configure(
+if (\class_exists('pxn\\pxdb\\dbPool')) {
+	if (!\function_exists('pxdb_configure')) {
+		function pxdb_configure(
 			$dbName,
 			$driver,
 			$host,
@@ -82,7 +72,18 @@ if (!\function_exists('pxdb_configure')) {
 			$p,
 			$database,
 			$prefix
-		);
+		) {
+			return \pxn\pxdb\dbPool::configure(
+				$dbName,
+				$driver,
+				$host,
+				$port,
+				$u,
+				$p,
+				$database,
+				$prefix
+			);
+		}
 	}
 }
 
