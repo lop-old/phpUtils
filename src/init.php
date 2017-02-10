@@ -165,6 +165,7 @@ function dump($var, $msg=NULL) {
 		if (empty($msg)) {
 			echo "--DUMP--\n";
 		} else {
+			$msg = \str_replace(' ', '-', $msg);
 			echo "--DUMP-{$msg}--\n";
 		}
 		\var_dump($var);
