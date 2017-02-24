@@ -43,22 +43,22 @@ final class San {
 	}
 	public static function isAlphaNumSafe($str) {
 		$str = (string) $str;
-		$compare = AlphaNumSafe($str);
+		$compare = self::AlphaNumSafe($str);
 		return $compare === $str;
 	}
 	public static function isAlphaNumSafeMore($str) {
 		$str = (string) $str;
-		$compare = AlphaNumSafeMore($str);
+		$compare = self::AlphaNumSafeMore($str);
 		return $compare === $str;
 	}
 	public static function isAlphaNumSpaces($str) {
 		$str = (string) $str;
-		$compare = AlphaNumSpaces($str);
+		$compare = self::AlphaNumSpaces($str);
 		return $compare === $str;
 	}
 	public static function isAlphaNumUnderscore($str) {
 		$str = (string) $str;
-		$compare = AlphaNumUnderscore($str);
+		$compare = self::AlphaNumUnderscore($str);
 		return $compare === $str;
 	}
 	public static function isAlphaNumFile($str) {
