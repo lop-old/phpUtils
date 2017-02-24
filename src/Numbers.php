@@ -22,14 +22,17 @@ final class Numbers {
 	 *         being trimmed.
 	 */
 	public static function isNumber($value) {
-		if ($value === NULL)
+		if ($value === NULL) {
 			return FALSE;
+		}
 		$value = \trim( (string)$value );
-		if ($value === '')
+		if ($value === '') {
 			return FALSE;
+		}
 		$value = Strings::TrimFront($value, '0');
-		if ($value == '')
+		if ($value == '') {
 			return TRUE;
+		}
 		$i = ((string) ((int)$value) );
 		return ($value === $i);
 	}
@@ -50,12 +53,15 @@ final class Numbers {
 	 * @return int value
 	 */
 	public static function MinMax($value, $min=FALSE, $max=FALSE) {
-		if ($min !== FALSE && $max !== FALSE && $min > $max)
+		if ($min !== FALSE && $max !== FALSE && $min > $max) {
 			throw new \Exception('Min must be less than Max!');
-		if ($min !== FALSE && $value < $min)
+		}
+		if ($min !== FALSE && $value < $min) {
 			return $min;
-		if ($max !== FALSE && $value > $max)
+		}
+		if ($max !== FALSE && $value > $max) {
 			return $max;
+		}
 		return $value;
 	}
 
@@ -68,8 +74,9 @@ final class Numbers {
 
 
 	public static function Round($value, $places=0) {
-		if ($places == 0)
+		if ($places == 0) {
 			return \round($value);
+		}
 		$pow = \pow(10, $places);
 		return self::PadZeros(
 			\round($value * $pow) / $pow,
@@ -77,8 +84,9 @@ final class Numbers {
 		);
 	}
 	public static function Floor($value, $places=0) {
-		if ($places == 0)
+		if ($places == 0) {
 			return \floor($value);
+		}
 		$pow = \pow(10, $places);
 		return self::PadZeros(
 			\floor($value * $pow) / $pow,
@@ -86,8 +94,9 @@ final class Numbers {
 		);
 	}
 	public static function Ceil($value, $places=0) {
-		if ($places == 0)
+		if ($places == 0) {
 			return \ceil($value);
+		}
 		$pow = \pow(10, $places);
 		return self::PadZeros(
 			\ceil($value * $pow) / $pow,
@@ -96,14 +105,17 @@ final class Numbers {
 	}
 	public static function PadZeros($value, $places) {
 		$str = (string) (double) $value;
-		if ($places <= 0)
+		if ($places <= 0) {
 			return $str;
+		}
 		$pos = \mb_strrpos($str, '.');
-		if ($pos === FALSE)
+		if ($pos === FALSE) {
 			return $str.'.'.\str_repeat('0', $places);
+		}
 		$pos = \mb_strlen($str) - ($pos + 1);
-		if ($pos < $places)
+		if ($pos < $places) {
 			return $str.\str_repeat('0', $places - $pos);
+		}
 		return $str;
 	}
 
@@ -115,39 +127,45 @@ final class Numbers {
 	 * @return string - Formatted size.
 	 */
 	public static function FormatBytes($size) {
-		if (empty($size))
+		if (empty($size)) {
 			return NULL;
+		}
 		$size = \trim((string) $size);
 		if (\mb_strtolower(\mb_substr($size, -1, 1)) == 'b') {
 			$size = \trim(\mb_substr($size, 0, -1));
 		}
 		switch ( \mb_strtolower(\mb_substr($size, -1, 1)) ) {
-			case 'k':
-				$size = ((double) $size) * Defines::KB;
-				break;
-			case 'm':
-				$size = ((double) $size) * Defines::MB;
-				break;
-			case 'g':
-				$size = ((double) $size) * Defines::GB;
-				break;
-			case 't':
-				$size = ((double) $size) * Defines::TB;
-				break;
-			default:
-				$size = (double) $size;
-				break;
+		case 'k':
+			$size = ((double) $size) * Defines::KB;
+			break;
+		case 'm':
+			$size = ((double) $size) * Defines::MB;
+			break;
+		case 'g':
+			$size = ((double) $size) * Defines::GB;
+			break;
+		case 't':
+			$size = ((double) $size) * Defines::TB;
+			break;
+		default:
+			$size = (double) $size;
+			break;
 		}
-		if ($size < 0)
+		if ($size < 0) {
 			return NULL;
-		if ($size < Defines::KB)
+		}
+		if ($size < Defines::KB) {
 			return \round($size, 0).'B';
-		if ($size < Defines::MB)
+		}
+		if ($size < Defines::MB) {
 			return \round($size / Defines::KB, 2).'KB';
-		if ($size < Defines::GB)
+		}
+		if ($size < Defines::GB) {
 			return \round($size / Defines::MB, 2).'MB';
-		if ($size < Defines::TB)
+		}
+		if ($size < Defines::TB) {
 			return \round($size / Defines::GB, 2).'GB';
+		}
 		return \round($size / Defines::TB, 2).'TB';
 	}
 
@@ -215,32 +233,32 @@ final class Numbers {
 			$str = '';
 			if ($val == 0) continue;
 			switch (\mb_strtolower($s)) {
-				case 'n':
-					$value += ($val * Defines::S_MS);
-					break;
-				case 's';
-					$value += ($val * Defines::S_SECOND);
-					break;
-				case 'm':
-					$value += ($val * Defines::S_MINUTE);
-					break;
-				case 'h':
-					$value += ($val * Defines::S_HOUR);
-					break;
-				case 'd':
-					$value += ($val * Defines::S_DAY);
-					break;
-				case 'w':
-					$value += ($val * Defines::S_WEEK);
-					break;
-				case 'o':
-					$value += ($val * Defines::S_MONTH);
-					break;
-				case 'y':
-					$value += ($val * Defines::S_YEAR);
-					break;
-				default:
-					continue;
+			case 'n':
+				$value += ($val * Defines::S_MS);
+				break;
+			case 's';
+				$value += ($val * Defines::S_SECOND);
+				break;
+			case 'm':
+				$value += ($val * Defines::S_MINUTE);
+				break;
+			case 'h':
+				$value += ($val * Defines::S_HOUR);
+				break;
+			case 'd':
+				$value += ($val * Defines::S_DAY);
+				break;
+			case 'w':
+				$value += ($val * Defines::S_WEEK);
+				break;
+			case 'o':
+				$value += ($val * Defines::S_MONTH);
+				break;
+			case 'y':
+				$value += ($val * Defines::S_YEAR);
+				break;
+			default:
+				continue;
 			}
 		}
 		return $value;
@@ -251,10 +269,11 @@ final class Numbers {
 	 * @return string
 	 */
 	public static function SecondsToString($seconds, $shorthand=TRUE, $maxParts=FALSE, $deviance=1.0) {
-		$maxParts =
-			($maxParts == FALSE)
+		$maxParts = (
+			$maxParts == FALSE
 			? FALSE
-			: (int) $maxParts;
+			: (int) $maxParts
+		);
 		$result = array();
 		// years
 		if ($seconds >= (Defines::S_YEAR * $deviance)) {
