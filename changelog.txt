@@ -1,7 +1,15 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2017-02-24 phpUtils 0.1.28
+==========================
+* fixes to dump() function
+* fixes to San::isAlphaNum..() functions
+* fixed formatting in Numbers class
+
+
 2017-01-31 phpUtils 0.1.27
+==========================
 * removed pxdb classes (moved to its own library)
 * added optional $msg argument to dump() function
 * changed how backtrace() is displayed
@@ -10,6 +18,7 @@ phpUtils 0.1.x - PHP Utilities Library
 * added exit codes to Defines class and ExitNow() calls
 * added register_app() and pxdb_configure() global functions
 * other small fixes
+
 
 2016-12-14 phpUtils 0.1.26
 ==========================
