@@ -266,6 +266,45 @@ final class Strings {
 
 
 
+	// array [row] [column]
+	public static function PadColumns($data, ...$widths) {
+		// find column widths
+		$i = 0;
+		foreach ($data as $row) {
+			if (!\is_array($row)) {
+				continue;
+			}
+			$i = 0;
+			foreach ($row as $column) {
+				$len = \strlen($column);
+				if (!isset($widths[$i])) {
+					$widths[$i] = 0;
+				}
+				if ($len > $widths[$i]) {
+					$widths[$i] = $len;
+				}
+				$i++;
+			}
+		}
+		// build output
+		$output = [];
+		foreach ($data as $row) {
+			if (!\is_array($row)) {
+				continue;
+			}
+			$i = 0;
+			$msg = '';
+			foreach ($row as $column) {
+				$msg .= self::PadLeft($column, $widths[$i]+2);
+				$i++;
+			}
+			$output[] = $msg;
+		}
+		return $output;
+	}
+
+
+
 	######################
 	## Starts/Ends With ##
 	######################
