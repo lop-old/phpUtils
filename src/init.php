@@ -362,21 +362,25 @@ function backtrace($e=NULL) {
 // debug mode
 global $pxnUtils_DEBUG;
 $pxnUtils_DEBUG = NULL;
-function debug($debug=NULL) {
+function debug($debug=NULL, $msg=NULL) {
 	global $pxnUtils_DEBUG;
 	if ($debug !== NULL) {
 		$last = $pxnUtils_DEBUG;
 		$pxnUtils_DEBUG = General::toBoolean($debug);
 		// update debug mode
-		if ($pxnUtils_DEBUG != ($last == TRUE)) {
+		if ($pxnUtils_DEBUG !== $last) {
 			// enabled
 			if ($pxnUtils_DEBUG) {
 				\error_reporting(\E_ALL | \E_STRICT);
 				\ini_set('display_errors', 'On');
 				\ini_set('html_errors',    'On');
 				\ini_set('log_errors',     'Off');
+				$msg = (empty($msg) ? '' : ": $msg");
+				echo "Debug mode enabled{$msg}\n";
 			// disabled
 			} else {
+				$msg = (empty($msg) ? '' : ": $msg");
+				echo "Debug mode disabled{$msg}\n";
 				\error_reporting(\E_ERROR | \E_WARNING | \E_PARSE | \E_NOTICE);
 				\ini_set('display_errors', 'Off');
 				\ini_set('log_errors',     'On');
@@ -388,9 +392,9 @@ function debug($debug=NULL) {
 // by define
 {
 	if (\defined('\DEBUG'))
-		debug(\DEBUG);
+		debug(\DEBUG, 'by define');
 	if (\defined('pxn\\phpUtils\\DEBUG'))
-		debug(\pxn\phpUtils\DEBUG);
+		debug(\pxn\phpUtils\DEBUG, 'by namespaced define');
 }
 // by file
 {
@@ -421,7 +425,7 @@ function debug($debug=NULL) {
 			($val === TRUE ? '1' : '0'),
 			0
 		);
-		debug($val);
+		debug($val, 'set cookie');
 	} else {
 		// from cookie
 		$val = General::getVar(
@@ -430,7 +434,7 @@ function debug($debug=NULL) {
 			'cookie'
 		);
 		if ($val === TRUE) {
-			debug($val);
+			debug($val, 'by cookie');
 		}
 	}
 }
