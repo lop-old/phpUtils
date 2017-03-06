@@ -57,12 +57,16 @@ final class Strings {
 			$last = $text;
 			while (\in_array(\mb_substr($text, 0, 1), $remove)) {
 				$text = \mb_substr($text, 1);
-				if ($text === $last) break;
+				if ($text === $last) {
+					break;
+				}
 				$last = $text;
 			}
 			while (\in_array(\mb_substr($text,-1, 1), $remove)) {
 				$text = \mb_substr($text, 0, -1);
-				if ($text === $last) break;
+				if ($text === $last) {
+					break;
+				}
 				$last = $text;
 			}
 			unset($last);
@@ -72,21 +76,29 @@ final class Strings {
 				$more = FALSE;
 				foreach ($remove as $str) {
 					$len = \mb_strlen($str);
-					if ($len == 0) continue;
+					if ($len == 0) {
+						continue;
+					}
 					$last = $text;
 					while (\mb_substr($text, 0, $len) == $str) {
 						$text = \mb_substr($text, $len);
-						if($text === $last) break;
+						if ($text === $last) {
+							break;
+						}
 						$last = $text;
 						$more = TRUE;
 					}
 					while (\mb_substr($text, 0 - $len, $len) == $str) {
 						$text = \mb_substr($text, 0, 0 - $len);
-						if ($text === $last) break;
+						if ($text === $last) {
+							break;
+						}
 						$last = $text;
 						$more = TRUE;
 					}
-					if ($more) break;
+					if ($more) {
+						break;
+					}
 				}
 			} while ($more);
 			unset($last);
@@ -113,7 +125,9 @@ final class Strings {
 			$last = $text;
 			while (\in_array(\mb_substr($text, 0, 1), $remove)) {
 				$text = \mb_substr($text, 1);
-				if ($text === $last) break;
+				if ($text === $last) {
+					break;
+				}
 				$last = $text;
 			}
 			unset($last);
@@ -123,15 +137,21 @@ final class Strings {
 				$more = FALSE;
 				foreach ($remove as $str) {
 					$len = \mb_strlen($str);
-					if ($len == 0) continue;
+					if ($len == 0) {
+						continue;
+					}
 					$last = $text;
 					while (\mb_substr($text, 0, $len) == $str) {
 						$text = \mb_substr($text, $len);
-						if ($text === $last) break;
+						if ($text === $last) {
+							break;
+						}
 						$last = $text;
 						$more = TRUE;
 					}
-					if ($more) break;
+					if ($more) {
+						break;
+					}
 				}
 			} while ($more);
 			unset($last);
@@ -158,7 +178,9 @@ final class Strings {
 			$last = $text;
 			while (\in_array(\mb_substr($text, -1, 1), $remove)) {
 				$text = \mb_substr($text, 0, -1);
-				if ($text === $last) break;
+				if ($text === $last) {
+					break;
+				}
 				$last = $text;
 			}
 			unset($last);
@@ -168,15 +190,21 @@ final class Strings {
 				$more = FALSE;
 				foreach ($remove as $str) {
 					$len = \mb_strlen($str);
-					if ($len == 0) continue;
+					if ($len == 0) {
+						continue;
+					}
 					$last = $text;
 					while (\mb_substr($text, 0 - $len, $len) == $str) {
 						$text = \mb_substr($text, 0, 0 - $len);
-						if ($text === $last) break;
+						if ($text === $last) {
+							break;
+						}
 						$last = $text;
 						$more = TRUE;
 					}
-					if ($more) break;
+					if ($more) {
+						break;
+					}
 				}
 			} while ($more);
 			unset($last);
@@ -193,7 +221,7 @@ final class Strings {
 	 */
 	public static function TrimQuotes($text) {
 		while (\mb_strlen($text) > 1) {
-			$f = \mb_substr($text, 0, 1);
+			$f = \mb_substr($text,  0, 1);
 			$e = \mb_substr($text, -1, 1);
 			// trim ' quotes
 			if ($f == Defines::QUOTE_S && $e == Defines::QUOTE_S) {
@@ -365,7 +393,7 @@ final class Strings {
 		if ($len > \mb_strlen($haystack)) {
 			return FALSE;
 		}
-		if($ignoreCase) {
+		if ($ignoreCase) {
 			$haystack = \mb_strtolower($haystack);
 			$needle   = \mb_strtolower($needle);
 		}
@@ -470,18 +498,23 @@ final class Strings {
 		$pos   = \mb_strlen($data);
 		$delim = NULL;
 		foreach ($patterns as $pat) {
-			if (empty($pat)) continue;
+			if (empty($pat)) {
+				continue;
+			}
 			$pat = (string) $pat;
 			$p = \mb_strpos($data, $pat);
-			if ($p === FALSE) continue;
+			if ($p === FALSE) {
+				continue;
+			}
 			// found a sooner delim
 			if ($p < $pos) {
 				$pos   = $p;
 				$delim = $pat;
 			}
 			// found delim at start
-			if ($p == 0)
+			if ($p == 0) {
 				break;
+			}
 		}
 		if ($delim == NULL) {
 			return NULL;
@@ -508,9 +541,13 @@ final class Strings {
 		$append  = self::EndsWith  (\end($parts),   '/');
 		$cleaned = [];
 		foreach ($parts as $str) {
-			if (empty($str)) continue;
+			if (empty($str)) {
+				continue;
+			}
 			$trimmed = self::Trim($str, '/', '\\', ' ');
-			if (empty($trimmed)) continue;
+			if (empty($trimmed)) {
+				continue;
+			}
 			$cleaned[] = $trimmed;
 		}
 		return
