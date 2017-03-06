@@ -379,8 +379,10 @@ function debug($debug=NULL, $msg=NULL) {
 				echo "Debug mode enabled{$msg}\n";
 			// disabled
 			} else {
-				$msg = (empty($msg) ? '' : ": $msg");
-				echo "Debug mode disabled{$msg}\n";
+				if ($last == NULL) {
+					$msg = (empty($msg) ? '' : ": $msg");
+					echo "Debug mode disabled{$msg}\n";
+				}
 				\error_reporting(\E_ERROR | \E_WARNING | \E_PARSE | \E_NOTICE);
 				\ini_set('display_errors', 'Off');
 				\ini_set('log_errors',     'On');
