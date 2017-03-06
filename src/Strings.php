@@ -214,6 +214,33 @@ final class Strings {
 
 
 
+	public static function MergeDuplicates($text, ...$search) {
+		if (!\is_array($search)) {
+			$search = [ (string)$search ];
+		}
+		Arrays::TrimFlat($search);
+		if (\count($search) == 0) {
+			$search = [ ' ' ];
+		}
+		while (TRUE) {
+			$changed = FALSE;
+			foreach ($search as $str) {
+				$last = $text;
+				$text = \mb_str_replace($str.$str, $str, $text);
+				if ($text !== $last) {
+					$changed = TRUE;
+				}
+			}
+			if (!$changed) {
+				break;
+			}
+		}
+		unset ($last);
+		return $text;
+	}
+
+
+
 	##################
 	## Pad to Width ##
 	##################
