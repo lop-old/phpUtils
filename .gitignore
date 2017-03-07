@@ -35,6 +35,8 @@ public/static/jquery
 *.idea
 *.jar
 *.rpm
+*.deb
+*.apk
 *.war
 *.ear
 *.zip
