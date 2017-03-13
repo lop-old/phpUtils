@@ -96,26 +96,27 @@ final class General {
 		$value = NULL;
 		foreach ($source as $src) {
 			$v = NULL;
-			switch (\mb_strtolower(\mb_substr(\trim( (string) $src ), 0, 1))) {
-				// get
-				case 'g':
-					$v = self::get($name, $type);
-					break;
-				// post
-				case 'p':
-					$v = self::post($name, $type);
-					break;
-				// cookie
-				case 'c':
-					$v = self::cookie($name, $type);
-					break;
-				// session
-				case 's':
-					$v = self::session($name, $type);
-					break;
-				default:
-					fail("Unknown value source: $src",
-						Defines::EXIT_CODE_INTERNAL_ERROR);
+			$char = \mb_substr($src, 0, 1);
+			switch (\mb_strtolower($char)) {
+			// get
+			case 'g':
+				$v = self::get($name, $type);
+				break;
+			// post
+			case 'p':
+				$v = self::post($name, $type);
+				break;
+			// cookie
+			case 'c':
+				$v = self::cookie($name, $type);
+				break;
+			// session
+			case 's':
+				$v = self::session($name, $type);
+				break;
+			default:
+				fail("Unknown value source: $src",
+					Defines::EXIT_CODE_INTERNAL_ERROR);
 			}
 			// value found
 			if ($v !== NULL) {

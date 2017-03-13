@@ -25,16 +25,6 @@ final class Arrays {
 
 
 
-	public static function MakeArray($data) {
-		if (\is_array($data)) {
-			return $data;
-		}
-		$str = (string) $data;
-		if (empty($str)) {
-			return [];
-		}
-		return [ $str ];
-	}
 	public static function Flatten(...$data) {
 		$result = [];
 		\array_walk_recursive(
@@ -58,10 +48,7 @@ final class Arrays {
 
 
 	public static function Trim(&$data) {
-		if ($data === NULL)
-			return;
-		if (!\is_array($data)) {
-			$data = [ $data ];
+		if ($data === NULL) {
 			return;
 		}
 		$temp = self::MakeArray($data);
@@ -74,6 +61,17 @@ final class Arrays {
 
 
 
+	// make array if not already
+	public static function MakeArray($data) {
+		if (\is_array($data)) {
+			return $data;
+		}
+		$str = (string) $data;
+		if (empty($str)) {
+			return [];
+		}
+		return [ $str ];
+	}
 	// explode() with multiple delimiters
 	public static function toArray($data, ...$delims) {
 		if (\is_array($data)) {
@@ -82,7 +80,7 @@ final class Arrays {
 		if (count($delims) == 0) {
 			$delims = [ ' ', ',', ';', "\t", "\r", "\n" ];
 		}
-		$str = (string) $data;
+		$data = (string) $data;
 		$first_delim = NULL;
 		foreach ($delims as $v) {
 			if (empty($v)) continue;

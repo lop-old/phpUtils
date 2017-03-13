@@ -75,6 +75,8 @@ class ShellHelp {
 				$usage[] = '<command>';
 			}
 			$usage[] = '[flags]';
+//TODO:
+// default to Command ?
 			if (!empty($this->argName)) {
 				$usage[] = '[--]';
 				$name = $this->argName;
