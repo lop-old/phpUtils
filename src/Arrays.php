@@ -25,6 +25,16 @@ final class Arrays {
 
 
 
+	public static function MakeArray($data) {
+		if (\is_array($data)) {
+			return $data;
+		}
+		$str = (string) $data;
+		if (empty($str)) {
+			return [];
+		}
+		return [ $str ];
+	}
 	public static function Flatten(...$data) {
 		$result = [];
 		\array_walk_recursive(
@@ -54,7 +64,7 @@ final class Arrays {
 			$data = [ $data ];
 			return;
 		}
-		$temp = $data;
+		$temp = self::MakeArray($data);
 		foreach ($temp as $k => $v) {
 			if ($v === NULL || $v === '') {
 				unset($data[$k]);
