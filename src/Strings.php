@@ -8,6 +8,8 @@
  */
 namespace pxn\phpUtils;
 
+use pxn\phpUtils\Arrays;
+
 
 final class Strings {
 	private final function __construct() {}
@@ -38,9 +40,7 @@ final class Strings {
 
 
 	public static function Trim($text, ...$remove) {
-		if (!\is_array($remove)) {
-			$remove = [ (string)$remove ];
-		}
+		$remove = Arrays::MakeArray($remove);
 		Arrays::TrimFlat($remove);
 		if (\count($remove) == 0) {
 			$remove = [ ' ', "\t", "\r", "\n" ];
@@ -106,9 +106,7 @@ final class Strings {
 		return $text;
 	}
 	public static function TrimFront($text, ...$remove) {
-		if (!\is_array($remove)) {
-			$remove = [ (string)$remove ];
-		}
+		$remove = Arrays::MakeArray($remove);
 		Arrays::TrimFlat($remove);
 		if (\count($remove) == 0) {
 			$remove = [ ' ', "\t", "\r", "\n" ];
@@ -159,9 +157,7 @@ final class Strings {
 		return $text;
 	}
 	public static function TrimEnd($text, ...$remove) {
-		if (!\is_array($remove)) {
-			$remove = [ (string)$remove ];
-		}
+		$remove = Arrays::MakeArray($remove);
 		Arrays::TrimFlat($remove);
 		if (\count($remove) == 0) {
 			$remove = [ ' ', "\t", "\r", "\n" ];
@@ -243,9 +239,7 @@ final class Strings {
 
 
 	public static function MergeDuplicates($text, ...$search) {
-		if (!\is_array($search)) {
-			$search = [ (string)$search ];
-		}
+		$search = Arrays::MakeArray($search);
 		Arrays::TrimFlat($search);
 		if (\count($search) == 0) {
 			$search = [ ' ' ];
@@ -491,9 +485,7 @@ final class Strings {
 			return NULL;
 		}
 		$data = (string) $data;
-		if (!\is_array($patterns)) {
-			$patterns = [$patterns];
-		}
+		$patterns = Arrays::MakeArray($patterns);
 		// find next delim
 		$pos   = \mb_strlen($data);
 		$delim = NULL;
