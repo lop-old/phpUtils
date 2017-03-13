@@ -92,10 +92,7 @@ final class General {
 	 * @return object - Returns the requested value, cast to requested type.
 	 */
 	public static function getVar($name, $type='str', $source=['get','post']) {
-		if (!\is_array($source))
-			$source = @\explode(',', (string) $source);
-		if (!\is_array($source))
-			return NULL;
+		$source = Arrays::MakeArray($source);
 		$value = NULL;
 		foreach ($source as $src) {
 			$v = NULL;
