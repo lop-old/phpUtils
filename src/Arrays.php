@@ -63,6 +63,9 @@ final class Arrays {
 
 	// make array if not already
 	public static function MakeArray($data) {
+		if ($data === NULL) {
+			return NULL;
+		}
 		if (\is_array($data)) {
 			return $data;
 		}
