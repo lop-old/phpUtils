@@ -307,15 +307,13 @@ function backtrace($e=NULL) {
 		}
 		$trFile = @$tr['file'];
 		$trBaseFile = \basename($trFile);
+		$trClas = (isset($tr['class']) ? $tr['class'] : '');
 		$trFunc = @$tr['function'];
 		$trLine = @$tr['line'];
+		$trContainer = (empty($trClas) ? $trBase : $trClas);
 		if ($isShell) {
 			echo "#$index - $trFile\n";
-			echo ' ';
-			if (!empty($trBaseFile)) {
-				echo " $trBaseFile";
-			}
-			echo " --> $trFunc ";
+			echo " $trContainer --> $trFunc ";
 			if (!empty($trLine)) {
 				echo " Line: $trLine";
 			}
@@ -333,7 +331,7 @@ function backtrace($e=NULL) {
 			echo '<tr style="background-color: '.$bgcolor.';">'.$CRLF;
 			echo $TAB.'<td></td>'.$CRLF;
 			echo $TAB.'<td>'.
-				(empty($trBaseFile) ? '' : '<i>'.$trBaseFile.'</i> ' ).
+				'<i>'.$trContainer.'</i> '.
 				'<font size="-1">--&gt;</font> '.
 				'<b>'.$trFunc.'</b> '.
 				' ( '.$trArgs.' ) '.
