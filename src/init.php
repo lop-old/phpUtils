@@ -300,24 +300,21 @@ function backtrace($e=NULL) {
 				$trArgs .= \print_r($arg, TRUE);
 			} else
 			if (!$isShell && \mb_strpos($arg, $CRLF)) {
-				$trArgs .= '<pre>'.$arg.'</pre>';
+				$trArgs .= "<pre>{$arg}</pre>";
 			} else {
 				$trArgs .= $arg;
 			}
 		}
-		$trFile = @$tr['file'];
-		$trBaseFile = \basename($trFile);
-		$trClas = (isset($tr['class']) ? $tr['class'] : '');
-		$trFunc = @$tr['function'];
-		$trLine = @$tr['line'];
+		$trFile = (isset($tr['file'])     ? $tr['file']     : '');
+		$trClas = (isset($tr['class'])    ? $tr['class']    : '');
+		$trFunc = (isset($tr['function']) ? $tr['function'] : '');
+		$trLine = (isset($tr['line'])     ? $tr['line']     : '');
+		$trBase = \basename($trFile);
 		$trContainer = (empty($trClas) ? $trBase : $trClas);
 		if ($isShell) {
-			echo "#$index - $trFile\n";
-			echo " $trContainer --> $trFunc ";
-			if (!empty($trLine)) {
-				echo " Line: $trLine";
-			}
-			echo "\n";
+			echo "#{$index} - {$trFile}\n";
+			echo " $trContainer -> {$trFunc}() ".
+				(empty($trLine) ? '' : " Line: $trLine")."\n";
 			if (!empty($trArgs)) {
 				echo " ARGS: $trArgs\n";
 			}
@@ -326,22 +323,22 @@ function backtrace($e=NULL) {
 			$bgcolor = ($evenodd ? '#ffe0d0' : '#fff8e8');
 			echo '<tr style="background-color: '.$bgcolor.';">'.$CRLF;
 			echo $TAB.'<td><font size="-2">#'.$index.')</font></td>'.$CRLF;
-			echo $TAB.'<td>'.$trFile.'</td>'.$CRLF;
-			echo '</tr>'.$CRLF;
+			echo "$TAB<td>$trFile</td>$CRLF";
+			echo "</tr>$CRLF";
 			echo '<tr style="background-color: '.$bgcolor.';">'.$CRLF;
-			echo $TAB.'<td></td>'.$CRLF;
-			echo $TAB.'<td>'.
-				'<i>'.$trContainer.'</i> '.
-				'<font size="-1">--&gt;</font> '.
-				'<b>'.$trFunc.'</b> '.
-				' ( '.$trArgs.' ) '.
+			echo "$TAB<td></td>$CRLF";
+			echo "$TAB<td>".
+				"<i>{$trContainer}</i> ".
+				'<font size="-1">-&gt;</font> '.
+				"<b>{$trFunc}()</b> ".
+				" ( {$trArgs} ) ".
 				(empty($trLine) ? '' : '<font size="-1">line: '.$trLine.'</font>' ).
-				'</td>'.$CRLF;
-			echo '</tr>'.$CRLF;
+				"</td>$CRLF";
+			echo "</tr>$CRLF";
 		}
 	}
 	if (!$isShell) {
-		echo '</table>'.$CRLF;
+		echo "</table>$CRLF";
 	}
 	echo $CRLF;
 	@\ob_flush();
