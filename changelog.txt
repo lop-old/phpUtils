@@ -1,6 +1,16 @@
 phpUtils 0.1.x - PHP Utilities Library
 
 
+2017-03-22 phpUtils 0.1.29
+==========================
+* sort db config files by name, just in case
+* added Strings::MergeDuplicates() and PadColumns() functions
+* added Arrays::MakeContain() function
+* added $msg argument to debug() function to specify a reason
+* some fixes and cleanup to backtrace() function
+* some other cleanup and small fixes
+
+
 2017-02-24 phpUtils 0.1.28
 ==========================
 * fixes to dump() function
