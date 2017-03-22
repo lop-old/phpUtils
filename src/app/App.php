@@ -114,6 +114,7 @@ abstract class App {
 			foreach ($paths as $path) {
 				// find .htdb files
 				$array = \scandir($path);
+				\sort($array, \SORT_NATURAL);
 				foreach ($array as $entry) {
 					if ($entry == '.' || $entry == '..') {
 						continue;
