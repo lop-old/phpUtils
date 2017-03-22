@@ -38,9 +38,9 @@
 	},
 	"require-dev": {
 		"ext-mbstring":    "*",
-		"51systems/doctrine-encrypt": "v5.0.*",
+		"51systems/doctrine-encrypt": "v6.0.*",
 		"filp/whoops":     "2.1.*",
-		"phpunit/phpunit": "5.*"
+		"phpunit/phpunit": "6.*"
 	},
 	"scripts": {
 		"test": "phpunit"
