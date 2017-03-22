@@ -40,7 +40,7 @@ final class Strings {
 
 
 	public static function Trim($text, ...$remove) {
-		$remove = Arrays::MakeArray($remove);
+		$remove = Arrays::MakeContain($remove);
 		Arrays::TrimFlat($remove);
 		if (\count($remove) == 0) {
 			$remove = [ ' ', "\t", "\r", "\n" ];
@@ -106,7 +106,7 @@ final class Strings {
 		return $text;
 	}
 	public static function TrimFront($text, ...$remove) {
-		$remove = Arrays::MakeArray($remove);
+		$remove = Arrays::MakeContain($remove);
 		Arrays::TrimFlat($remove);
 		if (\count($remove) == 0) {
 			$remove = [ ' ', "\t", "\r", "\n" ];
@@ -157,7 +157,7 @@ final class Strings {
 		return $text;
 	}
 	public static function TrimEnd($text, ...$remove) {
-		$remove = Arrays::MakeArray($remove);
+		$remove = Arrays::MakeContain($remove);
 		Arrays::TrimFlat($remove);
 		if (\count($remove) == 0) {
 			$remove = [ ' ', "\t", "\r", "\n" ];
@@ -239,7 +239,7 @@ final class Strings {
 
 
 	public static function MergeDuplicates($text, ...$search) {
-		$search = Arrays::MakeArray($search);
+		$search = Arrays::MakeContain($search);
 		Arrays::TrimFlat($search);
 		if (\count($search) == 0) {
 			$search = [ ' ' ];
@@ -485,7 +485,7 @@ final class Strings {
 			return NULL;
 		}
 		$data = (string) $data;
-		$patterns = Arrays::MakeArray($patterns);
+		$patterns = Arrays::MakeContain($patterns);
 		// find next delim
 		$pos   = \mb_strlen($data);
 		$delim = NULL;
