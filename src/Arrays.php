@@ -51,7 +51,7 @@ final class Arrays {
 		if ($data === NULL) {
 			return;
 		}
-		$temp = self::MakeArray($data);
+		$temp = self::MakeContain($data);
 		foreach ($temp as $k => $v) {
 			if ($v === NULL || $v === '') {
 				unset($data[$k]);
@@ -62,7 +62,7 @@ final class Arrays {
 
 
 	// make array if not already
-	public static function MakeArray($data) {
+	public static function MakeContain($data) {
 		if ($data === NULL) {
 			return NULL;
 		}
