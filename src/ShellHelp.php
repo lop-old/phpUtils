@@ -15,6 +15,7 @@ class ShellHelp {
 
 	protected $name = NULL;
 	protected $msg  = NULL;
+	protected $appendUsage = [];
 
 	protected $command  = NULL;
 	protected $commands = [];
@@ -40,6 +41,13 @@ class ShellHelp {
 			: (string) $name;
 		return $this;
 	}
+	public function appendSelfName($name) {
+		$this->name =
+			\implode([
+				$this->name,
+				$name
+			],' ');
+	}
 	public function getSelfName() {
 		if (empty($this->name)) {
 			return \basename($_SERVER['PHP_SELF']);
@@ -55,6 +63,15 @@ class ShellHelp {
 			? NULL
 			: (string) $msg;
 		return $this;
+	}
+
+
+
+	public function appendUsage($msg) {
+		$msg = (string) $msg;
+		if (!empty($msg)) {
+			$this->appendUsage[] = $msg;
+		}
 	}
 
 
@@ -112,6 +129,12 @@ class ShellHelp {
 			);
 		}
 		$usage[] = '[flags]';
+		if (\is_array($this->appendUsage) && \count($this->appendUsage) > 0) {
+			$usage = \array_merge(
+				$usage,
+				$this->appendUsage
+			);
+		}
 		$usageStr = \implode($usage, ' ');
 		unset($usage);
 		if (!empty($this->msg)) {
