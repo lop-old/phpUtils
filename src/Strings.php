@@ -264,6 +264,45 @@ final class Strings {
 
 
 
+	public static function WrapLines($text, $width, ...$lineEndings) {
+		$text = (string) $text;
+		$width = (int) $width;
+		if ($width < 1) {
+			fail('WrapLines width is invalid!',
+				Defines::EXIT_CODE_INTERNAL_ERROR);
+		}
+		if (\mb_strlen($text) <= $width) {
+			return [ $text ];
+		}
+		$lineEndings = Arrays::MakeContain($lineEndings);
+		Arrays::TrimFlat($lineEndings);
+		if (\count($lineEndings) == 0) {
+			$lineEndings = self::DEFAULT_TRIM_CHARS;
+		}
+		$lines = [];
+		while (TRUE) {
+			if (\mb_strlen($text) <= $width) {
+				$lines[] = $text;
+				break;
+			}
+			// find place to wrap line
+			for ($i=$width; $i>0; $i--) {
+				$chr = \mb_substr($text, $i, 1);
+				if (\in_array($chr, $lineEndings)) {
+					$lines[] = \mb_substr($text, 0, $i);
+					$text = \mb_substr($text, $i + 1);
+					continue 2;
+				}
+			}
+			// force split a line
+			$lines[] = \mb_substr($text, 0, $width);
+			$text = \mb_substr($text, $width);
+		}
+		return $lines;
+	}
+
+
+
 	##################
 	## Pad to Width ##
 	##################
