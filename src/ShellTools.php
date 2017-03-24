@@ -40,6 +40,10 @@ final class ShellTools {
 		if (self::hasFlag('--no-ansi')) {
 			self::setAnsiColorEnabled(FALSE);
 		}
+		// detect color support
+		if (self::$ANSI_COLOR_ENABLED === NULL) {
+			self::$ANSI_COLOR_ENABLED = (self::$stat['stdout'] == 'chr');
+		}
 	}
 	private static function initConsoleVars() {
 		if (self::$inited) {
