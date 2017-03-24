@@ -1,7 +1,7 @@
 <?php
 /*
  * PoiXson phpUtils - PHP Utilities Library
- * @copyright 2004-2016
+ * @copyright 2004-2017
  * @license GPL-3
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
@@ -11,191 +11,236 @@ namespace pxn\phpUtils;
 
 class ShellHelp {
 
+	const HELP_WIDTH = 80;
+
+	protected $name = NULL;
+	protected $msg  = NULL;
+
 	protected $command  = NULL;
-	protected $argName  = NULL;
-	protected $optional = NULL;
-	protected $many     = NULL;
+	protected $commands = [];
 
-	protected $args  = [];
-	protected $flags = [];
+	protected $flags     = [
+		'pre' => [],
+		'mid' => [],
+		'pst' => []
+	];
 
 
 
-	public function __construct($command=NULL, $argName=NULL, $optional=NULL, $many=NULL) {
-		$this->command  = $command;
-		$this->argName  = $argName;
-		$this->optional = $optional;
-		$this->many     = $many;
+	public function __construct($command=NULL) {
+		$this->setCommand($command);
 	}
 
 
 
-	public function addArgument($name, $desc=NULL) {
-		if (empty($name)) return;
-//		$array = [];
-//		if (!empty($desc)) {
-//			$array['desc'] = $desc;
-//		}
-//		if ($optional === TRUE || $optional === FALSE) {
-//			$array['optional'] = ($optional != FALSE);
-//		}
-//		if ($many === TRUE || $many === FALSE) {
-//			$array['many'] = ($many != FALSE);
-//		}
-//		$this->args[$name] = $array;
-		$this->args[$name] = $desc;
+	public function setSelfName($name) {
+		$this->name =
+			empty($name)
+			? NULL
+			: (string) $name;
+		return $this;
 	}
-	public function addFlag($flags, $desc=NULL) {
-		$array = [];
-		if (\is_array($flags)) {
-			$array['flags'] = $flags;
+	public function getSelfName() {
+		if (empty($this->name)) {
+			return \basename($_SERVER['PHP_SELF']);
+		}
+		return (string) $this->name;
+	}
+
+
+
+	public function setMessage($msg=NULL) {
+		$this->msg =
+			empty($msg)
+			? NULL
+			: (string) $msg;
+		return $this;
+	}
+
+
+
+	public function setCommand($command) {
+		$this->command =
+			empty($command)
+			? NULL
+			: (string) $command;
+		return $this;
+	}
+	public function addCommands($commands) {
+		$this->commands = \array_merge(
+			$this->commands,
+			$commands
+		);
+		return $this;
+	}
+
+
+
+	public function addFlags($flags, $position=NULL) {
+		$position = (string) $position;
+		$position = \mb_strtolower($position);
+		$pos = 'mid';
+		if ($position == 'pre') {
+			$pos = 'pre';
 		} else
-		if (!empty($flags)) {
-			$array['flags'] = [
-				(string) $flags
-			];
+		if ($position == 'pst' || $position == 'post') {
+			$pos = 'pst';
 		}
-		if (!empty($desc)) {
-			$array['desc'] = $desc;
-		}
-		$this->flags[] = $array;
+		$this->flags[$pos] = \array_merge(
+			$this->flags[$pos],
+			$flags
+		);
+		return $this;
 	}
 
 
 
 	public function Display() {
 		echo "\n";
-
-		// usage
-		{
-			$usage = [];
-			if (!empty($this->command)) {
-				$usage[] = (string) $this->command;
-			} else {
-				$usage[] = '<command>';
-			}
-			$usage[] = '[flags]';
-//TODO:
-// default to Command ?
-			if (!empty($this->argName)) {
-				$usage[] = '[--]';
-				$name = $this->argName;
-				$many = ($this->many != FALSE ? '...' : '');
-				if ($this->optional) {
-					$usage[] = "[<$name>]$many";
-				} else {
-					$usage[] = "<$name>$many";
-				}
-			}
-			echo ShellTools::FormatString(
-				"{color=orange}Usage:{reset}\n"
+		$this->Display_Usage();
+		$this->Display_Commands();
+		$this->Display_Flags();
+	}
+	public function Display_Usage() {
+		$usage = [];
+		$usage[] = $this->getSelfName();
+		if (\count($this->commands) > 0) {
+			$usage[] = (
+				empty($this->command)
+				? '<command>'
+				: (string) $this->command
 			);
-			echo '  '.\implode($usage, ' ')."\n";
-			echo "\n";
 		}
-
-		// prep and find longest line
+		$usage[] = '[flags]';
+		$usageStr = \implode($usage, ' ');
+		unset($usage);
+		if (!empty($this->msg)) {
+			$msg = Strings::Trim($this->msg);
+			$lines = Strings::WrapLines($msg, self::HELP_WIDTH);
+			foreach ($lines as $line) {
+				echo "{$line}\n";
+			}
+		}
+		echo ShellTools::FormatString(
+			"{color=orange}Usage:{reset}\n".
+			"  {$usageStr}\n"
+		);
+		echo "\n";
+	}
+	public function Display_Commands() {
+		echo ShellTools::FormatString(
+			"{color=orange}Commands:{reset}\n"
+		);
+		// find max command length
 		$maxSize = 0;
-		{
-			foreach ($this->args as $name => $desc) {
-				// find longest line
-				$len = \mb_strlen($name);
-				if ($len > $maxSize) {
-					$maxSize = $len;
-				}
+		foreach ($this->commands as $command => $desc) {
+			$len = \mb_strlen($command);
+			if ($len > $maxSize) {
+				$maxSize = $len;
 			}
-			foreach ($this->flags as &$array) {
-				if (!isset($array['flags'])) continue;
-				$line = \implode($array['flags'], ', ');
-				$firstLine = \reset($array['flags']);
-				if (Strings::StartsWith($firstLine, '--')) {
-					$line = "    $line";
-				}
-				$array['line'] = $line;
-				$len = \mb_strlen($line);
-				if ($len > $maxSize) {
-					$maxSize = $len;
-				}
-			}
-			unset($array);
-			$maxSize = Numbers::MinMax($maxSize, 20, 35) + 2;
 		}
-
-		// handle multi-line descriptions
-		$funcWrapDesc = function($desc) use ($maxSize) {
-			// multi-line string to array
-			if (!\is_array($desc)) {
-				$desc = (string) $desc;
-				if (\mb_strpos($desc, "\n") !== FALSE) {
-					$desc = \explode("\n", $desc);
-				}
-			}
-			// single line description
-			if (!\is_array($desc)) {
-				return (string) $desc;
-			}
-			// multi line description
-			$output = [];
-			$first = TRUE;
-			foreach ($desc as $line) {
-				$line = Strings::Trim( (string) $line );
-				if ($first) {
-					$first = FALSE;
-					$output[] = $line;
-				} else {
-					$padding = \str_repeat(' ', $maxSize + 4);
-					$output[] = "{$padding}$line";
-				}
-			}
-			return \implode("\n", $output);
-		};
-
-		// arguments
-		{
-			$name = \ucwords($this->argName);
+		$maxSize += 3;
+		// display commands
+		foreach ($this->commands as $command => $desc) {
+			$padding = \str_repeat(' ', $maxSize - \mb_strlen($command) );
+			$lines = Strings::WrapLines($desc, self::HELP_WIDTH - $maxSize);
+			$firstLine = $lines[0];
 			echo ShellTools::FormatString(
-				"{color=orange}$name:{reset}\n"
+				"  {color=green}$command{reset}$padding{$firstLine}\n"
 			);
-			foreach ($this->args as $name => $desc) {
-				$size = 0;
-				if (\is_string($name)) {
-					$size = \mb_strlen($name);
-				} else {
-					$name = '';
+			// multi-line description
+			if (\count($lines) > 1) {
+				unset($lines[0]);
+				foreach ($lines as $line) {
+					$padding = \str_repeat(' ', $maxSize + 2);
+					echo "{$padding}{$line}\n";
 				}
-				$descLines = $funcWrapDesc($desc);
-				$padding = \str_repeat(
-					' ',
-					Numbers::MinMax($maxSize - $size, 1)
-				);
-				echo ShellTools::FormatString(
-					"  {color=green}$name{reset}$padding{$descLines}\n"
-				);
 			}
-			echo "\n";
 		}
-
-		// flags
-		{
-			echo ShellTools::FormatString(
-				"{color=orange}Flags:{reset}\n"
+		echo "\n";
+	}
+	public function Display_Flags() {
+		echo ShellTools::FormatString(
+			"{color=orange}Flags:{reset}\n"
+		);
+		$firstGroup = (
+			isset($this->flags['pre'])
+			? $this->flags['pre']
+			: []
+		);
+		$lastGroup = (
+			isset($this->flags['pst'])
+			? $this->flags['pst']
+			: []
+		);
+		// display flag groups
+		$this->Display_FlagGroup('pre', $firstGroup);
+		foreach ($this->flags as $group => $flags) {
+			if ($group == 'pre' || $group == 'pst') {
+				continue;
+			}
+			$this->Display_FlagGroup($group, $flags);
+		}
+		$this->Display_FlagGroup('pst', $lastGroup);
+	}
+	public function Display_FlagGroup($group, $flags) {
+		if (!\is_array($flags) || \count($flags) == 0) {
+			return;
+		}
+		$prepared = [];
+		$maxSize = 0;
+		foreach ($flags as $desc => $entries) {
+			// prepare flag strings
+			$singles = [];
+			$doubles = [];
+			foreach ($entries as $entry) {
+				$str = Strings::TrimFront($entry, '-');
+				if (empty($str)) {
+					continue;
+				}
+				if (\mb_strlen($str) == 1) {
+					$singles[] = Strings::ForceStartsWith($entry, '-');
+				} else {
+					while(!Strings::StartsWith($entry, '--')) {
+						$entry = "-{$entry}";
+					}
+					$doubles[] = $entry;
+				}
+			}
+			// prepare string "-f, --flag"
+			$flagStr = \implode(
+				\array_merge(
+					$singles,
+					$doubles
+				),
+				', '
 			);
-			foreach ($this->flags as $array) {
-				$desc = (isset($array['desc']) ? $array['desc'] : '');
-				$line = (isset($array['line']) ? (string) $array['line'] : '');
-				$size = \mb_strlen($line);
-				$descLines = $funcWrapDesc($desc);
-				$padding = \str_repeat(
-					' ',
-					Numbers::MinMax($maxSize - $size, 1)
-				);
-				echo ShellTools::FormatString(
-					"  {color=green}$line{reset}$padding{$descLines}\n"
-				);
+			// find max length
+			$len = \mb_strlen($flagStr);
+			if ($len > $maxSize) {
+				$maxSize = $len;
 			}
-			echo ShellTools::FormatString("{reset}\n");
+			$prepared[$desc] = $flagStr;
 		}
-
+		$maxSize += 3;
+		// display prepared group of flags
+		foreach ($prepared as $desc => $flagStr) {
+			$padding = \str_repeat(' ', $maxSize - \mb_strlen($flagStr) );
+			$lines = Strings::WrapLines($desc, self::HELP_WIDTH - $maxSize);
+			$firstLine = $lines[0];
+			echo ShellTools::FormatString(
+				"  {color=green}$flagStr{reset}$padding{$firstLine}\n"
+			);
+			// multi-line description
+			if (\count($lines) > 1) {
+				unset($lines[0]);
+				foreach ($lines as $line) {
+					$padding = \str_repeat(' ', $maxSize + 2);
+					echo "{$padding}{$line}\n";
+				}
+			}
+		}
+		echo "\n";
 	}
 
 
