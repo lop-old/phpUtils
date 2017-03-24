@@ -321,7 +321,7 @@ final class ShellTools {
 	public static function FormatString_Callback(array $matches) {
 		$match = \reset($matches);
 		if (!self::isAnsiColorEnabled()) {
-			return $match;
+			return '';
 		}
 		if (!Strings::StartsWith($match, '{') || !Strings::EndsWith($match, '}')) {
 			return $match;
