@@ -44,6 +44,10 @@ final class ShellTools {
 		if (self::$ANSI_COLOR_ENABLED === NULL) {
 			self::$ANSI_COLOR_ENABLED = (self::$stat['stdout'] == 'chr');
 		}
+		// clear screen
+		if (self::isAnsiColorEnabled()) {
+			echo self::FormatString('{clear}');
+		}
 	}
 	private static function initConsoleVars() {
 		if (self::$inited) {
@@ -340,6 +344,8 @@ final class ShellTools {
 					break;
 				case 'reset':
 					return "\033[0m";
+				case 'clear':
+					return "\033[2J\033[1;1H";
 				}
 			// {tag=value}
 			} else {
