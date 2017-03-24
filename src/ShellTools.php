@@ -21,6 +21,7 @@ final class ShellTools {
 
 	private static $flags = NULL;
 	private static $args  = NULL;
+	private static $stat  = NULL;
 
 
 
@@ -50,6 +51,13 @@ final class ShellTools {
 		if (self::$flags !== NULL || self::$args !== NULL) {
 			return FALSE;
 		}
+		// detect shell state
+		self::$stat = [
+			'stdin'  => self::getStat(\STDIN),
+			'stdout' => self::getStat(\STDOUT),
+			'stderr' => self::getStat(\STDERR)
+		];
+		// parse shell arguments
 		$AllowShortFlagValues = Config::get(Defines::KEY_ALLOW_SHORT_FLAG_VALUES);
 		global $argv;
 		self::$flags = [];
@@ -128,6 +136,29 @@ final class ShellTools {
 		return TRUE;
 	}
 
+
+
+	public static function getStat($handle) {
+		$stat = \fstat($handle);
+		$mode = $stat['mode'] & 0170000;
+		switch ($mode) {
+		case 0010000:
+			return 'fifo';
+		case 0020000:
+			return 'chr';
+		case 0040000:
+			return 'dir';
+		case 0060000:
+			return 'blk';
+		case 0100000:
+			return 'reg';
+		case 0120000:
+			return 'lnk';
+		case 0140000:
+			return 'sock';
+		}
+		return NULL;
+	}
 
 
 	// get all as array
