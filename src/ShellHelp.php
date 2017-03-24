@@ -59,10 +59,14 @@ class ShellHelp {
 
 
 	public function setMessage($msg=NULL) {
-		$this->msg =
-			empty($msg)
-			? NULL
-			: (string) $msg;
+		if (empty($msg)) {
+			$this->msg = NULL;
+		} else
+		if (\is_array($msg)) {
+			$this->msg = \implode("\n", $msg);
+		} else {
+			$this->msg = (string) $msg;
+		}
 		return $this;
 	}
 
@@ -70,6 +74,12 @@ class ShellHelp {
 
 	public function appendUsage($msg) {
 		$msg = (string) $msg;
+		if (\is_array($msg)) {
+			$this->appendUsage = \array_merge(
+				$this->appendUsage,
+				$msg
+			);
+		} else
 		if (!empty($msg)) {
 			$this->appendUsage[] = $msg;
 		}
