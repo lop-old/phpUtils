@@ -265,7 +265,23 @@ final class Strings {
 
 
 	public static function WrapLines($text, $width, ...$lineEndings) {
+		// array of lines
+		if (\is_array($text)) {
+			$result = [];
+			foreach ($text as $line) {
+				$result[] = self::WrapLines($line, $width, $lineEndings);
+			}
+			return Arrays::Flatten($result);
+		}
+		// already has multiple lines
 		$text = (string) $text;
+		if (\mb_strpos($text, "\n") !== FALSE) {
+			$result = [];
+			$lines = \explode("\n", $text);
+			return self::WrapLines($lines, $width, $lineEndings);
+		}
+		// prepare
+		$text = str_replace("\r", '', (string) $text);
 		$width = (int) $width;
 		if ($width < 1) {
 			fail('WrapLines width is invalid!',
@@ -279,6 +295,7 @@ final class Strings {
 		if (\count($lineEndings) == 0) {
 			$lineEndings = self::DEFAULT_TRIM_CHARS;
 		}
+		// wrap lines to max width
 		$lines = [];
 		while (TRUE) {
 			if (\mb_strlen($text) <= $width) {
