@@ -14,6 +14,7 @@ use pxn\phpUtils\Arrays;
 final class Strings {
 	private final function __construct() {}
 
+	const DEFAULT_TRIM_CHARS = [ ' ', "\t", "\r", "\n" ];
 
 
 	public static function mb_ucfirst($str, $full=TRUE) {
@@ -43,7 +44,7 @@ final class Strings {
 		$remove = Arrays::MakeContain($remove);
 		Arrays::TrimFlat($remove);
 		if (\count($remove) == 0) {
-			$remove = [ ' ', "\t", "\r", "\n" ];
+			$remove = self::DEFAULT_TRIM_CHARS;
 		}
 		$allshort = TRUE;
 		foreach ($remove as $str) {
@@ -109,7 +110,7 @@ final class Strings {
 		$remove = Arrays::MakeContain($remove);
 		Arrays::TrimFlat($remove);
 		if (\count($remove) == 0) {
-			$remove = [ ' ', "\t", "\r", "\n" ];
+			$remove = self::DEFAULT_TRIM_CHARS;
 		}
 		$allshort = TRUE;
 		foreach ($remove as $str) {
@@ -160,7 +161,7 @@ final class Strings {
 		$remove = Arrays::MakeContain($remove);
 		Arrays::TrimFlat($remove);
 		if (\count($remove) == 0) {
-			$remove = [ ' ', "\t", "\r", "\n" ];
+			$remove = self::DEFAULT_TRIM_CHARS;
 		}
 		$allshort = TRUE;
 		foreach ($remove as $str) {
