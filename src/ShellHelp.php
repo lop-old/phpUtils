@@ -11,7 +11,8 @@ namespace pxn\phpUtils;
 
 class ShellHelp {
 
-	const HELP_WIDTH = 80;
+	const HELP_WIDTH       = 80;
+	const MIN_FLAG_SPACING = 11;
 
 	protected $name = NULL;
 	protected $msg  = NULL;
@@ -244,6 +245,9 @@ class ShellHelp {
 				$maxSize = $len;
 			}
 			$prepared[$desc] = $flagStr;
+		}
+		if ($maxSize < self::MIN_FLAG_SPACING) {
+			$maxSize = self::MIN_FLAG_SPACING;
 		}
 		$maxSize += 3;
 		// display prepared group of flags
