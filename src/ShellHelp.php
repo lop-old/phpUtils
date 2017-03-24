@@ -97,17 +97,17 @@ class ShellHelp {
 	public function addFlags($flags, $position=NULL) {
 		$position = (string) $position;
 		$position = \mb_strtolower($position);
-		$pos = 'mid';
-		if ($position == 'pre') {
-			$pos = 'pre';
-		} else
-		if ($position == 'pst' || $position == 'post') {
-			$pos = 'pst';
+		if ($position == 'post') {
+			$position = 'pst';
 		}
-		$this->flags[$pos] = \array_merge(
-			$this->flags[$pos],
-			$flags
-		);
+		if (isset($this->flags[$position])) {
+			$this->flags[$position] = \array_merge(
+				$this->flags[$position],
+				$flags
+			);
+		} else {
+			$this->flags[$position] = $flags;
+		}
 		return $this;
 	}
 
@@ -122,12 +122,12 @@ class ShellHelp {
 	public function Display_Usage() {
 		$usage = [];
 		$usage[] = $this->getSelfName();
-		if (\count($this->commands) > 0) {
-			$usage[] = (
-				empty($this->command)
-				? '<command>'
-				: (string) $this->command
-			);
+		if (empty($this->command)) {
+			if (!\is_array($this->commands) || \count($this->commands) > 0) {
+				$usage[] = '<command>';
+			}
+		} else {
+			$usage[] = (string) $this->command;
 		}
 		$usage[] = '[flags]';
 		if (\is_array($this->appendUsage) && \count($this->appendUsage) > 0) {
@@ -152,6 +152,9 @@ class ShellHelp {
 		echo "\n";
 	}
 	public function Display_Commands() {
+		if (!\is_array($this->commands) || \count($this->commands) == 0) {
+			return;
+		}
 		echo ShellTools::FormatString(
 			"{color=orange}Commands:{reset}\n"
 		);
