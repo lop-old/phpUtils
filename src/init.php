@@ -359,6 +359,7 @@ global $pxnUtils_DEBUG;
 $pxnUtils_DEBUG = NULL;
 function debug($debug=NULL, $msg=NULL) {
 	global $pxnUtils_DEBUG;
+	$isShell = System::isShell();
 	if ($debug !== NULL) {
 		$last = $pxnUtils_DEBUG;
 		$pxnUtils_DEBUG = General::toBoolean($debug);
@@ -371,12 +372,16 @@ function debug($debug=NULL, $msg=NULL) {
 				\ini_set('html_errors',    'On');
 				\ini_set('log_errors',     'Off');
 				$msg = (empty($msg) ? '' : ": $msg");
-				echo "Debug mode enabled{$msg}\n";
+				if ($isShell) {
+					echo "Debug mode enabled{$msg}\n";
+				}
 			// disabled
 			} else {
 				if ($last == NULL) {
 					$msg = (empty($msg) ? '' : ": $msg");
-					echo "Debug mode disabled{$msg}\n";
+					if ($isShell) {
+						echo "Debug mode disabled{$msg}\n";
+					}
 				}
 				\error_reporting(\E_ERROR | \E_WARNING | \E_PARSE | \E_NOTICE);
 				\ini_set('display_errors', 'Off');
