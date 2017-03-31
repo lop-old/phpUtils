@@ -29,6 +29,7 @@ abstract class App {
 	private static $inited      = FALSE;
 	private static $hasRendered = NULL;
 
+	private   $initedApp = FALSE;
 	protected $active    = NULL;
 	protected $name      = NULL;
 	protected $classpath = NULL;
@@ -163,6 +164,15 @@ abstract class App {
 				unset($tmp);
 			}
 		}
+	}
+	protected function doInitApp() {
+		if ($this->initedApp) {
+			return;
+		}
+		$this->initedApp = TRUE;
+		$this->initApp();
+	}
+	protected function initApp() {
 	}
 
 
@@ -320,6 +330,8 @@ abstract class App {
 			}
 		}
 		$this->active = TRUE;
+		// init app
+		$this->doInitApp();
 	}
 	protected function setDisactive() {
 		if ($this->active !== NULL) {
