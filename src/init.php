@@ -192,6 +192,14 @@ function dd($var, $msg=NULL) {
 
 // exit functions
 function ExitNow($code=1) {
+	// be sure captured buffer is dumped when in web mode
+	{
+		$app = \pxn\phpUtils\app\App::peak();
+		if ($app != NULL) {
+			$app->terminating();
+		}
+		unset($app);
+	}
 	// set rendered
 	if (\class_exists('pxn\\phpPortal\\WebApp')) {
 		$app = \pxn\phpPortal\WebApp::peak();

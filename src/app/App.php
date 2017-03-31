@@ -137,6 +137,8 @@ abstract class App {
 		]);
 		return TRUE;
 	}
+	public function terminating() {
+	}
 	protected function __construct() {
 		if (self::$instance != NULL) {
 			$name = self::$instance->getName();
