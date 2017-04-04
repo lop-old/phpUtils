@@ -207,21 +207,21 @@ class NumbersTest extends \PHPUnit\Framework\TestCase {
 	 * @covers ::SecondsToString
 	 */
 	public function testSecondsToString() {
-		$this->assertEquals(                 '1s', Numbers::SecondsToString(       1) );
-		$this->assertEquals(                '42s', Numbers::SecondsToString(      42) );
-		$this->assertEquals(                 '1m', Numbers::SecondsToString(      60) );
-		$this->assertEquals(              '1m 2s', Numbers::SecondsToString(      62) );
-		$this->assertEquals(          '1h 6m 50s', Numbers::SecondsToString(    4010) );
-		$this->assertEquals(           '5h 2m 1s', Numbers::SecondsToString(   18121) );
-		$this->assertEquals(                 '5d', Numbers::SecondsToString(  432000) );
-		$this->assertEquals(                '15d', Numbers::SecondsToString( 1296000) );
-		$this->assertEquals(                '30d', Numbers::SecondsToString( 2592000) );
-		$this->assertEquals(                 '1y', Numbers::SecondsToString(31536000) );
-		$this->assertEquals(    '1y 38d 1h 1m 1s', Numbers::SecondsToString(34822861) );
-		$this->assertEquals(           '1 Second', Numbers::SecondsToString(       1, FALSE) );
-		$this->assertEquals( '2 Hours  2 Minutes', Numbers::SecondsToString(    7320, FALSE) );
-		$this->assertEquals(             '1 Year', Numbers::SecondsToString(31536000, FALSE) );
-		$this->assertEquals(    '2 Years  2 Days', Numbers::SecondsToString(63244800, FALSE) );
+		$this->assertEquals(                    '1sec', Numbers::SecondsToString(       1) );
+		$this->assertEquals(                   '42sec', Numbers::SecondsToString(      42) );
+		$this->assertEquals(                    '1min', Numbers::SecondsToString(      60) );
+		$this->assertEquals(               '1min 2sec', Numbers::SecondsToString(      62) );
+		$this->assertEquals(          '1hr 6min 50sec', Numbers::SecondsToString(    4010) );
+		$this->assertEquals(           '5hr 2min 1sec', Numbers::SecondsToString(   18121) );
+		$this->assertEquals(                    '5day', Numbers::SecondsToString(  432000) );
+		$this->assertEquals(                   '15day', Numbers::SecondsToString( 1296000) );
+		$this->assertEquals(                   '30day', Numbers::SecondsToString( 2592000) );
+		$this->assertEquals(                     '1yr', Numbers::SecondsToString(31536000) );
+		$this->assertEquals( '1yr 38day 1hr 1min 1sec', Numbers::SecondsToString(34822861) );
+		$this->assertEquals(                '1 Second', Numbers::SecondsToString(       1, FALSE) );
+		$this->assertEquals(      '2 Hours  2 Minutes', Numbers::SecondsToString(    7320, FALSE) );
+		$this->assertEquals(                  '1 Year', Numbers::SecondsToString(31536000, FALSE) );
+		$this->assertEquals(         '2 Years  2 Days', Numbers::SecondsToString(63244800, FALSE) );
 	}
 
 
