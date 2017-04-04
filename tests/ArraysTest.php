@@ -145,11 +145,11 @@ class ArraysTest extends \PHPUnit_Framework_TestCase {
 			NULL,
 			Arrays::Trim($array)
 		);
-		// blank string
+		// empty string
 		$array = '';
 		Arrays::Trim($array);
 		$this->assertEquals(
-			\print_r([''],   TRUE),
+			\print_r([],   TRUE),
 			\print_r($array, TRUE)
 		);
 		// zero
