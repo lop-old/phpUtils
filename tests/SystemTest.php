@@ -15,7 +15,7 @@ use pxn\phpUtils\Strings;
 /**
  * @coversDefaultClass \pxn\phpUtils\System
  */
-class SystemTest extends \PHPUnit_Framework_TestCase {
+class SystemTest extends \PHPUnit\Framework\TestCase {
 
 	const TEST_DIR1 = '_SystemTest_TEMP_/';
 	const TEST_DIR2 = 'AnotherDir/';

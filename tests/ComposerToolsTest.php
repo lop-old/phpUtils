@@ -15,7 +15,7 @@ use pxn\phpUtils\Strings;
 /**
  * @coversDefaultClass \pxn\phpUtils\ComposerTools
  */
-class ComposerToolsTest extends \PHPUnit_Framework_TestCase {
+class ComposerToolsTest extends \PHPUnit\Framework\TestCase {
 
 
 

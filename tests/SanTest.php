@@ -14,7 +14,7 @@ use pxn\phpUtils\San;
 /**
  * @coversDefaultClass \pxn\phpUtils\San
  */
-class SanTest extends \PHPUnit_Framework_TestCase {
+class SanTest extends \PHPUnit\Framework\TestCase {
 
 	const TEST_DATA = 'abcd ABCD 1234 -_=+ ,.?! @#$%^&*~ ()<>[]{};:`\'" \\|/';
 

@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\ArgvInput;
 /**
  * @coversDefaultClass \pxn\phpUtils\console\ConsoleApp
  */
-class ConsoleAppTest extends \PHPUnit_Framework_TestCase {
+class ConsoleAppTest extends \PHPUnit\Framework\TestCase {
 
 	private $ranCommandB = FALSE;
 	private $ranCommandC = FALSE;

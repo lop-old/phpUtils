@@ -11,7 +11,7 @@ namespace pxn\phpUtils\tests;
 use pxn\phpUtils\Defines;
 
 
-class DefinesTest extends \PHPUnit_Framework_TestCase {
+class DefinesTest extends \PHPUnit\Framework\TestCase {
 
 
 

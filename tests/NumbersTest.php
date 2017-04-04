@@ -14,7 +14,7 @@ use pxn\phpUtils\Numbers;
 /**
  * @coversDefaultClass \pxn\phpUtils\Numbers
  */
-class NumbersTest extends \PHPUnit_Framework_TestCase {
+class NumbersTest extends \PHPUnit\Framework\TestCase {
 
 
 

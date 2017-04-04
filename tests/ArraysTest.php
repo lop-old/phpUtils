@@ -14,7 +14,7 @@ use pxn\phpUtils\Arrays;
 /**
  * @coversDefaultClass \pxn\phpUtils\Arrays
  */
-class ArraysTest extends \PHPUnit_Framework_TestCase {
+class ArraysTest extends \PHPUnit\Framework\TestCase {
 
 
 

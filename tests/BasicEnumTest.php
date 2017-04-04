@@ -14,7 +14,7 @@ use pxn\phpUtils\examples\BasicEnumExample;
 /**
  * @coversDefaultClass \pxn\phpUtils\BasicEnum
  */
-class BasicEnumTest extends \PHPUnit_Framework_TestCase {
+class BasicEnumTest extends \PHPUnit\Framework\TestCase {
 
 	const EXAMPLE_CONSTANTS = [
 		'DOG'     => 'woof',

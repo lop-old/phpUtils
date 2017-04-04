@@ -14,7 +14,7 @@ use pxn\phpUtils\Strings;
 /**
  * @coversDefaultClass \pxn\phpUtils\Strings
  */
-class StringsTest extends \PHPUnit_Framework_TestCase {
+class StringsTest extends \PHPUnit\Framework\TestCase {
 
 
 

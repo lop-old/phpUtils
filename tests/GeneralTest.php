@@ -14,7 +14,7 @@ use pxn\phpUtils\General;
 /**
  * @coversDefaultClass \pxn\phpUtils\General
  */
-class GeneralTest extends \PHPUnit_Framework_TestCase {
+class GeneralTest extends \PHPUnit\Framework\TestCase {
 
 	const EXPECTED_CLASS_STRING = 'pxn\\phpUtils\\tests\\GeneralTest';
 

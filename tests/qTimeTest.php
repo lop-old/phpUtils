@@ -15,7 +15,7 @@ use pxn\phpUtils\General;
 /**
  * @coversDefaultClass \pxn\phpUtils\qTime
  */
-class qTimeTest extends \PHPUnit_Framework_Testcase {
+class qTimeTest extends \PHPUnit\Framework\TestCase {
 
 
 

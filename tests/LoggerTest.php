@@ -14,7 +14,7 @@ use pxn\phpUtils\Logger;
 /**
  * @coversDefaultClass \pxn\phpUtils\Logger
  */
-class LoggerTest extends \PHPUnit_Framework_TestCase {
+class LoggerTest extends \PHPUnit\Framework\TestCase {
 
 
 
