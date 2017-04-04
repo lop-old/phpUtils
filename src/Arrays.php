@@ -26,6 +26,9 @@ final class Arrays {
 
 
 	public static function Flatten(...$data) {
+		if (\count($data) == 1 && \reset($data) === NULL) {
+			return NULL;
+		}
 		$result = [];
 		\array_walk_recursive(
 			$data, // @codeCoverageIgnore
@@ -51,8 +54,10 @@ final class Arrays {
 		if ($data === NULL) {
 			return;
 		}
-		$temp = self::MakeContain($data);
-		foreach ($temp as $k => $v) {
+		if (!\is_array($data)) {
+			$data = [$data];
+		}
+		foreach ($data as $k => $v) {
 			if ($v === NULL || $v === '') {
 				unset($data[$k]);
 			}
