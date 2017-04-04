@@ -72,9 +72,9 @@ class ComposerToolsTest extends \PHPUnit\Framework\TestCase {
 		$name = $composer->getName();
 		$this->assertEquals('pxn/phputils', $name);
 		// version
-		$version = $composer->getVersion();
-		$this->assertNotEmpty($version);
-		$this->assertTrue(\mb_strpos($version, '.') !== FALSE);
+		//$version = $composer->getVersion();
+		//$this->assertNotEmpty($version);
+		//$this->assertTrue(\mb_strpos($version, '.') !== FALSE);
 		// homepage
 		$homepage = $composer->getHomepage();
 		$this->assertNotEmpty($homepage);

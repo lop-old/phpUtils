@@ -5,15 +5,15 @@
  * @license GPL-3
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
- */
+ * /
 namespace pxn\phpUtils\tests;
 
 use pxn\phpUtils\Logger;
 
 
-/**
+/ **
  * @coversDefaultClass \pxn\phpUtils\Logger
- */
+ * /
 class LoggerTest extends \PHPUnit\Framework\TestCase {
 
 
@@ -68,3 +68,4 @@ class LoggerTest extends \PHPUnit\Framework\TestCase {
 
 
 }
+*/

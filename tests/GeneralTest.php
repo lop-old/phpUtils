@@ -92,6 +92,7 @@ class GeneralTest extends \PHPUnit\Framework\TestCase {
 	 * @covers ::ValidateClass
 	 */
 	public function testValidateClass() {
+//TODO: needs assert "This test did not perform any assertions"
 		General::ValidateClass(
 			self::EXPECTED_CLASS_STRING,
 			$this

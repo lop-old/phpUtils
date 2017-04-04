@@ -5,16 +5,16 @@
  * @license GPL-3
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
- */
+ * /
 namespace pxn\phpUtils\tests;
 
 use pxn\phpUtils\System;
 use pxn\phpUtils\Strings;
 
 
-/**
+/ **
  * @coversDefaultClass \pxn\phpUtils\System
- */
+ * /
 class SystemTest extends \PHPUnit\Framework\TestCase {
 
 	const TEST_DIR1 = '_SystemTest_TEMP_/';
@@ -23,10 +23,10 @@ class SystemTest extends \PHPUnit\Framework\TestCase {
 
 
 
-	/**
+	/ **
 	 * @covers ::mkDir
 	 * @covers ::rmDir
-	 */
+	 * /
 	public function test_mkDir_rmDir() {
 		$cwd = $this->getCWD();
 		// ensure clean
