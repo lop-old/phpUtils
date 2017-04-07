@@ -21,12 +21,6 @@ final class Defines {
 
 	// config keys
 	const KEY_ALLOW_SHORT_FLAG_VALUES = 'allow short flag values';
-	const KEY_SITE_TITLE      = 'site title';
-	const KEY_FAILED_PAGE     = 'failed page';
-	const KEY_FAV_ICON        = 'fav icon';
-	const KEY_TWIG_CACHE_PATH = 'twig cache path';
-	const KEY_CACHER_PATH     = 'cacher path';
-	const TEMPLATE_EXTENSION = '.htm';
 
 
 	const DIR_SEP      = \DIRECTORY_SEPARATOR;
