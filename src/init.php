@@ -297,9 +297,12 @@ function backtrace($e=NULL) {
 		$trBase = \basename($trFile);
 		$trContainer = (empty($trClas) ? $trBase : $trClas);
 		if ($isShell) {
-			echo "#{$index} - {$trFile}\n";
-			echo " $trContainer -> {$trFunc}() ".
-				(empty($trLine) ? '' : " Line: $trLine")."\n";
+			if (!empty($trLine)) {
+				$trLine = Strings::PadLeft($trLine, 2, ' ');
+				$trLine = "Line: $trLine - ";
+			}
+			echo "#{$index} - {$trLine}{$trFile}\n";
+			echo " CALL: $trContainer -> {$trFunc}()\n";
 			if (!empty($trArgs)) {
 				echo " ARGS: $trArgs\n";
 			}
@@ -402,7 +405,7 @@ function debug($debug=NULL, $msg=NULL) {
 				}
 			// disabled
 			} else {
-				if ($last == NULL) {
+				if ($last == NULL && $msg != 'default') {
 					$msg = (empty($msg) ? '' : ": $msg");
 					if ($isShell) {
 						echo "Debug mode disabled{$msg}\n";
