@@ -7,10 +7,10 @@
  * @link http://poixson.com/
  */
 # init 1 - startup
-# init 2 - defines
-# init 3 - functions
-# init 4 - debug
-# init 5 - configs
+# init 2 - functions
+# init 3 - defines
+# init 4 - configs
+# init 5 - debug
 # init 6 - globals
 namespace pxn\phpUtils;
 
@@ -83,32 +83,9 @@ try {
 
 
 
-// load shell args
-if (System::isShell()) {
-	ShellTools::init();
-}
-
-
-
-########################
-##                    ##
-##  init 2 - defines  ##
-##                    ##
-########################
-
-
-
-// defines
-\pxn\phpUtils\Defines::init();
-
-// paths
-\pxn\phpUtils\Paths::init();
-
-
-
 ##########################
 ##                      ##
-##  init 3 - functions  ##
+##  init 2 - functions  ##
 ##                      ##
 ##########################
 
@@ -354,9 +331,49 @@ function backtrace($e=NULL) {
 
 
 
+########################
+##                    ##
+##  init 3 - defines  ##
+##                    ##
+########################
+
+
+
+// defines
+\pxn\phpUtils\Defines::init();
+if (\class_exists('\\pxn\\phpPortal\\DefinesPortal')) {
+	\pxn\phpPortal\DefinesPortal::init();
+}
+
+// paths
+\pxn\phpUtils\Paths::init();
+
+
+
+########################
+##                    ##
+##  init 4 - configs  ##
+##                    ##
+########################
+
+
+
+// configs
+\pxn\phpUtils\ConfigGeneral::init();
+if (\class_exists('\\pxn\\phpPortal\\ConfigPortal')) {
+	\pxn\phpPortal\ConfigPortal::init();
+}
+
+// load shell args
+if (System::isShell()) {
+	ShellTools::init();
+}
+
+
+
 ######################
 ##                  ##
-##  init 4 - debug  ##
+##  init 5 - debug  ##
 ##                  ##
 ######################
 
@@ -565,18 +582,6 @@ function (\Exception $e) {
 	exit(1);
 });
 */
-
-
-
-########################
-##                    ##
-##  init 5 - configs  ##
-##                    ##
-########################
-
-
-
-\pxn\phpUtils\Config::init();
 
 
 
