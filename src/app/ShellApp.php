@@ -31,6 +31,12 @@ abstract class ShellApp extends App {
 
 
 
+	public function &getPageContents() {
+		return 'PAGE';
+	}
+
+
+
 	protected function getWeight() {
 		return System::isShell()
 			? 1000

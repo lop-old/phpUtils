@@ -67,6 +67,10 @@ abstract class App {
 
 
 
+	public abstract function &getPageContents();
+
+
+
 	// init/register this app
 	public static function register() {
 		// init the framework
