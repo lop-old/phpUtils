@@ -8,8 +8,6 @@
  */
 namespace pxn\phpUtils;
 
-use pxn\phpUtils\Defines;
-
 
 class ConfigGeneral {
 	private function __construct() {}

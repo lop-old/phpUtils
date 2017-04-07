@@ -8,8 +8,6 @@
  */
 namespace pxn\phpUtils;
 
-use pxn\phpUtils\Defines;
-
 
 final class General {
 	private final function __construct() {}

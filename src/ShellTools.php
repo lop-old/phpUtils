@@ -8,9 +8,6 @@
  */
 namespace pxn\phpUtils;
 
-use pxn\phpUtils\Config;
-use pxn\phpUtils\Defines;
-
 
 final class ShellTools {
 	private final function __construct() {}
