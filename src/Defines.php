@@ -1,7 +1,7 @@
 <?php
 /*
  * PoiXson phpUtils - PHP Utilities Library
- * @copyright 2004-2016
+ * @copyright 2004-2017
  * @license GPL-3
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
@@ -14,7 +14,7 @@ final class Defines {
 	public static function init() {}
 
 
-	const PHP_MIN_VERSION = 50600;
+	const PHP_MIN_VERSION = 70100;
 
 	const DEBUG_COOKIE = 'pxn_debug';
 
