@@ -10,7 +10,7 @@ namespace pxn\phpUtils\app;
 
 use pxn\phpUtils\ShellTools;
 use pxn\phpUtils\System;
-use pxn\phpUtils\Config;
+use pxn\phpUtils\ConfigGeneral;
 use pxn\phpUtils\Defines;
 
 
@@ -40,10 +40,7 @@ abstract class ShellApp extends App {
 
 
 	public static function setAllowShortFlagValues($enabled=TRUE) {
-		Config::set(
-			Defines::KEY_ALLOW_SHORT_FLAG_VALUES,
-			($enabled != FALSE)
-		);
+		ConfigGeneral::setAllowShortFlagValues($enabled);
 	}
 
 

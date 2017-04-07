@@ -14,8 +14,6 @@ final class ShellTools {
 
 	private static $inited = FALSE;
 
-	public static $ANSI_COLOR_ENABLED = NULL;
-
 	private static $flags = NULL;
 	private static $args  = NULL;
 	private static $stat  = NULL;
@@ -26,23 +24,22 @@ final class ShellTools {
 		if (self::$inited) {
 			return;
 		}
-		Config::setDefault(Defines::KEY_ALLOW_SHORT_FLAG_VALUES, FALSE);
 		self::initConsoleVars();
 		self::$inited = TRUE;
 		// ansi color enabled
 		if (self::hasFlag('--ansi')) {
-			self::setAnsiColorEnabled(TRUE);
+			ConfigGeneral::setAnsiColorEnabled(TRUE);
 		}
 		// ansi color disabled
 		if (self::hasFlag('--no-ansi')) {
-			self::setAnsiColorEnabled(FALSE);
+			ConfigGeneral::setAnsiColorEnabled(FALSE);
 		}
 		// detect color support
-		if (self::$ANSI_COLOR_ENABLED === NULL) {
-			self::$ANSI_COLOR_ENABLED = (self::$stat['stdout'] == 'chr');
-		}
+		ConfigGeneral::defaultAnsiColorEnabled(
+			(self::$stat['stdout'] == 'chr')
+		);
 		// clear screen
-		if (self::isAnsiColorEnabled()) {
+		if (ConfigGeneral::isAnsiColorEnabled()) {
 			echo self::FormatString('{clear}');
 		}
 	}
@@ -63,7 +60,7 @@ final class ShellTools {
 			'stderr' => self::getStat(\STDERR)
 		];
 		// parse shell arguments
-		$AllowShortFlagValues = Config::get(Defines::KEY_ALLOW_SHORT_FLAG_VALUES);
+		$AllowShortFlagValues = ConfigGeneral::getAllowShortFlagValues();
 		global $argv;
 		self::$flags = [];
 		self::$args  = [];
@@ -223,7 +220,7 @@ final class ShellTools {
 		}
 		if (isset(self::$flags[$key])) {
 			// don't allow "-x value"
-			$AllowShortFlagValues = Config::get(Defines::KEY_ALLOW_SHORT_FLAG_VALUES);
+			$AllowShortFlagValues = ConfigGeneral::getAllowShortFlagValues();
 			if (!$AllowShortFlagValues) {
 				if (!Strings::StartsWith($key, '--')) {
 					return TRUE;
@@ -296,18 +293,6 @@ final class ShellTools {
 
 
 
-	public static function isAnsiColorEnabled() {
-		if (self::$ANSI_COLOR_ENABLED === NULL) {
-			return TRUE;
-		}
-		return (self::$ANSI_COLOR_ENABLED != FALSE);
-	}
-	public static function setAnsiColorEnabled($enabled) {
-		self::$ANSI_COLOR_ENABLED = $enabled;
-	}
-
-
-
 	public static function FormatString($str) {
 		return \preg_replace_callback(
 			'#\{[a-z0-9,=]+\}#i',
@@ -317,7 +302,7 @@ final class ShellTools {
 	}
 	public static function FormatString_Callback(array $matches) {
 		$match = \reset($matches);
-		if (!self::isAnsiColorEnabled()) {
+		if (!ConfigGeneral::isAnsiColorEnabled()) {
 			return '';
 		}
 		if (!Strings::StartsWith($match, '{') || !Strings::EndsWith($match, '}')) {
