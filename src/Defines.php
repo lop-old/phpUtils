@@ -20,7 +20,9 @@ final class Defines {
 
 
 	// config keys
-	const KEY_ALLOW_SHORT_FLAG_VALUES = 'allow short flag values';
+	const KEY_CONFIG_GROUP_GENERAL = 'general config';
+	const KEY_CFG_ANSI_COLOR_ENABLED      = 'ansi color enabled';
+	const KEY_CFG_ALLOW_SHORT_FLAG_VALUES = 'allow short flag values';
 
 
 	const DIR_SEP      = \DIRECTORY_SEPARATOR;
