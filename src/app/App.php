@@ -8,7 +8,7 @@
  */
 namespace pxn\phpUtils\app;
 
-use pxn\phpUtils\Config;
+use pxn\phpUtils\ConfigGeneral;
 use pxn\phpUtils\Paths;
 use pxn\phpUtils\Strings;
 use pxn\phpUtils\Defines;
@@ -256,7 +256,7 @@ abstract class App {
 		}
 		// get from config
 		if (empty($name)) {
-			$name = Config::get(self::KEY_RENDER_MODE);
+			$name = ConfigGeneral::getDisplayMode();
 		}
 		// default render mode
 		if (empty($name)) {

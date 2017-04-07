@@ -15,6 +15,7 @@ class ConfigGeneral {
 	const CONFIG_GROUP = Defines::KEY_CONFIG_GROUP_GENERAL;
 	const ANSI_COLOR_ENABLED      = Defines::KEY_CFG_ANSI_COLOR_ENABLED;
 	const ALLOW_SHORT_FLAG_VALUES = Defines::KEY_CFG_ALLOW_SHORT_FLAG_VALUES;
+	const DISPLAY_MODE            = DefinesPortal::KEY_CFG_DISPLAY_MODE;
 
 	protected static $cfg = NULL;
 
@@ -32,6 +33,9 @@ class ConfigGeneral {
 		// allow short flag values (shell commands)
 		self::$cfg->setDefault(     self::ALLOW_SHORT_FLAG_VALUES, FALSE);
 		self::$cfg->setValidHandler(self::ALLOW_SHORT_FLAG_VALUES, 'bool');
+
+		// display mode (shell or web)
+		self::$cfg->setValidHandler(self::DISPLAY_MODE, 'string');
 
 		return TRUE;
 	}
@@ -69,6 +73,21 @@ class ConfigGeneral {
 		self::$cfg->setValue(
 			self::ALLOW_SHORT_FLAG_VALUES,
 			$enabled
+		);
+	}
+
+
+
+	// display mode (shell or web)
+	public static function getDisplayMode() {
+		return self::$cfg->getString(
+			self::DISPLAY_MODE
+		);
+	}
+	public static function setDisplayMode($mode) {
+		self::$cfg->setValue(
+			self::DISPLAY_MODE,
+			$mode
 		);
 	}
 
