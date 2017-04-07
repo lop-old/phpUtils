@@ -15,7 +15,7 @@ class ConfigGeneral {
 	const CONFIG_GROUP = Defines::KEY_CONFIG_GROUP_GENERAL;
 	const ANSI_COLOR_ENABLED      = Defines::KEY_CFG_ANSI_COLOR_ENABLED;
 	const ALLOW_SHORT_FLAG_VALUES = Defines::KEY_CFG_ALLOW_SHORT_FLAG_VALUES;
-	const DISPLAY_MODE            = DefinesPortal::KEY_CFG_DISPLAY_MODE;
+	const DISPLAY_MODE            = Defines::KEY_CFG_DISPLAY_MODE;
 
 	protected static $cfg = NULL;
 
