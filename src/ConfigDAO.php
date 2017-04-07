@@ -83,6 +83,51 @@ class ConfigDAO {
 		// no value set
 		return NULL;
 	}
+	public function getString() {
+		$value = $this->getValue();
+		if ($value === NULL) {
+			return NULL;
+		}
+		return (string) $value;
+	}
+	public function getInt() {
+		$value = $this->getValue();
+		if ($value === NULL) {
+			return NULL;
+		}
+		return (integer) $value;
+	}
+	public function getLong() {
+		$value = $this->getValue();
+		if ($value === NULL) {
+			return NULL;
+		}
+		return (integer) $value;
+	}
+	public function getFloat() {
+		$value = $this->getValue();
+		if ($value === NULL) {
+			return NULL;
+		}
+		return (float) $value;
+	}
+	public function getDouble() {
+		$value = $this->getValue();
+		if ($value === NULL) {
+			return NULL;
+		}
+		return (double) $value;
+	}
+	public function getBool() {
+		$value = $this->getValue();
+		if ($value === NULL) {
+			return NULL;
+		}
+		return ($value != FALSE);
+	}
+
+
+
 	// set store value
 	public function setValue($value) {
 		$this->value      = $value;
