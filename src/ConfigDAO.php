@@ -90,6 +90,10 @@ class ConfigDAO {
 		$this->value      = $value;
 		$this->validValue = NULL;
 	}
+	public function setRef(&$value) {
+		$this->value      = &$value;
+		$this->validValue = NULL;
+	}
 	// set default value
 	public function setDefault($value) {
 		$this->def        = $value;

@@ -169,6 +169,10 @@ class Config {
 		$dao = $this->getDAO($key);
 		$dao->setValue($value);
 	}
+	public function setRef($key, &$value) {
+		$dao = $this->getDAO($key);
+		$dao->setRef($value);
+	}
 	public function setDefault($key, $value) {
 		$dao = $this->getDAO($key);
 		$dao->setDefault($value);
