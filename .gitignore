@@ -1,34 +1,37 @@
 .git/
 
-pxnloader.php
 debug
 DEBUG
 .debug
+error_log
+
+pxnloader.php
 .htdb*
-**/config.php
-**/auth.json
-**/.cache/
-**/.*_cache/
-**/.backups/
+config.php
 public/static/bootstrap
 public/static/jquery
-**/error_log
 
-**/vendor/
-**/composer.phar
-**/coverage/
-**/.gradle/
-# resources/
-**/bin/
-**/target/
-**/rpmbuild-root/
-**/out/
-**/build/
+.cache/
+.*_cache/
+.backups/
+*.lock
+
+bin/
+target/
+vendor/
+coverage/
+rpmbuild-root/
+out/
+build/
+
+composer.phar
+auth.json
 
 .classpath
 .project
 .buildpath
-**/.settings/
+.gradle/
+.settings/
 
 *.class
 *.iml
