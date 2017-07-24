@@ -605,4 +605,39 @@ final class Strings {
 
 
 
+	public static function CommonPath($pathA, $pathB) {
+		$pathA = (string) $pathA;
+		$pathB = (string) $pathB;
+		$prepend = self::StartsWith($pathA, '/')
+				|| self::StartsWith($pathB, '/');
+		if ($prepend) {
+			$pathA = self::TrimFront($pathA, '/');
+			$pathB = self::TrimFront($pathB, '/');
+		}
+		$partsA = \explode('/', $pathA);
+		$partsB = \explode('/', $pathB);
+		$endIndex =
+			\min(
+				\count($partsA),
+				\count($partsB)
+			) - 1;
+		$result = [];
+		for ($i=0; $i<$endIndex; $i++) {
+			if ($partsA[$i] != $partsB[$i])
+				break;
+			$result[] = $partsA[$i];
+		}
+		if (\count($result) == 0) {
+			return ($prepend ? '/' : '');
+		}
+		$result = \implode($result, '/');
+		return (
+			$prepend
+			? self::ForceStartsWith($result, '/')
+			: $result
+		);
+	}
+
+
+
 }
