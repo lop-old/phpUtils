@@ -428,18 +428,28 @@ function debug($debug=NULL, $msg=NULL) {
 }
 // by file
 {
-	$entry = Paths::entry();
-	$base  = Paths::base();
+	$entry  = Paths::entry();
+	$base   = Paths::base();
+	$common = Strings::CommonPath(
+		$entry,
+		$base
+	);
 	$paths = [
-		"$entry/debug",
-		"$entry/DEBUG",
-		"$entry/.debug",
-		"$base/debug",
-		"$base/DEBUG",
-		"$base/.debug"
+		$entry,
+		$base,
+		$common,
+		$common."/.."
 	];
 	foreach ($paths as $path) {
-		if (\file_exists($path)) {
+		if (\file_exists($path."/debug")) {
+			debug(TRUE, 'by file');
+			break;
+		}
+		if (\file_exists($path."/DEBUG")) {
+			debug(TRUE, 'by file');
+			break;
+		}
+		if (\file_exists($path."/.debug")) {
 			debug(TRUE, 'by file');
 			break;
 		}
