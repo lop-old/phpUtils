@@ -247,7 +247,11 @@ final class Strings {
 			$changed = FALSE;
 			foreach ($search as $str) {
 				$last = $text;
-				$text = \mb_str_replace($str.$str, $str, $text);
+				$text = \str_replace(
+					$str.$str,
+					$str,
+					$text
+				);
 				if ($text !== $last) {
 					$changed = TRUE;
 				}
