@@ -44,9 +44,7 @@ class init {
 	\ini_set('display_errors', 'On');
 	\ini_set('html_errors',    $isShell ? 'Off' : 'On');
 	\ini_set('log_errors',     'On');
-	if ( ! $isShell ) {
-		\ini_set('error_log', 'error_log');
-	}
+	\ini_set('error_log',      $isShell ? '/var/log/php_shell_error' : 'error_log');
 }
 
 // php version 5.6 required
@@ -61,6 +59,10 @@ if (\defined('pxn\\phpUtils\\INDEX_DEFINE')) {
 }
 if (\defined('pxn\\phpUtils\\PORTAL_LOADED')) {
 	echo '<h2>Unknown state! Portal already loaded?</h2>';
+	exit(1);
+}
+if (!\function_exists('mb_substr')) {
+	echo '<h2>mbstring library not installed?</h2>';
 	exit(1);
 }
 \define('pxn\\phpUtils\\INDEX_DEFINE', TRUE);
