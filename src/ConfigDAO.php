@@ -128,6 +128,41 @@ class ConfigDAO {
 
 
 
+	public function peakValue() {
+		// stored value
+		if (!empty($this->value)) {
+			$value = self::runValidHandler(
+				$this->validHandler,
+				$this->value,
+				self::KEY_DAO_VALUE
+			);
+			if (!empty($value)) {
+				$this->validValue = $value;
+				return $value;
+			}
+		}
+		// no value set
+		return NULL;
+	}
+	public function peakSuper() {
+		// super value
+		if (!empty($this->sup)) {
+			$value = self::runValidHandler(
+				$this->validHandler,
+				$this->sup,
+				self::KEY_DAO_SUPER
+			);
+			if (!empty($value)) {
+				$this->validValue = $value;
+				return $value;
+			}
+		}
+		// no value set
+		return NULL;
+	}
+
+
+
 	// set store value
 	public function setValue($value) {
 		$this->value      = $value;

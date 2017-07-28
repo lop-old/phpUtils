@@ -163,6 +163,23 @@ class Config {
 
 
 
+	public function peakValue($key) {
+		$dao = $this->peakDAO($key);
+		if ($dao == NULL) {
+			return NULL;
+		}
+		return $dao->peakValue();
+	}
+	public function peakSuper($key) {
+		$dao = $this->peakDAO($key);
+		if ($dao == NULL) {
+			return NULL;
+		}
+		return $dao->peakSuper();
+	}
+
+
+
 	public function setValue($key, $value) {
 		$dao = $this->getDAO($key);
 		$dao->setValue($value);
