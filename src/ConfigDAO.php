@@ -45,40 +45,34 @@ class ConfigDAO {
 			return $this->validValue;
 		}
 		// super value
-		if (!empty($this->sup)) {
+		if ($this->sup !== NULL) {
 			$value = self::runValidHandler(
 				$this->validHandler,
 				$this->sup,
 				self::KEY_DAO_SUPER
 			);
-			if (!empty($value)) {
-				$this->validValue = $value;
-				return $value;
-			}
+			$this->validValue = $value;
+			return $value;
 		}
 		// stored value
-		if (!empty($this->value)) {
+		if ($this->value !== NULL) {
 			$value = self::runValidHandler(
 				$this->validHandler,
 				$this->value,
 				self::KEY_DAO_VALUE
 			);
-			if (!empty($value)) {
-				$this->validValue = $value;
-				return $value;
-			}
+			$this->validValue = $value;
+			return $value;
 		}
 		// default value
-		if (!empty($this->def)) {
+		if ($this->def !== NULL) {
 			$value = self::runValidHandler(
 				$this->validHandler,
 				$this->def,
 				self::KEY_DAO_DEFAULT
 			);
-			if (!empty($value)) {
-				$this->validValue = $value;
-				return $value;
-			}
+			$this->validValue = $value;
+			return $value;
 		}
 		// no value set
 		return NULL;
@@ -207,7 +201,7 @@ class ConfigDAO {
 	public static function runValidHandler($handler, $value, $type) {
 		if (\is_array($handler)) {
 			foreach ($handler as $h) {
-				$value = runValidHandler(
+				$value = self::runValidHandler(
 					$h,
 					$value,
 					$type
