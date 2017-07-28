@@ -184,44 +184,6 @@ final class Paths {
 
 
 
-	public static function getTwigCachePath() {
-		if ( ! \class_exists('pxn\\phpPortal\\DefinesPortal')) {
-			return NULL;
-		}
-		$cfg = Config::get(\pxn\phpPortal\DefinesPortal::KEY_CONFIG_GROUP_PORTAL);
-		if ($cfg == NULL) {
-			return NULL;
-		}
-		$path = $cfg->getString(
-			\pxn\phpPortal\DefinesPortal::KEY_CFG_TWIG_CACHE_PATH
-		);
-		if (empty($path)) {
-			$path = self::base().'/.twig_cache';
-		}
-		if (!\is_dir($path)) {
-			\mkdir($path, 0700);
-		}
-		return $path;
-	}
-	public static function getCacherPath() {
-		if ( ! \class_exists('pxn\\phpPortal\\DefinesPortal')) {
-			return NULL;
-		}
-		$cfg = Config::get(\pxn\phpPortal\DefinesPortal::KEY_CONFIG_GROUP_PORTAL);
-		if ($cfg == NULL) {
-			return NULL;
-		}
-		$path = $cfg->getString(
-			\pxn\phpPortal\DefinesPortal::KEY_CFG_CACHER_PATH
-		);
-		if (empty($path)) {
-			$path = self::base().'/.pxn_cache';
-		}
-		if (!\is_dir($path)) {
-			\mkdir($path, 0700);
-		}
-		return $path;
-	}
 
 
 

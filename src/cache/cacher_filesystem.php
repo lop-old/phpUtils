@@ -22,13 +22,7 @@ class cacher_filesystem extends cacher {
 
 	public function __construct($expireSeconds=NULL, $cachePath=NULL) {
 		parent::__construct($expireSeconds);
-		if (!debug()) {
-			$this->cachePath = (
-				empty($cachePath)
-				? \pxn\phpUtils\Paths::getCacherPath()
-				: (string) $cachePath
-			);
-		}
+		$this->cachePath = $cachePath;
 	}
 
 
@@ -58,7 +52,7 @@ class cacher_filesystem extends cacher {
 
 	protected function _getEntry($source, $context) {
 		// cache disabled
-		if (debug()) {
+		if (\debug()) {
 			return $source();
 		}
 		// existing entry
