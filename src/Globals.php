@@ -55,8 +55,8 @@ if (!\function_exists('backtrace')) {
 
 # debug()
 if (!\function_exists('debug')) {
-	function debug($debug=NULL) {
-		return \pxn\phpUtils\debug($debug);
+	function debug($debug=NULL, $msg=NULL) {
+		return \pxn\phpUtils\debug($debug, $msg);
 	}
 }
 

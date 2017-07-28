@@ -13,6 +13,7 @@ class ConfigGeneral {
 	private function __construct() {}
 
 	const CONFIG_GROUP = Defines::KEY_CONFIG_GROUP_GENERAL;
+	const DEBUG_ENABLED           = Defines::KEY_CFG_DEBUG;
 	const ANSI_COLOR_ENABLED      = Defines::KEY_CFG_ANSI_COLOR_ENABLED;
 	const ALLOW_SHORT_FLAG_VALUES = Defines::KEY_CFG_ALLOW_SHORT_FLAG_VALUES;
 	const DISPLAY_MODE            = Defines::KEY_CFG_DISPLAY_MODE;
@@ -27,6 +28,10 @@ class ConfigGeneral {
 		}
 		self::$cfg = Config::get(self::CONFIG_GROUP);
 
+		// debug mode
+		self::$cfg->setDefault(     self::DEBUG_ENABLED, FALSE);
+		self::$cfg->setValidHandler(self::DEBUG_ENABLED, 'bool');
+
 		// ansi color enabled (in shell)
 		self::$cfg->setValidHandler(self::ANSI_COLOR_ENABLED, 'bool');
 
@@ -38,6 +43,62 @@ class ConfigGeneral {
 		self::$cfg->setValidHandler(self::DISPLAY_MODE, 'string');
 
 		return TRUE;
+	}
+
+
+
+	// debug mode
+	public static function isDebug() {
+		return self::$cfg->getBool(
+			self::DEBUG_ENABLED
+		);
+	}
+	public static function notDebug() {
+		$value = self::isDebug();
+		if ($value === NULL) {
+			return NULL;
+		}
+		return ($value == FALSE);
+	}
+	public static function setDebug($enabled=TRUE, $msg=NULL) {
+		$last = self::$cfg->getValue(self::DEBUG_ENABLED);
+		self::$cfg->setValue(
+			self::DEBUG_ENABLED,
+			$enabled
+		);
+		$value = self::$cfg->getValue(self::DEBUG_ENABLED);
+		if ($value !== $last) {
+			$enabled = self::$cfg->getBool(self::DEBUG_ENABLED);
+			$isShell = System::isShell();
+			// debug mode enabled
+			if ($enabled) {
+				\error_reporting(\E_ALL | \E_STRICT);
+				\ini_set('display_errors', 'On');
+				\ini_set('html_errors',    'On');
+				\ini_set('log_errors',     'Off');
+				$msg = (empty($msg) ? '' : ": $msg");
+				if ($isShell) {
+					echo "Debug mode enabled{$msg}\n";
+				}
+			// debug mode disabled
+			} else {
+				if ($last == NULL && $msg != 'default') {
+					$msg = (empty($msg) ? '' : ": $msg");
+					if ($isShell) {
+						echo "Debug mode disabled{$msg}\n";
+					}
+				}
+				\error_reporting(\E_ERROR | \E_WARNING | \E_PARSE | \E_NOTICE);
+				\ini_set('display_errors', 'Off');
+				\ini_set('log_errors',     'On');
+			}
+		}
+	}
+	public static function setDebugRef(&$value) {
+		self::$cfg->setRef(
+			self::DEBUG_ENABLED,
+			$value
+		);
 	}
 
 

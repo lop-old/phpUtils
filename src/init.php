@@ -387,46 +387,26 @@ if (System::isShell()) {
 // debug mode
 global $pxnUtils_DEBUG;
 $pxnUtils_DEBUG = NULL;
+\pxn\phpUtils\ConfigGeneral::setDebugRef($pxnUtils_DEBUG);
+$cfg = \pxn\phpUtils\Config::get(\pxn\phpUtils\Defines::KEY_CONFIG_GROUP_GENERAL);
+$dao = $cfg->getDAO(\pxn\phpUtils\Defines::KEY_CFG_DEBUG);
+$dao->setValidHandler('bool');
+
 function debug($debug=NULL, $msg=NULL) {
-	global $pxnUtils_DEBUG;
-	$isShell = System::isShell();
 	if ($debug !== NULL) {
-		$last = $pxnUtils_DEBUG;
-		$pxnUtils_DEBUG = General::toBoolean($debug);
-		// update debug mode
-		if ($pxnUtils_DEBUG !== $last) {
-			// enabled
-			if ($pxnUtils_DEBUG) {
-				\error_reporting(\E_ALL | \E_STRICT);
-				\ini_set('display_errors', 'On');
-				\ini_set('html_errors',    'On');
-				\ini_set('log_errors',     'Off');
-				$msg = (empty($msg) ? '' : ": $msg");
-				if ($isShell) {
-					echo "Debug mode enabled{$msg}\n";
-				}
-			// disabled
-			} else {
-				if ($last == NULL && $msg != 'default') {
-					$msg = (empty($msg) ? '' : ": $msg");
-					if ($isShell) {
-						echo "Debug mode disabled{$msg}\n";
-					}
-				}
-				\error_reporting(\E_ERROR | \E_WARNING | \E_PARSE | \E_NOTICE);
-				\ini_set('display_errors', 'Off');
-				\ini_set('log_errors',     'On');
-			}
-		}
+		\pxn\phpUtils\ConfigGeneral::setDebug($debug, $msg);
 	}
-	return $pxnUtils_DEBUG;
+	return \pxn\phpUtils\ConfigGeneral::isDebug();
 }
+
 // by define
 {
-	if (\defined('\DEBUG'))
+	if (\defined('\DEBUG')) {
 		debug(\DEBUG, 'by define');
-	if (\defined('pxn\\phpUtils\\DEBUG'))
+	}
+	if (\defined('pxn\\phpUtils\\DEBUG')) {
 		debug(\pxn\phpUtils\DEBUG, 'by namespaced define');
+	}
 }
 // by file
 {
