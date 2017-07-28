@@ -171,6 +171,10 @@ final class Paths {
 	public static function portal() {
 		return self::$local_portal;
 	}
+	public static function data() {
+		$basePath = self::base();
+		return "$basePath/data";
+	}
 
 
 
